@@ -1,0 +1,153 @@
+{
+    "navbar": {
+       
+        "dropdown": {
+            "megamenu": {
+                "text": "Mega Menu",
+                "uicontent": {
+                    "title": "Composants de l'interface utilisateur",
+                    "list": {
+                        "lightbox": "Boite à lumière",
+                        "rangeslider": "Curseur de plage",
+                        "sweetalert": "Sweet Alert",
+                        "rating": "Évaluation",
+                        "forms": "Formes",
+                        "tables": "les tables",
+                        "charts": "Graphiques"
+                    }
+                },
+                "application": {
+                    "title": "Applications",
+                    "list": {
+                        "ecommerce": "Commerce électronique",
+                        "calendar": "Calendrier",
+                        "email": "Email",
+                        "projects": "Projets",
+                        "tasks": "Tâches",
+                        "contacts": "Contacts"
+                    }
+                },
+                "extrapages": {
+                    "title": "Pages supplémentaires",
+                    "list": {
+                        "lightsidebar": "Barre latérale légère",
+                        "compactsidebar": "Barre latérale compacte",
+                        "horizontallayout": "Disposition horizontale",
+                        "maintenance": "Entretien",
+                        "comingsoon": "Bientôt disponible",
+                        "timeline": "Chronologie",
+                        "faqs": "FAQ"
+                    }
+                }
+            },
+          
+            "notification": {
+                "badge": "3",
+                "text": "Notifications",
+                "subtext": "Voir tout",
+                "order": {
+                    "title": "Votre commande est passée",
+                    "text": "Si plusieurs langues fusionnent la grammaire",
+                    "time": "Il y a 3 minutes"
+                },
+                "james": {
+                    "title": "James Lemire",
+                    "text": "It will seem like simplified English.",
+                    "time": "Il y a 1 heure"
+                },
+                "item": {
+                    "title": "Votre article est expédié",
+                    "text": "Si plusieurs langues fusionnent la grammaire",
+                    "time": "Il y a 3 minutes"
+                },
+                "salena": {
+                    "title": "Salena Layfield",
+                    "text": "As a skeptical Cambridge friend of mine occidental.",
+                    "time": "Il y a 1 heure"
+                },
+                "button": "Charger plus.."
+            },
+            "henry": {
+                "text": "Henri",
+                "list": {
+                    "profile": "Profil",
+                    "mywallet": "Mon portefeuille",
+                    "settings": "Réglages",
+                    "lockscreen": "Écran verrouillé",
+                    "logout": "Se déconnecter"
+                }
+            }
+        }
+    },
+    "menuitems": {
+        "menu": {
+            "text": "Menu"
+        },
+       
+        "layouts": {
+            "text": "Disposition",
+            "list": {
+                "horizontal": "Horizontale",
+                "lightsidebar": "Barre latérale légère",
+                "compactsidebar": "Barre latérale compacte",
+                "iconsidebar": "Barre latérale des icônes",
+                "boxed": "Disposition en boîte",
+                "coloredsidebar": "Barre latérale colorée",
+                "vertical": "Verticale",
+                "lighttopbar": "Barre supérieure légère",
+                "coloredheader": "En-tête coloré"
+            }
+        },
+       
+        "archive": {
+            "text": "Archives"
+        },
+        
+        
+        "email": {
+            "text": "Gestion Utilisateurs",
+            "list": {
+                "inbox": "Liste des Utilisateurs",
+                "reademail": "Profil",
+                "droit": "Droit",
+                "menu": "Menu"
+               
+            }
+        },
+        "invoices": {
+            "text": "Gestion PME",
+            "list": {
+                "invoicelist": "Liste des factures",
+                "invoicedetail": "Détail de la facture"
+            }
+        },
+        "projects": {
+            "text": "Parametrages",
+            "list": {
+                "grid": "Grille de projets",
+                "projectlist": "Liste des projets",
+                "overview": "Aperçu du projet",
+                "create": "Créer un nouveau"
+            }
+        },
+        "tasks": {
+            "text": "Gestion Autorisation",
+            "list": {
+                "tasklist": "Liste de tâches",
+                "kanban": "Tableau Kanban",
+                "createtask": "Créer une tâche"
+            }
+        },
+        "contacts": {
+            "text": "Gestion Direction",
+            "list": {
+                "usergrid": "Grille utilisateur",
+                "userlist": "liste d'utilisateur",
+                "profile": "Profil"
+            }
+        }
+  
+        
+      
+    }
+  }
