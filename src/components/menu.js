@@ -154,31 +154,31 @@ let menuItems = [
             }
         ]
     },
-    {
-        id: 46,
-        label: "menuitems.contacts.text",
-        icon: "bx-building",
-        subItems: [
-            {
-                id: 47,
-                label: "menuitems.contacts.list.usergrid",
-                link: "/contacts/grid",
-                parentId: 46
-            },
-            {
-                id: 48,
-                label: "menuitems.contacts.list.userlist",
-                link: "/contacts/list",
-                parentId: 46
-            },
-            {
-                id: 49,
-                label: "menuitems.contacts.list.profile",
-                link: "/contacts/profile",
-                parentId: 46
-            }
-        ]
-    },
+    // {
+    //     id: 46,
+    //     label: "menuitems.contacts.text",
+    //     icon: "bx-building",
+    //     subItems: [
+    //         {
+    //             id: 47,
+    //             label: "menuitems.contacts.list.usergrid",
+    //             link: "/contacts/grid",
+    //             parentId: 46
+    //         },
+    //         {
+    //             id: 48,
+    //             label: "menuitems.contacts.list.userlist",
+    //             link: "/contacts/list",
+    //             parentId: 46
+    //         },
+    //         {
+    //             id: 49,
+    //             label: "menuitems.contacts.list.profile",
+    //             link: "/contacts/profile",
+    //             parentId: 46
+    //         }
+    //     ]
+    // },
 
    
     
@@ -193,7 +193,7 @@ const isDNIDepartment = authenticatedUser.direction === 'DNI';
 if (isDNIDepartment) {
     // Filtrer le menu pour exclure l'élément avec l'id 56 (menuitems.dncic.text)
     menuItems = menuItems.filter(item => item.id !== 56);
-} else{
+} else if(authenticatedUser.direction === 'DNCIC'){
     menuItems = menuItems.filter(item => item.id !== 34);
     const parent37 = menuItems.find(item => item.id === 37);
     if (parent37) {

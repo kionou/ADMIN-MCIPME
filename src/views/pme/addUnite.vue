@@ -2320,7 +2320,11 @@ async mounted() {
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
-            this.isOpen = true;
+              localStorage.removeItem('tempMpmeData')
+             setTimeout(()=>{
+                this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
+              }, 5000);
+              this.$router.push({ path: '/importatrices' })
             this.loading = false;
           } else {
             console.error("Erreur lors de l'enregistrement des données pour le MPME");
@@ -2361,13 +2365,9 @@ async mounted() {
         });
 
         console.log("response", response);
-        if (response.status === 200) {
+        if (response.data.status === 'success') {
           console.log("Données MPME mises à jour avec succès !");
-          localStorage.removeItem('tempMpmeData')
-  setTimeout(()=>{
-    this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-  }, 5000);
-          router.go(-1)
+         
           return true;
         } else {
           console.error("Erreur lors de la mise à ", response.data);
@@ -2376,10 +2376,7 @@ async mounted() {
         }
       } catch (error) {
         console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
-        if (
-          (error && error.response.data === "Unauthorized") ||
-          error.response.data.status === "error"
-        ) {
+        if (  error.response.data.status === "error" ) {
           console.log("aut", error.response.data.status === "error");
           
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
