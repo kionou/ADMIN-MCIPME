@@ -7,7 +7,7 @@
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Categories produits</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des Sous Categories produits</BCardTitle>
 
             
 
@@ -36,6 +36,7 @@
                  <BTr>
                    <BTh scope="col" ></BTh>
                    <BTh scope="col">Nom</BTh>
+                   <BTh scope="col">Nom Categorie</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
@@ -47,6 +48,7 @@
                    </BTd>
                  
                    <BTd>{{ region.NomCategorieProduit }}</BTd>
+                   <BTd>{{ region.categorie.NomCategorieProduit }}</BTd>
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
@@ -89,7 +91,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une Categorie</h5>
+                     <h5 class="text-primary">Ajouter une sous Categorie produit</h5>
                      
                    </div>
                  </BCol>
@@ -108,21 +110,20 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <!-- <BRow>
+                   <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
-
+                       <label for="userpassword">Categorie Produit</label>
+                       <MazSelect label="Sélectionner la categorie produit" v-model="step1.categorie" color="info" :options="SelectPrefecture" search />
+                      <small v-if="v$.step1.categorie.$error">{{v$.step1.categorie.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CategorieProduitsId']"> {{ resultError["CategorieProduitsId"] }} </small>
                      </div>
                   </BCol>
-                </BRow> -->
+                </BRow>
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
+                       <label for="userpassword">Nom Sous Categorie</label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
@@ -164,7 +165,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une Categorie</h5>
+                     <h5 class="text-primary">Modifier une Sous Categorie produit</h5>
                      
                    </div>
                  </BCol>
@@ -183,21 +184,20 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <!-- <BRow>
+                  <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
-
+                       <label for="userpassword">Categorie Produit</label>
+                       <MazSelect label="Sélectionner la categorie produit" v-model="step2.categorie" color="info" :options="SelectPrefecture" search />
+                      <small v-if="v$.step2.categorie.$error">{{v$.step2.categorie.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CategorieProduitsId']"> {{ resultError["CategorieProduitsId"] }} </small>
                      </div>
                   </BCol>
-                </BRow> -->
+                </BRow>
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
+                       <label for="userpassword">Nom Sous Categorie</label>
                      <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
@@ -258,6 +258,7 @@ export default {
      UpdateUser1:false,
      ToId:'',
      CategorieOptions:[],
+     SelectPrefecture:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -319,6 +320,7 @@ export default {
 async mounted() {
    console.log("uusers",this.loggedInUser);
    await this.fetchCategorieProduits()
+   await this.fetchSousCategorieProduits()
   
  },
  methods: {
@@ -336,6 +338,39 @@ async mounted() {
             });
                console.log(response.data.data);
                this.CategorieOptions = response.data.data;
+               this.SelectPrefecture = this.CategorieOptions.map(prefecture => ({
+                  label: prefecture.NomCategorieProduit,
+                  value: prefecture.id
+                 
+                }));
+        
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+},
+async fetchSousCategorieProduits() {
+    try {
+              const response = await axios.get('/type-produits', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`, },
+               
+    
+            });
+               console.log(response.data.data);
+               this.CategorieOptions = response.data.data;
+               this.SelectPrefecture = this.CategorieOptions.map(prefecture => ({
+                  label: prefecture.NomCategorieProduit,
+                  value: prefecture.id
+                 
+                }));
+        
                this.loading = false;
             
             } catch (error) {
