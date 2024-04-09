@@ -47,6 +47,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/users/index.vue")
     },
+    {
+      path: "/historiques",
+      name: "historiques",
+      meta: { requiresAuth: true },
+      component: () => import("../views/users/historique.vue")
+    },
     
   
    // To start partenaires
@@ -208,6 +214,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/produit/default.vue")
     },
+
+       // To start directions
+  
+       {
+        path: "/directions",
+        name: "directions",
+        meta: { requiresAuth: true },
+        component: () => import("../views/directions/default.vue")
+      },
      
   
   ],

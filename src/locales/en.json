@@ -110,7 +110,7 @@
                 "inbox": "Liste des Utilisateurs",
                 "reademail": "Profil",
                 "droit": "Droit",
-                "menu": "Menu"
+                "historique": "Historique des actions"
                
             }
         },
@@ -136,7 +136,7 @@
                 "projectlist": "Localités",
                 "overview": "Partenaires",
                 "create": "Secteurs & Sous-secteurs",
-                "demande": "Types de demandes",
+                "demande": "Liste des directions",
                 "categorie": "types de Produits",
                 "zone": " Zones Industrielles",
                 "indicateur": "Indicateurs",

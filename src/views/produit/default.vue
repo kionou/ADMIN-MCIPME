@@ -13,7 +13,7 @@
                 <span class="d-none d-sm-inline-block"> Produits</span>
               </template>
              
-              <Sous ></Sous>
+              <!-- <Sous ></Sous> -->
             </BTab>
             <BTab>
               <template v-slot:title>
@@ -40,7 +40,7 @@
                 </span>
                 <span class="d-none d-sm-inline-block"> Formes</span>
               </template>
-              <Prefecture ></Prefecture>
+              <!-- <Prefecture ></Prefecture> -->
             </BTab>
             <BTab>
               <template v-slot:title>
@@ -50,7 +50,7 @@
                 <span class="d-none d-sm-inline-block"> Unites</span>
               </template>
               <!-- vrai -->
-              <Prefecture ></Prefecture> 
+              <!-- <Prefecture ></Prefecture>  -->
             </BTab>
            
           </BTabs>
