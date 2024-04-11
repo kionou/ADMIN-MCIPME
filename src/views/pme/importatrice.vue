@@ -11,9 +11,10 @@
 
              <div class="flex-shrink-0 d-flex">
                <div @click="$router.push({ path: '/add-unite' })"  class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6">
-               <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <BCol xxl="4" lg="6" class=" me-1">
+               <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
+             <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
              </div>
            </div>
          </BCardBody>
@@ -50,7 +51,7 @@
                          <router-link  :to="{ name: 'update-importatrice', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <div @click="confirmDelete(pme.CodeMpme)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
@@ -101,6 +102,8 @@ import PageHeader from "@/components/page-header.vue";
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
+import {successmsg} from "@/lib/modal.js"
+import Swal from 'sweetalert2'
 
 
 export default {
@@ -141,6 +144,20 @@ async  mounted() {
    await this.fetchRegionOptions()
  },
  methods: {
+  successmsg:successmsg,
+  updateCurrentPage(pageNumber) {
+         this.currentPage = pageNumber;
+         window.scrollTo({
+           top: 0,
+           behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+         });
+       },
+       updatePaginatedItems() {
+         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        
+         const endIndex = startIndex + this.itemsPerPage;
+         return  this.pmeOptions.slice(startIndex, endIndex);
+       },
   
   async fetchPmes() {
             try {
@@ -185,6 +202,58 @@ async  mounted() {
         );
       }
     },
+      async confirmDelete(id) {
+     // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
+     const result = await Swal.fire({
+       title: 'Êtes-vous sûr?',
+       text: 'Vous ne pourrez pas revenir en arrière!',
+       icon: 'warning',
+       showCancelButton: true,
+       confirmButtonText: 'Oui, supprimez-le!',
+       cancelButtonText: 'Non, annulez!',
+       reverseButtons: true
+     });
+
+     // Si l'utilisateur confirme la suppression
+     if (result.isConfirmed) {
+       this.DeleteUser(id);
+     }
+         },
+         async DeleteUser(id) {
+          this.loading = true
+         
+         try {
+           // Faites une requête pour supprimer l'élément avec l'ID itemId
+           const response = await axios.delete(`/mcipme/${id}`, {
+             headers: {
+               Authorization: `Bearer ${this.loggedInUser.token}`,
+               
+   
+             },
+   
+   
+           });
+           console.log('Réponse de suppression:', response);
+           if (response.data.status === 'success') {
+           await this.fetchPmes()
+
+             this.loading = false
+            this.successmsg('Supprimé!', 'Votre pme a été supprimé.')
+   
+           } else {
+             console.log('error', response.data)
+             this.loading = false
+           }
+         } catch (error) {
+           console.error('Erreur lors de la suppression:', error);
+           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+           
+         }
+   
+       },
           NameRegion(id){
             try {
             

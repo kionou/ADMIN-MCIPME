@@ -2206,14 +2206,15 @@ async mounted() {
         text: 'Voulez-vous voir les modifications ?',
         showCancelButton: true,
         confirmButtonText: 'Oui',
-        cancelButtonText: 'Non'
+        confirmButtonColor: "#007676",
+        cancelButtonText: 'Non',
+        cancelButtonTextColor: '#FF0000',
       }).then((result) => {
         if (result.isConfirmed) {
-          // Si l'utilisateur clique sur Oui, vous pouvez ajouter ici le code pour afficher les modifications
-          Swal.fire('Les modifications sont affichées !');
+          this.$router.push({ path: `/detail-importatrice/${this.id}` })
         } else {
-          // Si l'utilisateur clique sur Non, vous pouvez ajouter ici le code correspondant
-          Swal.fire('Vous avez choisi de ne pas voir les modifications.');
+          this.$router.push({ path: `/importatrices`})
+
         }
       });
     },
@@ -2319,8 +2320,7 @@ async mounted() {
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
-              localStorage.removeItem('tempMpmeDataUpdate')
-            
+            this.afficherMessageSuccess()  
             this.loading = false;
           } else {
             console.error("Erreur lors de l'enregistrement des données pour le MPME");
