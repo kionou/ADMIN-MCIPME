@@ -118,12 +118,13 @@ const router = createRouter({
     props:true,
     component: () => import("../views/pme/detailDistri.vue")
   },
-  // {
-  //   path: "/pme/ajouter",
-  //   name: "partenaire-add",
-  //   meta: { requiresAuth: true },
-  //   component: () => import("../views/pme/ajouter.vue")
-  // },
+  {
+    path: "/pme/update-pme/:id",
+    name: "update-importatrice",
+    meta: { requiresAuth: true },
+    props:true,
+    component: () => import("../views/pme/updatepme.vue")
+  },
   // To finish pme
   
   

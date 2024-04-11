@@ -15,7 +15,7 @@
                                 </div>
                                 <div
                                     class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">Sous-préfecture</dt>
+                                    <dt class="text-sm font-medium text-gray-500">Préfecture </dt>
                                     <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.Sousprefecture}}</dd>
                                 </div>
 
@@ -29,7 +29,7 @@
                                     class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Ville</dt>
                                     <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{
-                                        data.Ville }}</dd>
+                                        data.Ville || 'Néant' }}</dd>
                                 </div>
                                 <div
                                     class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -49,12 +49,7 @@
                                     <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{
                                         data.BoitePostale }} </dd>
                                 </div>
-                                <div
-                                    class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6  ">
-                                    <dt class="text-sm font-medium text-gray-500">Localisation</dt>
-                                    <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.Localisation
-                                    }}</dd>
-                                </div>
+                               
 
 
                             </dl>

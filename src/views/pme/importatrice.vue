@@ -47,7 +47,7 @@
                        </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <router-link  :to="{ name: 'update-importatrice', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
                          <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>

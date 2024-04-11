@@ -65,12 +65,20 @@
                                 Informations générales
                             </button>
                         </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link  " role="tab" data-bs-toggle="tab"
+                                data-bs-target="#navs-pills-top-home11" aria-controls="navs-pills-top-home11"
+                                aria-selected="false">
+                               Plus d'informations 
+                            </button>
+                        </li>
+                        
 
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                 data-bs-target="#navs-pills-top-profile1" aria-controls="navs-pills-top-profile1"
                                 aria-selected="false">
-                                Distributrice
+                                Distributrices
                             </button>
                         </li>
 
@@ -95,44 +103,44 @@
                                                
                                                 <div class="border-t border-gray-200">
                                                     <dl>
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Sigle Pme</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SigleMpme }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Nom Dirigeant</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NomDirigeant }} {{ data.PrenomDirigeant }}</dd>
                                                         </div>
 
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Date de Création</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.AnneeCreation }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Date de début des activités</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.AnneeEntreeActivite }}</dd>
                                                         </div>
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Forme  juridique</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.CodeStatutJuridique }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Secteur d'activité</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.PrincipalSecteurActivite }}</dd>
                                                         </div>
 
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Téléphone WhathApp</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroWhatsApp }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6  ">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6  ">
                                                             <dt class="text-sm font-medium text-gray-500">Téléphone Secondaire</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTelephoneSecondaire }}</dd>
@@ -172,11 +180,11 @@
                                             <tr class="bg-white">
                                             
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneH }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneH || 0 }}</td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneF }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneF || 0 }}</td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmploye}}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmploye || 0}}</td>
                                                
                                             </tr>
                                         </tbody>
@@ -195,44 +203,44 @@
                                                
                                                 <div class="border-t border-gray-200">
                                                     <dl>
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Adresse Email</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.AdresseEmail }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Autre Statut Juridique</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.AutreStatutJuridique }}</dd>
                                                         </div>
 
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Liste Sous Secteur Activite</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.ListeSousSecteurActivite }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Pays du Siège Social</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.PaysSiegeSocial }}</dd>
                                                         </div>
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Numero Nif</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroNif }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Date Generation du Numero Nif</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.DateGenerationNif }}</dd>
                                                         </div>
 
-                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Numéro Rccm</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroRccm }} </dd>
                                                         </div>
                                                         <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6  ">
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6  ">
                                                             <dt class="text-sm font-medium text-gray-500">Numero de la TVA</dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTva }}</dd>
@@ -272,11 +280,11 @@
                                             <tr class="bg-white">
                                             
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH || 0 }} </td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF || 0 }}</td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire}}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire || 0}}</td>
                                             
                                             </tr>
                                         </tbody>
@@ -287,6 +295,254 @@
                     </div>
                                 </div>
                             </div>
+
+
+
+                        </div>
+
+                        <div class=" tab-pane fade " id="navs-pills-top-home11" role="tabpanel">
+
+<div class="row ttb">
+    <div class=" card col-xl-6 col-lg-6 col-md-6 py-2 ttb1">
+        <div class=" bg-white rounded-lg  ">
+           
+            <div class="">
+                <div class="overflow-hidden bg-white border-b border-gray-200 rounded-lg">
+                   
+                    <div class="border-t border-gray-200">
+                        <dl>
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Titre Dirigeant</dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.TitreDirigeant }} </dd>
+                            </div>
+                            <div
+                                class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Nom Dirigeant</dt>
+                                <dd
+                                    class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NomDirigeant }} {{ data.PrenomDirigeant }}</dd>
+                            </div>
+
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Sexe Dirigeant </dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SexeDirigeant }} </dd>
+                            </div>
+                            <div
+                                class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Pays Dirigeant</dt>
+                                <dd
+                                    class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.PaysDirigeant }}</dd>
+                            </div>
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Année Naissance Dirigeant</dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.AnneeNaissanceDirigeant }} </dd>
+                            </div>
+                            <div
+                                class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Dirigeant Proprietaire</dt>
+                                <dd
+                                    class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.DirigeantProprietaire }}</dd>
+                            </div>
+
+                           
+
+                            
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden bg-white border-b border-gray-200 rounded-lg mt-3">
+                   
+                   <div class="border-t border-gray-200">
+                       <dl>
+                           <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Titre Repondant </dt>
+                               <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.TitreRepondant }} </dd>
+                           </div>
+                           <div
+                               class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Nom Repondant</dt>
+                               <dd
+                                   class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NomRepondant }} </dd>
+                           </div>
+
+                           <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Fonction Repondant </dt>
+                               <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.FonctionRepondant }} </dd>
+                           </div>
+                           <div
+                               class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Adresse du Repondant</dt>
+                               <dd
+                                   class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.AdresseRepondant }}</dd>
+                           </div>
+                           <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Ville du Repondant </dt>
+                               <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.VilleRepondant }} </dd>
+                           </div>
+                           <div
+                               class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Téléphone WhatsApp du Repondant </dt>
+                               <dd
+                                   class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.TelephoneWhatsAppRepondant }}</dd>
+                           </div>
+                           <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Contacter </dt>
+                               <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.Contacter }} </dd>
+                           </div>
+
+                          
+
+                           
+                       </dl>
+                   </div>
+               </div>
+
+            </div>
+
+        </div>
+
+       
+    </div>
+
+    <div class=" card col-xl-6 col-lg-6 col-md-6 py-2 ttb1">
+        <div class=" bg-white rounded-lg  ">
+           
+            <div class="">
+                <div class="overflow-hidden bg-white border-b border-gray-200 rounded-lg">
+                   
+                    <div class="border-t border-gray-200">
+                        <dl>
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Titre Proprietaire </dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.TitreProprietaire }} </dd>
+                            </div>
+                            <div
+                                class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Nom Proprietaire</dt>
+                                <dd
+                                    class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NomProprietaire }} {{ data.PrenomProprietaire }}</dd>
+                            </div>
+
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Sexe Proprietaire </dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SexeProprietaire }} </dd>
+                            </div>
+                            <div
+                                class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Pays Proprietaire</dt>
+                                <dd
+                                    class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.PaysProprietaire }}</dd>
+                            </div>
+                            <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Année Naissance Proprietaire</dt>
+                                <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.AnneeNaissanceProprietaire }} </dd>
+                            </div>
+                           
+
+                            
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden bg-white border-b border-gray-200 rounded-lg mt-3">
+                   
+                   <div class="border-t border-gray-200">
+                       <dl>
+                           <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Existance Actionnaire </dt>
+                               <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.ExistanceActionnaire }} </dd>
+                           </div>
+                           <div
+                               class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                               <dt class="text-sm font-medium text-gray-500">Existance Conseil Administration</dt>
+                               <dd
+                                   class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.ExistanceConseilAdministration }} </dd>
+                           </div>
+
+                          
+                          
+
+                           
+                       </dl>
+                   </div>
+               </div>
+
+            </div>
+
+        </div>
+
+        <div class="rounded-lg  mt-3">
+<p class="max-w-2xl mb-1 text-center font-semibold text-gray-900"> Nombre d'employés temporaires dans l'entreprise</p>
+<div class="-my-2  sm:-mx-6 lg:-mx-8">
+<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+    <div class="overflow-hidden border-b border-gray-200  rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                   
+                    <th scope="col"
+                        class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                        Hommes</th>
+                    <th scope="col"
+                        class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                        Femmes</th>
+                   
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white">
+                
+                    <td
+                        class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelTemporaireHomme || 0 }} </td>
+                    <td
+                        class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelTemporaireFemme || 0 }}</td>
+                 
+                
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+        </div>
+        <div class="rounded-lg  mt-3">
+<p class="max-w-2xl mb-1 text-center font-semibold text-gray-900">Nombre d'Employés dans l'Entreprise: Hommes et Femmes</p>
+<div class="-my-2  sm:-mx-6 lg:-mx-8">
+<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+    <div class="overflow-hidden border-b border-gray-200  rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                   
+                    <th scope="col"
+                        class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                        Hommes</th>
+                    <th scope="col"
+                        class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                        Femmes</th>
+                  
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white">
+                
+                    <td
+                        class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneH || 0 }}</td>
+                    <td
+                        class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneF || 0 }}</td>
+                    
+                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+       </div>
+    </div>
+</div>
 
 
 
