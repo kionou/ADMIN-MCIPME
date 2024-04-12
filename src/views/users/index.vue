@@ -49,7 +49,8 @@ export default {
   data() {
     return {
       loading: false,
-      UserOptions:'',
+      UserOptionsPersonnels:'',
+      UserOptionsEntreprise:'',
      
     }
   },
@@ -58,12 +59,12 @@ export default {
       return this.$store.getters['auth/myAuthenticatedUser'];
     },
     statistic() {
-      return `Total des Utilisateurs: ${this.UserOptions}`;
+      return `Total des Utilisateurs: Personnels = ${this.UserOptionsPersonnels} et Entreprises = ${this.UserOptionsEntreprise}  `;
     }
   },
   async mounted() {
     console.log("uusers", this.loggedInUser);
-    //  await this.fetchData();
+      await this.fetchUsers();
   },
   methods: {
     async fetchUsers() {
@@ -78,9 +79,16 @@ export default {
                    console.log(response.data.data);
                  // Filtrer les utilisateurs dont Identifiant est null
                 
-                 this.UserOptions = response.data.data.
-length
-;
+                 this.UserOptions = response.data.data.length;
+                 console.log( this.UserOptions);
+                 const filteredUsersPersonnels = response.data.data.filter(user => user.Identifiant !== null);
+                 console.log(filteredUsersPersonnels.length); 
+                 this.UserOptionsEntreprise = filteredUsersPersonnels.length
+
+                 const filteredUsersEntreprise = response.data.data.filter(user => user.Identifiant === null);
+                 console.log(filteredUsersEntreprise.length); 
+                 this.UserOptionsPersonnels = filteredUsersEntreprise.length
+
               this.loading = false;
            
            } catch (error) {

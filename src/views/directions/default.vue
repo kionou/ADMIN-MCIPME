@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Directions" pageTitle="Tableau de bord" />
+   <PageHeader title="Directions" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -301,6 +301,7 @@ export default {
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
+     UserOptionsPersonnels:"",
        error:'',
      step1:{
            
@@ -353,6 +354,9 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Directions = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
@@ -380,6 +384,7 @@ async mounted() {
             });
                console.log(response.data.data);
                 this.IndicateursOptions = response.data.data;
+                this.UserOptionsPersonnels =  this.IndicateursOptions.length
                this.loading = false;
             
             } catch (error) {

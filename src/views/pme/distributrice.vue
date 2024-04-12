@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Entreprises Distributrices" pageTitle="Tableau de bord" />
+   <PageHeader title="Entreprises Distributrices" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -121,13 +121,17 @@ export default {
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
-     regionOptions:[]
+     regionOptions:[],
+     UserOptionsPersonnels:"",
    }
  },
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Entreprises Distributrices = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.pmeOptions.length / this.itemsPerPage);
    },
@@ -156,6 +160,7 @@ async  mounted() {
                const filteredUsers = response.data.data.filter(user => user.ParentPme !== null);
                  console.log(filteredUsers); 
                 this.pmeOptions = filteredUsers;
+                this.UserOptionsPersonnels = filteredUsers.length
                this.loading = false;
             
             } catch (error) {

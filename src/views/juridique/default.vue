@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Status Juridique" pageTitle="Tableau de bord" />
+   <PageHeader title="Status Juridique" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -290,6 +290,7 @@ export default {
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
+     UserOptionsPersonnels:"",
        error:'',
      step1:{
             code:'',
@@ -346,6 +347,9 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Statuts Juridiques = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.StatutJuridiqueOptions.length / this.itemsPerPage);
    },
@@ -372,6 +376,7 @@ async mounted() {
 
         this.StatutJuridiqueOptions = options
         console.log('Code de la préfecture :', this.StatutJuridiqueOptions );
+        this.UserOptionsPersonnels = this.StatutJuridiqueOptions.length
         this.loading = false
 
       } catch (error) {

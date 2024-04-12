@@ -12,8 +12,9 @@
                         </div>
                         <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                                <img src="@/assets/img/prof.png" alt="user image"
-                                    class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" />
+                                <!-- <img src="@/assets/img/prof.png" alt="profile image"class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" /> -->
+                                <img v-if="data.profile === null" src="../../assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
+                                <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                             </div>
                             <div class="name-user">
                                 <div

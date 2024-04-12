@@ -3,7 +3,7 @@
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
     <BRow class="justify-content-center">
-      <BCol md="8" lg="6" xl="5">
+      <BCol md="8" lg="6" xl="6">
         <BCard no-body class="overflow-hidden">
           <div class="bg-primary-subtle">
             <BRow>

@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" />
+   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -300,6 +300,7 @@ export default {
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
+      UserOptionsPersonnels:"",
      v$: useVuelidate(),
        error:'',
      step1:{
@@ -353,6 +354,9 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Indicateurs  = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
@@ -380,6 +384,7 @@ async mounted() {
             });
                console.log(response.data.data);
                 this.IndicateursOptions = response.data.data;
+                this.UserOptionsPersonnels =  this.IndicateursOptions.length
                this.loading = false;
             
             } catch (error) {

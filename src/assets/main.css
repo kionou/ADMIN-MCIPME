@@ -224,3 +224,12 @@ margin-bottom: 10px !important;
   background-color:#F9D310 !important ;
   border-color: var(--bs-nav-tabs-link-active-border-color);
 }
+
+.m-select .m-select-list-item {
+  
+  /* padding-left: .75rem;
+  padding-right: .75rem; */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+ 
+}

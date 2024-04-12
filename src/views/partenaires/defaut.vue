@@ -2,7 +2,7 @@
   
      <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Partenaires" pageTitle="Tableau de bord" />
+    <PageHeader title="Partenaires" pageTitle="Tableau de bord" :statistic="statistic" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
@@ -100,6 +100,9 @@ export default {
 totalPages() {
 return Math.ceil(this.partenairesOptions.length / this.itemsPerPage);
 },
+statistic() {
+      return `Total des Partenaires = ${this.UserOptionsPersonnels} .  `;
+    },
 paginatedItems() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
@@ -121,6 +124,7 @@ data() {
          data:'',
          currentPage: 1,
          itemsPerPage: 12,
+         UserOptionsPersonnels:"",
     };
 },
 
@@ -155,6 +159,7 @@ methods: {
             });
                console.log(response.data.data);
                this.partenairesOptions = response.data.data.data;
+               this.UserOptionsPersonnels = this.partenairesOptions.length
                this.loading = false;
             
             } catch (error) {
