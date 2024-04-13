@@ -10,16 +10,26 @@
                 <span class="d-inline-block d-sm-none">
                   <i class="fas fa-home"></i>
                 </span>
-                <span class="d-none d-sm-inline-block">Unites</span>
+                <span class="d-none d-sm-inline-block"> Produits</span>
               </template>
-              <Region ></Region>
+             
+              <!-- <Sous ></Sous> -->
             </BTab>
             <BTab>
               <template v-slot:title>
                 <span class="d-inline-block d-sm-none">
                   <i class="far fa-user"></i>
                 </span>
-                <span class="d-none d-sm-inline-block">Categories</span>
+                <span class="d-none d-sm-inline-block"> Sous categories</span>
+              </template>
+              <SousCat ></SousCat>
+            </BTab>
+            <BTab>
+              <template v-slot:title>
+                <span class="d-inline-block d-sm-none">
+                  <i class="far fa-user"></i>
+                </span>
+                <span class="d-none d-sm-inline-block"> Categories</span>
               </template>
               <Prefecture ></Prefecture>
             </BTab>
@@ -28,9 +38,19 @@
                 <span class="d-inline-block d-sm-none">
                   <i class="far fa-user"></i>
                 </span>
-                <span class="d-none d-sm-inline-block">Produits</span>
+                <span class="d-none d-sm-inline-block"> Formes</span>
               </template>
-              <Sous ></Sous>
+              <!-- <Prefecture ></Prefecture> -->
+            </BTab>
+            <BTab>
+              <template v-slot:title>
+                <span class="d-inline-block d-sm-none">
+                  <i class="far fa-user"></i>
+                </span>
+                <span class="d-none d-sm-inline-block"> Unites</span>
+              </template>
+              <!-- vrai -->
+              <!-- <Prefecture ></Prefecture>  -->
             </BTab>
            
           </BTabs>
@@ -46,6 +66,8 @@
   import Region from '../../components/admin/produits/unites.vue';
   import Prefecture from '../../components/admin/produits/categories.vue';
   import Sous from '../../components/admin/produits/produits.vue';
+  import SousCat from '../../components/admin/produits/souscat.vue';
+ 
   
  
   
@@ -58,6 +80,7 @@
       Region,
       Prefecture,
       Sous,
+      SousCat
    
     },
     data() {

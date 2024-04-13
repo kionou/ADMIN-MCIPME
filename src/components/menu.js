@@ -24,6 +24,18 @@ let menuItems = [
       //     link: "/email/reademail/1",
       //     parentId: 29
       // },
+      // {
+      //     id: 32,
+      //     label: "menuitems.email.list.droit",
+      //     link: "/email/reademail/1",
+      //     parentId: 29
+      // },
+      {
+        id: 33,
+        label: "menuitems.email.list.historique",
+        link: "/historiques",
+        parentId: 29,
+      },
     ],
   },
   {
@@ -87,12 +99,12 @@ let menuItems = [
         link: "/secteurs",
         parentId: 37,
       },
-      // {
-      //     id: 50,
-      //     label: "menuitems.projects.list.demande",
-      //     link: "/demande",
-      //     parentId: 37
-      // },
+      {
+        id: 50,
+        label: "menuitems.projects.list.demande",
+        link: "/directions",
+        parentId: 37,
+      },
       {
         id: 51,
         label: "menuitems.projects.list.categorie",
@@ -133,7 +145,7 @@ let menuItems = [
       {
         id: 43,
         label: "menuitems.tasks.list.tasklist",
-        link: "/type",
+        link: "/tasks/list",
         parentId: 42,
       },
       {

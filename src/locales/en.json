@@ -58,22 +58,6 @@
           "title": "Votre article est expédié",
           "text": "Si plusieurs langues fusionnent la grammaire",
           "time": "Il y a 3 minutes"
-        },
-        "salena": {
-          "title": "Salena Layfield",
-          "text": "As a skeptical Cambridge friend of mine occidental.",
-          "time": "Il y a 1 heure"
-        },
-        "button": "Charger plus.."
-      },
-      "henry": {
-        "text": "Henri",
-        "list": {
-          "profile": "Profil",
-          "mywallet": "Mon portefeuille",
-          "settings": "Réglages",
-          "lockscreen": "Écran verrouillé",
-          "logout": "Se déconnecter"
         }
       }
     }

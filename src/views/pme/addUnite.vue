@@ -2393,7 +2393,7 @@ async mounted() {
 
     initializeYears() {
       const currentYear = new Date().getFullYear();
-      for (let year = 1800; year <= currentYear; year++) {
+      for (let year = 1900; year <= currentYear; year++) {
         this.years.push(year);
       }
       this.yearOptions = this.years.map((year) => ({

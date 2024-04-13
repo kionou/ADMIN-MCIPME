@@ -1,15 +1,14 @@
 <template >
-    <div>
-      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   
+    <Layout>
+     <Loading v-if="loading" style="z-index: 99999;"></Loading>
+   <PageHeader title="Directions" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Categories produits</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des directions</BCardTitle>
 
-            
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -30,39 +29,58 @@
          
          
          <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" ></BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Action</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                    
-                     
-                   </BTd>
+            <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+        
+       
+                
+        <div class="" style="width: 320px; height:180px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="indicateur in paginatedItems" :key="indicateur.id">
+          <BCardBody>
+            <div class="d-flex">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 3rem; height: 3rem;  border-radius: 50%;">
+                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                  <img src="@/assets/images/companies/img-1.png"  height="30" />
+                </span>
+              </div>
+
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">
+                  <BLink href="javascript: void(0);" class="text-dark">{{ indicateur.Sigle }}</BLink>
+                </h5>
+                <p class="text-muted mb-4">{{ indicateur.Description }}</p>
+                <div class="avatar-group">
                  
-                   <BTd>{{ region.NomCategorieProduit }}</BTd>
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
+                 
+                  
+                </div>
+              </div>
+            </div>
+          </BCardBody>
+          <div class="px-4 py-3 border-top">
+            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
+              
+              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
+                code: {{ indicateur. CodeDirection }}
+              </li>
+              <!-- <ul class="list-unstyled hstack gap-1 mb-0">
                       
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
-                       </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
                       
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
-           </div>
+                    </ul> -->
+
+            </ul>
+          </div>
+        </div>
+        
+       
+      
+        
+        
+            </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -89,7 +107,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une Categorie</h5>
+                     <h5 class="text-primary">Ajouter un indicateur</h5>
                      
                    </div>
                  </BCol>
@@ -101,20 +119,33 @@
                  <router-link to="#">
                    <div class="avatar-md profile-user-wid ">
                  <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+                   <img src="@/assets/img/armoirie.png"  style="width: 75%; height: 75%; z-index: 33;"/>
                  </span>
                </div>
                  </router-link>
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
+                  
+                <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+                  
                    <!-- <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
@@ -122,16 +153,15 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
+                       <label for="userpassword"> Nom ou Description</label>
+                       <MazTextarea v-model="step1.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
 
-                   
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -164,7 +194,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une Categorie</h5>
+                     <h5 class="text-primary">Modifier un indicateur</h5>
                      
                    </div>
                  </BCol>
@@ -183,13 +213,25 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <!-- <BRow>
+                    <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+                  
+                   <!-- <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
@@ -197,17 +239,14 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
+                       <label for="userpassword">Nom ou Description</label>
+                       <MazTextarea v-model="step2.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.description.$error">{{v$.step2.description.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
-
-                  
-
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -226,16 +265,14 @@
    </div>
  </div>
    </BModal>
-    </div>
-    
    
 
-
+ </Layout>
 </template>
 <script>
-
+import Layout from "../../layouts/main.vue";
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
-
+import PageHeader from "@/components/page-header.vue";
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
@@ -246,7 +283,8 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-  
+   Layout,
+   PageHeader,
    Loading ,
    Pag,
    MazPhoneNumberInput,
@@ -257,7 +295,7 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     CategorieOptions:[],
+     IndicateursOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -265,37 +303,45 @@ export default {
      v$: useVuelidate(),
        error:'',
      step1:{
-          
-            nom:'',
            
+            code:'',
+            description:'',
   
           },
 
             step2:{
-           
-            nom:'',
-           
+            
+            code:'',
+            description:'',
            
        },
    }
  },
  validations: {
    step1:{
+    code: {
+     require
      
-   nom: {
+   },
+   description: {
      require,
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   
   
    },
    step2:{
+    code: {
+     require
      
-   nom: {
+   },
+   description: {
      require,
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   
   
            
        },
@@ -308,34 +354,32 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.CategorieOptions.length / this.itemsPerPage);
+   return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.CategorieOptions.slice(startIndex, endIndex);
+     return this.IndicateursOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-   await this.fetchCategorieProduits()
-  
+  await this.fetchIndicateursOptions()
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+   
    successmsg:successmsg,
-   async fetchCategorieProduits() {
+   async fetchIndicateursOptions() {
     try {
-              const response = await axios.get('/type-produits', {
+              const response = await axios.get('/directions', {
               headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`, },
-               
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
     
             });
                console.log(response.data.data);
-               this.CategorieOptions = response.data.data;
+                this.IndicateursOptions = response.data.data;
                this.loading = false;
             
             } catch (error) {
@@ -346,8 +390,7 @@ async mounted() {
               this.$router.push("/");  //a revoir
             }
             }
-},
-   
+    },
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
@@ -355,13 +398,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-          NomCategorieProduit:this.step1.nom,
-          
+          CodeIndicateur:this.step1.code,
+          Description:this.step1.description,
+          Direction:this.loggedInUser.direction
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/type-produits' , DataUser, {
+         const response = await axios.post('/indicateurs' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -372,8 +416,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de categorie produit",'Votre categorie produit a été crée avec succès !')
-          await this.fetchCategorieProduits()
+           this.successmsg("Création d'indicateur",'Votre indicateur a été crée avec succès !')
+           await this.fetchIndicateursOptions()
 
          } else {
 
@@ -420,7 +464,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/type-produits/${id}`, {
+           const response = await axios.delete(`/indicateurs/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -431,9 +475,9 @@ async mounted() {
            });
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
-           await this.fetchCategorieProduits()
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre categorie produit a été supprimée.')
+            this.successmsg('Supprimé!', 'Votre indicateur a été supprimé.')
+            await this.fetchIndicateursOptions()
    
            } else {
              console.log('error', response.data)
@@ -441,10 +485,11 @@ async mounted() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -455,13 +500,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.CategorieOptions.find(user => user.id === id);
+             const user = this.IndicateursOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
-                      this.step2.nom = user.NomCategorieProduit,
-                      this.ToId = user.id
+
+            this.step2.code = user.CodeIndicateur,
+            this.step2.description = user.Description,
+            this.ToId = id
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -484,15 +531,15 @@ async mounted() {
       
                const dataCath = {
    
-          
-            NomCategorieProduit:this.step2.nom,
-            CategorieProduitsId:null,
-             id:this.ToId
+                CodeIndicateur:this.step2.code,
+                Description:this.step2.description,
+                Direction:this.loggedInUser.direction,
+                id:this.ToId
              }
-     console.log('dataCath',dataCath);
+             console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.post(`type-produits/${this.ToId}/update`,dataCath, {
+          const response = await axios.post(`indicateurs/${this.ToId}/update`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -500,18 +547,21 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchCategorieProduits()
+            await this.fetchIndicateursOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de categorie produit",'Votre categorie produit a été modifiée avec succès !')
+           this.successmsg("Modification d'indicateur",'Votre indicateur a été modifiée avec succès !')
+           
             
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+         
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }
@@ -530,7 +580,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.CategorieOptions.slice(startIndex, endIndex);
+         return  this.IndicateursOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -551,8 +601,6 @@ async mounted() {
      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
      console.log("resultError", this.resultError);
    },
-
-  
  },
 }
 </script>

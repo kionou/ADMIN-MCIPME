@@ -44,8 +44,6 @@ const router = createRouter({
       component: () => import("../views/users/index.vue"),
     },
 
-    // To start partenaires
-
     {
       path: "/partenaires",
       name: "partenaires",
