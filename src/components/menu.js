@@ -21,7 +21,7 @@ let menuItems = [
       // {
       //     id: 31,
       //     label: "menuitems.email.list.reademail",
-      //     link: "/email/reademail/1",
+      //     link: "/historiques",
       //     parentId: 29
       // },
       // {

@@ -8,7 +8,7 @@ import qs from 'qs';
 // https://cors-proxy.fringe.zone/
 // https://bd-mcipme.org/bd-services/public
 const axiosInstance = axios.create({
-  baseURL: 'https://cors-proxy.fringe.zone/https://bd-mcipme.org/bd-services/public/api',
+  baseURL: 'https://bd-mcipme.org/bd-services/public/api',
   headers: {
     // 'Content-Type': 'application/json', 
     // 'Content-Type': 'multipart/form-data',

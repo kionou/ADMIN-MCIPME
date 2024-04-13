@@ -90,7 +90,7 @@
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
-        "reademail": "Profil",
+        "historique": "Historiques",
         "droit": "Droit",
         "menu": "Menu"
       }

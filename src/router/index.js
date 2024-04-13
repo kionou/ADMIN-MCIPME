@@ -43,6 +43,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/users/index.vue"),
     },
+    {
+      path: "/historiques",
+      name: "historiques",
+      meta: { requiresAuth: true },
+      component: () => import("../views/users/historique.vue")
+    },
 
     {
       path: "/partenaires",
