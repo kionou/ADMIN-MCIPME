@@ -145,7 +145,7 @@ let menuItems = [
       {
         id: 43,
         label: "menuitems.tasks.list.tasklist",
-        link: "/tasks/list",
+        link: "type",
         parentId: 42,
       },
       {
