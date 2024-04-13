@@ -148,6 +148,12 @@ export default [
     meta: { requiresAuth: true },
     component: () => import("../views/indicateurs/default.vue"),
   },
+  {
+    path: "/directions",
+    name: "directions",
+    meta: { requiresAuth: true },
+    component: () => import("../views/directions/default.vue"),
+  },
 
   {
     path: "/type",

@@ -199,6 +199,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/type.vue"),
     },
+    {
+      path: "/directions",
+      name: "directions",
+      meta: { requiresAuth: true },
+      component: () => import("../views/directions/default.vue"),
+    },
+  
   ],
   // mode: "history",
 
