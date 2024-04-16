@@ -4,6 +4,7 @@ import simplebar from "simplebar-vue";
 import { avatar3, avatar4, avatar1 } from "@/assets/images/users/data"
 import { mapGetters } from 'vuex';
 import { icons } from "@/lib/data-fontawesome";
+import axios from '@/lib/axiosConfig.js'
 
 export default {
   data() {
@@ -72,14 +73,31 @@ export default {
         }
       }
     },
+   
 
      async logout() {
     try {      
-     
-     console.log('deconnexion');             
-    await this.$store.dispatch('auth/clearMyAuthenticatedUser'); // Appel de l'action pour déconnecter l'utilisateur
-    this.$router.push('/'); // Redirection vers la page de connexion
-                
+      // try {
+      //   const response = await axios.get('/api/auth-user-logout', {
+      //     headers: {
+           
+      //       Authorization: `Bearer ${this.loggedInUser.token}`,
+      //     },
+      //   });
+      //   console.log("Réponse du téléversement :", response);
+      //   if (response.data.status === "success") {
+      //    // Redirection vers la page de connexion
+      //   } 
+      // } catch (error) {
+      //   console.error("Erreur lors du téléversement :", error);
+      //   if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+      //           await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+      //         this.$router.push("/");  //a revoir
+      //       }
+      // }      
+         console.log('deconnexion');             
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser'); // Appel de l'action pour déconnecter l'utilisateur
+          this.$router.push('/');      
 
     } catch (error) {
       console.error('Erreur lors de la déconnexion :', error);
@@ -143,8 +161,8 @@ export default {
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
           <BDropdownItem>
-            <router-link to="/contacts/profile" v-slot="{ navigate }">
-              <span @click="navigate" @keypress.enter="navigate" class="text-body">
+            <router-link to="/profil" >
+              <span   class="text-body">
                 <i class="bx bx-user font-size-16 align-middle me-1"></i>
                 Profil
               </span>

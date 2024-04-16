@@ -105,37 +105,36 @@
                  </span>
                </div>
                  </router-link>
+                 <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
+                    <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                  </li>
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <!-- <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
-
-                     </div>
-                  </BCol>
-                </BRow> -->
-                <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
+                
+                <BRow v-for="(categorie, index) in categories" :key="categorie.id">
+                  <BCol md="12" class="d-flex align-items-center">
+                     <div class="mb-3 position-relative w-100">
                        <label for="userpassword">Nom Categorie</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                     <MazInput v-model="categorie.NomCategorieProduit"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <!-- <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small>  -->
+                      <small v-if="errors[index] && errors[index].NomCategorieProduit">{{ errors[index].NomCategorieProduit }}</small>
                       <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
 
                      </div>
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
+                         <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                       </li>
                   </BCol>
+                 
+                
                    </BRow>
 
                    
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
-                       <button class="" @click="HamdleAddUser()">Valider</button>
+                       <button class="" @click="submitForm()">Valider</button>
                       </div>
                      </BCol>
                    </BRow>
@@ -263,7 +262,9 @@ export default {
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
-       error:'',
+     categories: [{ NomCategorieProduit: '' }],
+     error: '',
+      errors:[],
      step1:{
           
             nom:'',
@@ -322,9 +323,17 @@ async mounted() {
   
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+  AddformData() {
+      this.categories.push({ NomCategorieProduit: "", });
+    },
+  
+    deleteRow(index) {
+      console.log(index);
+      if(index !== 0){
+        this.categories.splice(index, 1);
+      }
+        
+    },
    successmsg:successmsg,
    async fetchCategorieProduits() {
     try {
@@ -347,27 +356,76 @@ async mounted() {
             }
             }
 },
-   
+async submitForm() {
+  this.errors = [];
+  this.categories.forEach((categorie, index) => {
+  const errors = {};
+  if (!categorie.NomCategorieProduit) {
+    errors.NomCategorieProduit = 'Ce champ est obligatoire!';
+    }
+  this.errors[index] = errors;
+});
+// Vérifiez s'il y a des erreurs
+if (this.errors.some((errors) => errors.NomCategorieProduit)) {
+  return; // Ne poursuivez pas la soumission si des erreurs sont présentes
+} else {
+         this.loading = true
+        console.log('bonjour', this.categories);
+        this.categories.forEach((categorie, index) => {
+        console.log( 'this.idOffre',{ 'NomCategorieProduit':categorie.NomCategorieProduit } );
+         this.submitApi(this.categories)
+      });
+    }     
+    },
+    async submitApi(categories){
+
+
+try {
+  const response = await axios.post('/type-produits' , categories, {
+             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
+    console.log('Réponse du téléversement :', response);
+    if (response.data.status === "success") { 
+      await this.fetchCategorieProduits()
+           this.AddUser = false
+           this.loading = false
+           this.successmsg("Création des categories produits",'Vos categories produits ont été crées avec succès !')
+         
+
+         } else {
+
+         }
+   } catch (error) {
+   console.log('response.login', error); 
+
+   this.loading = false
+   if (error.response.data.status === "error") {
+   return this.error = error.response.data.message
+
+   } else {
+     this.formatValidationErrors(error.response.data.errors);
+   }
+
+    } 
+  
+
+},
+
+
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()
     if (this.v$.$errors.length == 0 ) {
-       this.loading = true
-         let DataUser = {
-          NomCategorieProduit:this.step1.nom,
-          
-         }
-         console.log("eeeee",DataUser);
+          console.log(' this.fields', this.fields);
+        //  this.loading = true
+        //  let DataUser = {
+        //   NomCategorieProduit:this.step1.nom, 
+        //  }
+        //  console.log("eeeee",DataUser);
          try {
         
          const response = await axios.post('/type-produits' , DataUser, {
-             headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-   
-   
-           });
+             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
          console.log('response.login', response.data); 
          if (response.data.status === "success") { 
            this.AddUser = false
@@ -378,9 +436,6 @@ async mounted() {
          } else {
 
          }
-
-
-
    } catch (error) {
    console.log('response.login', error); 
 

@@ -12,7 +12,7 @@
                         </div>
                         <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                                <img v-if="data.profile === null" src="../../assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
+                                <img v-if="data.profile === null" src="@/assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                                 <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                             </div>
                             <div class="name-user">
@@ -78,7 +78,7 @@
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                 data-bs-target="#navs-pills-top-profile1" aria-controls="navs-pills-top-profile1"
                                 aria-selected="false">
-                                Distributrices
+                                Entreprises rattachées
                             </button>
                         </li>
 
@@ -132,7 +132,7 @@
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Secteur d'activité</dt>
                                                             <dd
-                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.PrincipalSecteurActivite }}</dd>
+                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="data.secteur_activite">  {{ data.secteur_activite.NomSecteurActivite }}</dd>
                                                         </div>
 
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
@@ -216,7 +216,9 @@
 
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Liste Sous Secteur Activite</dt>
-                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.ListeSousSecteurActivite }} </dd>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="sous"> 
+                                                                <span v-for="pme in sous" :key="pme.id" > {{ pme.NomSousSecteur }} , </span> 
+                                                                 </dd>
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
@@ -564,7 +566,7 @@
           </p> -->
           <p class="texte-content carde-content">Date creation: <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content">Region: <span>{{ pme.Region }}</span></p>
+          <p class="texte-content" v-if="pme.Region">Region: <span>{{ pme.Region.NomRegion }}</span></p>
           <p class="texte-content">Ville: <span>{{ pme.Ville }}</span></p>
           <p class="texte-content">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
           <p class="texte-content">Taille: <span>{{ pme.SigleMpme }}</span></p>
@@ -601,7 +603,7 @@
           </div>
       </div>
       <div class="date-box">
-         <img src="../../assets/img/guinea.png" alt="">
+         <img src="@/assets/img/guinea.png" alt="">
       </div>
   </div>
 </div>
@@ -634,11 +636,11 @@
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
-import Position from '../../components/admin/pme/position.vue'
+import Position from '@/components/admin/pme/position.vue'
 import Pag from '@/components/others/pagination.vue'
 
 
@@ -679,6 +681,7 @@ export default {
          items:'',
          dataImport:[],
          dataimage:[],
+         sous:[],
          currentPage: 1,
          itemsPerPage: 10,
     
@@ -723,7 +726,8 @@ async  mounted() {
             const response = await axios.get(`/mcipme/${this.id}`)
             const data = response.data.data
             console.log('eeee', data);
-            this.data = data
+            this.data = data.detail
+            this.sous = data.list_sous_secteurs
             this.loading =   false
             // this.items = JSON.parse(this.data.ListeSousSecteurActivite)
   

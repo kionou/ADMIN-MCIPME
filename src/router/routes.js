@@ -67,7 +67,7 @@ export default [
     path: "/industrie",
     name: "industrie",
     meta: { requiresAuth: true },
-    component: () => import("../views/pme/default.vue"),
+    component: () => import("../views/pme/dni/default.vue"),
   },
   // {
   //   path: "/pme/ajouter",

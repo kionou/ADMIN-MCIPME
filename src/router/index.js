@@ -49,6 +49,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/users/historique.vue")
     },
+    {
+      path: "/profil",
+      name: "profil",
+      meta: { requiresAuth: true },
+      component: () => import("../views/profil/default.vue")
+    },
 
     {
       path: "/partenaires",
@@ -74,49 +80,81 @@ const router = createRouter({
     // To start pme
 
     {
-      path: "/industrie",
-      name: "industrie",
+      path: "/industrielles",
+      name: "industrielles",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/default.vue"),
+      component: () => import("../views/pme/dni/default.vue"),
     },
+
+    {
+      path: "/industrielle/ajouter",
+      name: "industrielle-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/pme/dni/addUnite.vue"),
+    },
+    {
+      path: "/industrielle/update/:id",
+      name: "industrielle-update",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/pme/dni/updateUnite.vue"),
+    },
+    {
+      path: "/detail-industrielle/:id",
+      name: "detail-industrielle",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/pme/dni/detail.vue"),
+    },
+
+
+      // dncic
     {
       path: "/importatrices",
       name: "importatrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/importatrice.vue"),
+      component: () => import("../views/pme/dncic/importatrice.vue"),
     },
     {
       path: "/distributrices",
       name: "distributrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/distributrice.vue"),
+      component: () => import("../views/pme/dncic/distributrice.vue"),
     },
     {
-      path: "/add-unite",
-      name: "add-unite",
+      path: "/exportatrices",
+      name: "exportatrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/addUnite.vue"),
+      component: () => import("../views/pme/dncic/exportatrice.vue"),
     },
     {
-      path: "/detail-importatrice/:id",
-      name: "detail-importatrice",
+      path: "/entreprises/ajouter",
+      name: "entreprises-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/pme/dncic/addpme.vue"),
+    },
+    {
+      path: "/entreprises/update/:id",
+      name: "entreprises-update",
+      meta: { requiresAuth: true },
+      props:true,
+      component: () => import("../views/pme/dncic/updatepme.vue")
+    },
+    {
+      path: "/detail-entreprises/:id",
+      name: "detail-entreprises",
       meta: { requiresAuth: true },
       props: true,
-      component: () => import("../views/pme/detailUnite.vue"),
+      component: () => import("../views/pme/dncic/detail.vue"),
     },
     {
       path: "/detail-distributrice/:id",
       name: "detail-distributrice",
       meta: { requiresAuth: true },
       props: true,
-      component: () => import("../views/pme/detailDistri.vue"),
+      component: () => import("../views/pme/dncic/detailDistri.vue"),
     },
-    // {
-    //   path: "/pme/ajouter",
-    //   name: "partenaire-add",
-    //   meta: { requiresAuth: true },
-    //   component: () => import("../views/pme/ajouter.vue")
-    // },
+   
     // To finish pme
 
     // To start localites
@@ -182,6 +220,13 @@ const router = createRouter({
       component: () => import("../views/zone/default.vue"),
     },
 
+    {
+      path: "/zone-industrielle/ajouter",
+      name: "ajouter-zone-industrielle",
+      meta: { requiresAuth: true },
+      component: () => import("../views/zone/add.vue"),
+    },
+
     // To start zone indicateurs
 
     {
@@ -200,8 +245,8 @@ const router = createRouter({
       component: () => import("../views/produit/default.vue"),
     },
     {
-      path: "/type",
-      name: "type",
+      path: "/demandes",
+      name: "demandes",
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/type.vue"),
     },

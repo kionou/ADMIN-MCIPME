@@ -104,8 +104,9 @@
     "dncic": {
       "text": "Entreprises",
       "list": {
-        "importatrice": "Importatrices",
-        "distributrice": "Distributrices"
+        "distributrice": "Distributrices",
+        "exportatrice": "Exportatrices",
+        "importatrice": "Importatrices"
       }
     },
     "projects": {
@@ -115,8 +116,8 @@
         "projectlist": "Localités",
         "overview": "Partenaires",
         "create": "Secteurs & Sous-secteurs",
-        "demande": "Types de demandes",
-        "categorie": "types Produits",
+        "demande": "Directions",
+        "categorie": "types de Produits",
         "zone": " Zones Industrielles",
         "indicateur": "Indicateurs",
         "juridique": "Statuts Juridiques"

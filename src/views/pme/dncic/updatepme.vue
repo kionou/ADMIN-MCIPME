@@ -164,7 +164,7 @@
                                 type="text"
                                 name="SigleMpme"
                                 id="SigleMpme"
-                                placeholder="DNPMECL"
+                                placeholder="DNCIC"
                                 v-model="step1.sigle_mpme"
                                 :class="{ 'error-border': resultError['SigleMpme'] }"
                                 @input="resultError['SigleMpme'] = false"
@@ -186,7 +186,7 @@
                                 type="text"
                                 name="nom"
                                 id="nom"
-                                placeholder="DNPMECL"
+                                placeholder="DNCIC"
                                 v-model="step1.nom"
                                 :class="{ 'error-border': resultError['NomMpme'] }"
                                 @input="resultError['NomMpme'] = false"
@@ -563,7 +563,7 @@
                   {{ resultError["PaysSiegeSocial"] }}
                 </small>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <div class="input-groupe">
                   <label for="ListeSousSecteurActivite"
                     >Êtes-vous une unité distributrice ? <span class="text-danger">*</span></label
@@ -580,31 +580,31 @@
                   v$.step2.distributrice.$errors[0].$message
                 }}</small>
               </div>
-            </div>
-            <div class="col" v-if="step2.distributrice === 'Oui'">
+            </div> -->
+            <div class="col">
                 <div class="input-groupe">
                   <label for="ListeSousSecteurActivite"
-                    >Choisissez vos unités importatrices  <span class="text-danger">*</span></label
+                    >Quel est le type de votre entreprise ?  <span class="text-danger">*</span></label
                   >
                   <MazSelect
-                  label="Sélectionner vos unités importatrices"
-                    v-model="step2.pmes"
+                  label="Sélectionner le type de votre entreprise"
+                    v-model="step2.types"
                     no-radius  color="info"
-                    :options="McipmeOptions"
+                    :options="EntrepriseOptions"
                     multiple
-                    :class="{ 'error-border': resultError['pmes'] }"
-                    @input="resultError['pmes'] = false"
+                    :class="{ 'error-border': resultError['types'] }"
+                    @input="resultError['types'] = false"
                    
                     search
                   />
                   
                    
                 
-                <small v-if="v$.step2.pmes.$error">{{
-                  v$.step2.pmes.$errors[0].$message
+                <small v-if="v$.step2.types.$error">{{
+                  v$.step2.types.$errors[0].$message
                 }}</small>
-                <small v-if="resultError['pmes']">
-                  {{ resultError["pmes"] }}
+                <small v-if="resultError['types']">
+                  {{ resultError["types"] }}
                 </small>
               </div>
             </div>
@@ -1804,7 +1804,7 @@
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
 import Loading from '@/components/others/loading.vue';
 import axios from "@/lib/axiosConfig.js";
@@ -1812,6 +1812,7 @@ import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
 import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidNumeri } from "@/functions/rules";
 import {successmsg} from "@/lib/modal.js"
+import Swal from 'sweetalert2'
 
 
 export default {
@@ -1821,6 +1822,7 @@ export default {
    Loading ,
    
  },
+ props:['id'],
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
@@ -1858,6 +1860,8 @@ export default {
       StatutJuridiqueOptions: [],
       McipmeOptions:[],
       QuartierOptions: [],
+      EntrepriseOptions:[],
+      userData:'',
      
     //   ChiffreOptions: chiffre,
  // Pour stocker les sous-secteurs sélectionnés
@@ -1914,7 +1918,7 @@ export default {
         an_prod_1: "", 
         PaysSiegeSocial: "Guinea",
         distributrice:"",
-        pmes:"",
+        types:"",
 
         nbre_rccm: "",
         FichierRccm:"",
@@ -2009,8 +2013,8 @@ export default {
       prin_sect_acti: { require },
       selectedSousSecteurs: { require },
       PaysSiegeSocial: { require },
-      distributrice: { require },
-      pmes: {},
+      distributrice: {  },
+      types: {},
       nbre_rccm: {},
       FichierRccm:{},
       nbre_nif: {},
@@ -2081,13 +2085,7 @@ export default {
 async mounted() {
 
    console.log("uusers",this.loggedInUser);
-   const localStorageUserData = localStorage.getItem('tempMpmeData') || null;
-   if(localStorageUserData !== null){
-    const userDataString = JSON.parse(localStorageUserData)
-   this.userData = userDataString
-            this.storeUserDataLocal(userDataString);
-           console.log("UserData:",userDataString );
-   }
+ 
    
    try {
       window.scrollTo({
@@ -2097,6 +2095,7 @@ async mounted() {
       
       console.log("data", this.loggedInUser);
       await Promise.all([
+        this.fetchgetOneMpme(),
         this.fetchMpmeData(),
         this.fetchCountryOptions(),
         this.fetchRegionOptions(),
@@ -2106,6 +2105,7 @@ async mounted() {
         this.fetchSecteurActiviteOptions(),
         this.fetchSousSecteurActiviteOptions(),
         this.fetchStatutJuridiqueOptions(),
+        this.fetchEntrepriseOptions(),
         this.initializeYears(),
        
       ]);
@@ -2143,7 +2143,7 @@ async mounted() {
         ListeSousSecteurActivite: JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)),
         AnneeProduction1: this.step2.an_prod_1,
         PaysSiegeSocial: this.step2.PaysSiegeSocial,
-        pmes:this.step2.pmes,
+        types:this.step2.types,
         NumeroRccm: this.step2.nbre_rccm,
         FichierRccm: this.step2.FichierRccm,
         NumeroNif: this.step2.nbre_nif,
@@ -2201,20 +2201,37 @@ async mounted() {
         Direction:this.loggedInUser.direction
       };
     },
+    afficherMessageSuccess() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Modifications enregistrées avec succès !',
+        text: 'Voulez-vous voir les modifications ?',
+        showCancelButton: true,
+        confirmButtonText: 'Oui',
+        confirmButtonColor: "#007676",
+        cancelButtonText: 'Non',
+        cancelButtonTextColor: '#FF0000',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/detail-importatrice/${this.id}` })
+        } else {
+          this.$router.push({ path: `/importatrices`})
+
+        }
+      });
+    },
     async nextStep() {
     //   this.loading = true;
       if (this.currentStep === 1) {
         this.error = "";
         this.v$.step1.$touch();
         if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
-          this.currentStep++;
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          this.getSuivant(mpmeData)
+         
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2229,14 +2246,10 @@ async mounted() {
         this.error = "";
         this.v$.step2.$touch();
         if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
           const mpmeData = this.createMpmeData();
-          console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
-          this.currentStep++;
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2250,14 +2263,10 @@ async mounted() {
         this.error = "";
         this.v$.step3.$touch();
         if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
           const mpmeData = this.createMpmeData();
-          console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
-          this.currentStep++;
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2271,14 +2280,10 @@ async mounted() {
         this.error = "";
         this.v$.step4.$touch();
         if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
           const mpmeData = this.createMpmeData();
-          console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
-          this.currentStep++;
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2292,14 +2297,10 @@ async mounted() {
       this.error = "";
         this.v$.step5.$touch();
         if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
           const mpmeData = this.createMpmeData();
-          console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
-          this.currentStep++;
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2316,15 +2317,12 @@ async mounted() {
           this.loading = true
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataUpdate', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiant', this.loggedInUser.id);
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
-              localStorage.removeItem('tempMpmeData')
-             setTimeout(()=>{
-                this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-              }, 5000);
-              this.$router.push({ path: '/importatrices' })
+            this.afficherMessageSuccess()  
             this.loading = false;
           } else {
             console.error("Erreur lors de l'enregistrement des données pour le MPME");
@@ -2352,22 +2350,54 @@ async mounted() {
     },
 
     successmsg:successmsg,
+    async fetchgetOneMpme() {
+      try {
+        const userId = this.loggedInUser.id;
+        // const userId = 'MPME-1580-2023'
+        const response = await axios.get(`/mcipme/${this.id}`);
+        this.userData = response.data.data.detail;
+        console.log("UserData:", this.userData);
+        const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiant');
+        const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdate');
+        console.log("UserData:", CodeIdentifiant);
+        console.log("UserData:", localStorageUserData);
+
+          if (CodeIdentifiant === this.id) {
+            const userDataString = JSON.parse(localStorageUserData)
+            this.storeUserDataLocal(userDataString);
+           console.log("UserData:",userDataString );
+          } else {
+            this.storeUserData(this.userData);
+           console.log("UserData:", this.userData);
+          }
+        
+        // console.log('UserData:', this.userData.ListeSousSecteurActivite);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des options des USER :", error);
+        if (error.response.status === 500) {
+          this.$router.push("/");  //a revoir
+        }
+      }
+    },
 
     // appeel apî
+ 
     async enregistrerMpmeDonnees(mpmeData) {
       try {
-       
-        const response = await axios.post('/mcipme', mpmeData, {
+        const userId = this.id;
+        // const userId = 'MPME-1580-2023'
+
+        const response = await axios.put(`/mcipme/${userId}`, mpmeData, {
           headers: {
             Authorization: `Bearer ${this.loggedInUser.token}`,
-             
+            'Content-Type': 'application/json', 
+            
           },
         });
 
         console.log("response", response);
-        if (response.data.status === 'success') {
+        if (response.status === 200) {
           console.log("Données MPME mises à jour avec succès !");
-         
           return true;
         } else {
           console.error("Erreur lors de la mise à ", response.data);
@@ -2436,6 +2466,40 @@ async mounted() {
           "Erreur lors de la récupération des options des pays :",
           error.message
         );
+      }
+    },
+    async fetchEntrepriseOptions() {
+      try {
+       
+        const response = await axios.get('/types-entreprises', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`, },
+            params:{statut:true}
+        });
+
+        console.log("response", response);
+        if (response.data.status === 'success') {
+          console.log("Données MPME mises à jour avec succès !",response.data.data);
+         this.EntrepriseOptions = response.data.data.map((country) => ({
+        label:country. IntituleType,
+        value: country.id,
+      }));
+         
+        } 
+      } catch (error) {
+        console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (  error.response.data.status === "error" ) {
+          console.log("aut", error.response.data.status === "error");
+          
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
       }
     },
     async fetchRegionOptions() {
@@ -2705,7 +2769,34 @@ async mounted() {
       console.log("handleFileUploadNif Selected file:", file);
       this.step2.FichierNif = file
     },
+    getTempMpmeData(key) {
+      // Votre logique pour récupérer les données du local storage
+      // Assurez-vous de retourner les données ou une valeur par défaut appropriée
+      return localStorage.getItem(key) || null;
+    },
+   async getSuivant(mpmeData){
+         localStorage.setItem('tempMpmeDataUpdate', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiant', this.loggedInUser.id);
 
+           const success = await this.enregistrerMpmeDonnees(mpmeData);
+          console.log("success", success);
+          if (success) {
+         
+            this.currentStep++;
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+            this.loading = false;
+          } else {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+            this.loading = false;
+          }
+        
+    },
     storeUserDataLocal(userData) {
 
       this.step1.region = userData.Region;
@@ -2731,7 +2822,7 @@ async mounted() {
       this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step2.pmes = userData.pmes;
+      this.step2.types = userData.types;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;
@@ -2783,6 +2874,96 @@ async mounted() {
       this.step6.origineDonnees = userData.OrigineDonnees;
 
      
+      // ... Lier d'autres propriétés de la même manière
+    },
+
+    storeUserData(userData) {
+      this.step1.region = userData.Region;
+      this.step1.commune = userData.Commune;
+      this.step1.ville = userData.Ville;
+      this.step1.sous_prefecture = userData.Sousprefecture;
+      this.step1.localisation = userData.Localisation;
+      this.step1.sigle_mpme = userData.SigleMpme;
+      this.step1.nom = userData.NomMpme;
+      this.step1.quartier = userData.Quartier;
+      this.step1.rue = userData.Rue;
+      this.step1.boite_postale = userData.BoitePostale;
+      this.step1.tel_what = userData.NumeroWhatsApp;
+      this.step1.tel_second = userData.NumeroTelephoneSecondaire;
+      this.step1.email = userData.AdresseEmail;
+      this.step1.url = userData.SiteWeb;
+
+      this.step2.an_creation = userData.AnneeCreation;
+      this.step2.an_entre_acti = userData.AnneeEntreeActivite;
+      this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
+      this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+      this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
+      // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
+      this.step2.an_prod_1 = userData.AnneeProduction1;
+      this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
+      this.step2.types = userData.types;
+      this.step2.nbre_rccm = userData.NumeroRccm;
+      this.step2.FichierRccm=userData.FichierRccm
+      this.step2.nbre_nif = userData.NumeroNif;
+      this.step2.FichierNif = userData.FichierNif;
+      this.step2.DateGenerationNif = userData.DateGenerationNif;
+      this.step2.NumeroTva = userData.NumeroTva;
+
+      if (userData.ListeSousSecteurActivite.includes("|")) {
+        this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split("|");
+      } else if (userData.ListeSousSecteurActivite.includes(",")) {
+        this.step2.selectedSousSecteurs = JSON.parse(userData.ListeSousSecteurActivite);
+      } else {
+        this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split(" ");
+      }
+    
+      this.step3.NbreEmployeGuinneF = userData.NbreEmployeGuinneF;
+      this.step3.NbreEmployeGuinneH = userData.NbreEmployeGuinneH;
+      this.step3.NbreEmploye = userData.NbreEmploye;
+      this.step3.pers_per_femm = userData.PersonnelPermanentFemme;
+      this.step3.pers_per_homm = userData.PersonnelPermanentHomme;
+      this.step3.pers_temp_femm = userData.PersonnelTemporaireFemme;
+      this.step3.pers_temp_homm = userData.PersonnelTemporaireHomme;
+      this.step3.NbreActionnaireGuinneF = userData.NbreActionnaireGuinneF;
+      this.step3.NbreActionnaireGuinneH = userData.NbreActionnaireGuinneH;
+      this.step3.NbreActionnaireGuinne = userData.NbreActionnaire;
+      
+
+      this.step4.titreDirigeant = userData.TitreDirigeant;
+      this.step4.nomDirigeant = userData.NomDirigeant;
+      this.step4.prenomDirigeant = userData.PrenomDirigeant;
+      this.step4.sexeDirigeant = userData.SexeDirigeant;
+      this.step4.paysDirigeant = userData.PaysDirigeant;
+      this.step4.anneeNaissanceDirigeant = userData.AnneeNaissanceDirigeant;
+      this.step4.dirigeantProprietaire = userData.DirigeantProprietaire;
+      this.step4.titreProprietaire = userData.TitreProprietaire;
+      this.step4.nomProprietaire = userData.NomProprietaire;
+      this.step4.prenomProprietaire = userData.PrenomProprietaire;
+      this.step4.sexeProprietaire = userData.SexeProprietaire;
+      this.step4.paysProprietaire = userData.PaysProprietaire;
+      this.step4.anneeNaissanceProprietaire = userData.AnneeNaissanceProprietaire;
+
+      this.step5.titreRepondant = userData.TitreRepondant;
+      this.step5.nomRepondant = userData.NomRepondant;
+      this.step5.fonctionRepondant = userData.FonctionRepondant;
+      this.step5.adresseRepondant = userData.AdresseRepondant;
+      this.step5.villeRepondant = userData.VilleRepondant;
+      this.step5.telephoneWhatsAppRepondant = userData.TelephoneWhatsAppRepondant;
+      this.step5.contacter = userData.Contacter;
+      this.step5.existanceActionnaire = userData.ExistanceActionnaire;
+      this.step5.existanceConseilAdministration = userData.ExistanceConseilAdministration;
+
+      this.step6.lienGoogleMapMpme = userData.LienGoogleMapMpme;
+      this.step6.latitudeMpme = userData.LatitudeMpme;
+      this.step6.longitudeMpme = userData.LongitudeMpme;
+      this.step6.altitudeMpme = userData.AltitudeMpme;
+      this.step6.precisionGPSMpme = userData.PrecisionGPSMpme;
+      this.step6.origineDonnees = userData.OrigineDonnees;
+
+    
+    
+
+   
       // ... Lier d'autres propriétés de la même manière
     },
 

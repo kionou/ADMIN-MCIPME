@@ -13,7 +13,7 @@
                         <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                                 <!-- <img src="@/assets/img/prof.png" alt="profile image"class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" /> -->
-                                <img v-if="data.profile === null" src="../../assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
+                                <img v-if="data.profile === null" src="@/assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                                 <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                             </div>
                             <div class="name-user">
@@ -346,7 +346,7 @@
                             </div>
                         </div>
                         <div class="date-box">
-                            <img src="../../assets/img/guinea.png" alt="">
+                            <img src="@/assets/img/guinea.png" alt="">
                         </div>
                     </div>
                     </div>
@@ -379,11 +379,11 @@
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
-import Position from '../../components/admin/pme/position.vue'
+import Position from '@/components/admin/pme/position.vue'
 import Pag from '@/components/others/pagination.vue'
 
 

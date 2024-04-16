@@ -41,7 +41,7 @@
                    <BTh scope="col">Numéro</BTh>
                    <BTh scope="col">Direction</BTh>
                    <BTh scope="col">Fonction</BTh>
-                   <BTh scope="col">Action</BTh>
+                   <BTh scope="col">Actions</BTh>
                  </BTr>
                </BThead>
                <BTbody>

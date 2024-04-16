@@ -38,7 +38,7 @@
 
           <BCardBody v-else>
             <div
-              class="py-2 d-flex justify-content-center align-items-center flex-wrap"
+              class="py-2 d-flex  align-items-center flex-wrap"
             >
               <div
                 class=""

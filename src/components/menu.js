@@ -46,7 +46,7 @@ let menuItems = [
       {
         id: 35,
         label: "menuitems.invoices.list.invoicelist",
-        link: "/industrie",
+        link: "/industrielles",
         parentId: 34,
       },
     ],
@@ -58,14 +58,20 @@ let menuItems = [
     subItems: [
       {
         id: 57,
-        label: "menuitems.dncic.list.importatrice",
-        link: "/importatrices",
+        label: "menuitems.dncic.list.distributrice",
+        link: "/distributrices",
         parentId: 56,
       },
       {
-        id: 57,
-        label: "menuitems.dncic.list.distributrice",
-        link: "/distributrices",
+        id: 58,
+        label: "menuitems.dncic.list.exportatrice",
+        link: "/exportatrices",
+        parentId: 56,
+      },
+      {
+        id: 59,
+        label: "menuitems.dncic.list.importatrice",
+        link: "/importatrices",
         parentId: 56,
       },
     ],
@@ -145,21 +151,21 @@ let menuItems = [
       {
         id: 43,
         label: "menuitems.tasks.list.tasklist",
-        link: "type",
+        link: "/demandes",
         parentId: 42,
       },
-      {
-        id: 44,
-        label: "menuitems.tasks.list.kanban",
-        link: "/tasks/kanban",
-        parentId: 42,
-      },
-      {
-        id: 45,
-        label: "menuitems.tasks.list.createtask",
-        link: "/tasks/create",
-        parentId: 42,
-      },
+      // {
+      //   id: 44,
+      //   label: "menuitems.tasks.list.kanban",
+      //   link: "/tasks/kanban",
+      //   parentId: 42,
+      // },
+      // {
+      //   id: 45,
+      //   label: "menuitems.tasks.list.createtask",
+      //   link: "/tasks/create",
+      //   parentId: 42,
+      // },
     ],
   },
   // {

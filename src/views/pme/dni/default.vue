@@ -1,20 +1,19 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Entreprises Importatrices" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center">
-             <BCardTitle class="mb-0 flex-grow-1">Liste des Entreprises importatrices</BCardTitle>
+             <BCardTitle class="mb-0 flex-grow-1">Liste des Unités industrielles</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-               <div @click="$router.push({ path: '/add-unite' })"  class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6" class=" me-1">
-               <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+               <div @click="$router.push({ path: '/industrielle/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
+               <BCol xxl="4" lg="6">
+               <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-             <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
              </div>
            </div>
          </BCardBody>
@@ -44,23 +43,24 @@
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link :to="{ name: 'detail-importatrice', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                         <router-link :to="{ name: 'detail-industrielle', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
                        </li>
                        
+                     
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <router-link  :to="{ name: 'update-importatrice', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
+                         <router-link  :to="{ name: 'industrielle-update', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
                          <div @click="confirmDelete(pme.CodeMpme)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
-                              variant="white" dropright top>
+                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" menu-class="dropdown-menu-end"
+                              variant="white" right>
                               <template #button-content>
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
-                              <BDropdownItem  @click="OpenLogo(pme.CodeMpme)">Ajouter un logo</BDropdownItem>
+                              <BDropdownItem href="#">Open</BDropdownItem>
                               <BDropdownItem href="#">Edit</BDropdownItem>
                               <BDropdownItem href="#">Rename</BDropdownItem>
                               <BDropdownDivider />
@@ -68,13 +68,11 @@
                             </BDropdown>
                        </li>
                      </ul>
-                     
 
           </div>
       </div>
       <div class="date-box">
-         <img v-if="pme.profile === null" src="../../assets/img/guinea.png" alt="">
-         <img v-else :src="pme.profile" alt="">
+         <img src="@/assets/img/guinea.png" alt="">
       </div>
   </div>
 </div>
@@ -93,83 +91,13 @@
      </BCol>
    </BRow>
 
-   <BModal v-model="AddLogo" hide-footer centered header-class="border-0" title-class="font-18" >
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un logo</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png"  style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                  
-                  <div id="uploadArea" class="upload-area">
-            <!-- Header -->
-            {{ error }}
-            
-          
 
-            <!-- Drop Zoon -->
-            <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
-              <div class="profile-pic">
-                <label class="-label" for="file">
-                  <span class="glyphicon glyphicon-camera"></span>
-                  <span>Change Image</span>
-                </label>
-                <input id="file" type="file" @change="loadFile" />
-
-                <img
-                 
-                  src="@/assets/img/flags.png"
-                  id="output"
-                  width="200"
-                />
-                <!-- <img v-else :src="userData.profile" id="output" width="200" /> -->
-              </div>
-            </div>
-            <!-- End Drop Zoon -->
-          </div>
-                  
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
    
 
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
@@ -190,23 +118,17 @@ export default {
    return { 
       
     loading:true,
-    AddLogo:false,
-    IdLogo:'',
     pmeOptions:[],
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
-     regionOptions:[],
-     UserOptionsPersonnels:'',
+     regionOptions:[]
    }
  },
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
-   statistic() {
-      return `Total des Entreprises Importatrices = ${this.UserOptionsPersonnels} .  `;
-    },
    totalPages() {
    return Math.ceil(this.pmeOptions.length / this.itemsPerPage);
    },
@@ -222,21 +144,6 @@ async  mounted() {
    await this.fetchRegionOptions()
  },
  methods: {
-  successmsg:successmsg,
-  updateCurrentPage(pageNumber) {
-         this.currentPage = pageNumber;
-         window.scrollTo({
-           top: 0,
-           behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
-         });
-       },
-       updatePaginatedItems() {
-         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        
-         const endIndex = startIndex + this.itemsPerPage;
-         return  this.pmeOptions.slice(startIndex, endIndex);
-       },
-  
   async fetchPmes() {
             try {
               const response = await axios.get('/mcipme', {
@@ -247,10 +154,7 @@ async  mounted() {
     
             });
                console.log(response.data.data);
-               const filteredUsers = response.data.data.filter(user => user.ParentPme === null);
-                 console.log(filteredUsers); 
-                this.pmeOptions = filteredUsers;
-                this.UserOptionsPersonnels = filteredUsers.length
+                this.pmeOptions = response.data.data;
                this.loading = false;
             
             } catch (error) {
@@ -262,7 +166,7 @@ async  mounted() {
             }
             }
           },
-   async fetchRegionOptions() {
+          async fetchRegionOptions() {
       // Renommez la méthode pour refléter qu'elle récupère les options de pays
       try {
         await this.$store.dispatch("fetchRegionOptions");
@@ -281,7 +185,7 @@ async  mounted() {
         );
       }
     },
-      async confirmDelete(id) {
+    async confirmDelete(id) {
      // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
      const result = await Swal.fire({
        title: 'Êtes-vous sûr?',
@@ -351,57 +255,7 @@ async  mounted() {
         );
             }
         
-   },
-   OpenLogo(id){
-    this.AddLogo = true
-    this.IdLogo = id
-   },
-   async loadFile(event) {
-      this.loading = true;
-      var image = document.getElementById("output");
-      image.src = URL.createObjectURL(event.target.files[0]);
-      const file = event.target.files[0];
-      const formData = new FormData();
-      formData.append("code", this.IdLogo);
-      formData.append("profile", file);
-      formData.append( "Directions",this.direction )
-      console.log('logo', this.IdLogo , file)
-
-      try {
-        const response = await axios.post("/mcipme/changement-de-profile", formData, {
-          headers: {
-            Authorization: `Bearer ${this.loggedInUser.token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log("response", response);
-
-        if (response.data.status === "success") {
-          this.fetchPmes();
-          this.msgsuccess = AddLogo;
-          this.loading = false;
-          this.successmsg('Logo ajouté', 'Logo ajouté avec success.')
-        } else {
-          console.log("errorrr", response.data);
-          this.error = "L'enregistrement a échoué !!!";
-        }
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour des données MPME guinee :", error);
-        if (
-          (error && error.response.data === "Unauthorized") ||
-          error.response.data.status === "error"
-        ) {
-          console.log("aut", error.response.data.status === "error");
-          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-        }
-         else {
-          this.formatValidationErrors(error.response.data.errors);
-          this.loading = false;
-          return false;
-        }
-      }
-    },
+   }
  },
 }
 </script>
@@ -519,133 +373,6 @@ margin-bottom: 10px !important;
 .date-box img {
  width: 100%;
  height: 100%;
-}
-
-.profile-pic {
-  color: transparent;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.profile-pic input {
-  display: none;
-}
-
-.profile-pic img {
-  position: absolute;
-  object-fit: cover;
-  width: 80%;
-  height: 100%;
-  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
-  z-index: 0;
-  border-radius: 50%;
-  border: 1px solid var(--color-primary);
-}
-
-.profile-pic .-label {
-  cursor: pointer;
-  height: 165px;
-  width: 230px;
-}
-
-.profile-pic:hover .-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 10000;
-  color: #fafafa;
-  transition: background-color 0.2s ease-in-out;
-
-  margin-bottom: 0;
-}
-
-.profile-pic span {
-  display: inline-flex;
-  padding: 0.2em;
-  height: 2em;
-}
-
-/* Upload Area */
-.upload-area {
-  width: 100%;
-  /* max-width: 25rem; */
-  background-color: rgb(255, 255, 255);
-  /* border: 2px solid var(--color-secondary); */
-  border-radius: 24px;
-  /* padding: 2rem 1.875rem 5rem 1.875rem; */
-  /* margin: 0.625rem; */
-  text-align: center;
-}
-
-.upload-area--open {
-  /* Slid Down Animation */
-  animation: slidDown 500ms ease-in-out;
-}
-
-.upload-area__title {
-  font-size: 1.8rem;
-  font-weight: 500;
-  margin-bottom: 0.3125rem;
-}
-
-.upload-area__paragraph {
-  font-size: 0.9375rem;
-  color: rgb(196, 195, 196);
-  margin-top: 0;
-}
-
-.upload-area__tooltip {
-  position: relative;
-  color: var(--color-secondary);
-  cursor: pointer;
-  transition: color 300ms ease-in-out;
-}
-
-.upload-area__tooltip:hover {
-  color: var(--clr-blue);
-}
-
-.upload-area__tooltip-data {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -125%);
-  min-width: max-content;
-  background-color: rgb(255, 255, 255);
-  color: rgb(63, 134, 255);
-  border: 1px solid var(--color-secondary);
-  padding: 0.625rem 1.25rem;
-  font-weight: 500;
-  opacity: 0;
-  visibility: hidden;
-  transition: none 300ms ease-in-out;
-  transition-property: opacity, visibility;
-}
-
-.upload-area__tooltip:hover .upload-area__tooltip-data {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Drop Zoon */
-.upload-area__drop-zoon {
-  position: relative;
-  height: 11.25rem;
-  /* 180px */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border: 2px dashed var(--color-secondary);
-  border-radius: 15px;
-  /* margin-top: 2.1875rem; */
-  height:220px;
-  transition: border-color 300ms ease-in-out;
 }
 
    
