@@ -13,7 +13,7 @@
                 <span class="d-none d-sm-inline-block"> Produits</span>
               </template>
              
-              <!-- <Sous ></Sous> -->
+              <Sous ></Sous>
             </BTab>
             <BTab>
               <template v-slot:title>
@@ -40,7 +40,7 @@
                 </span>
                 <span class="d-none d-sm-inline-block"> Formes</span>
               </template>
-              <!-- <Prefecture ></Prefecture> -->
+              <Formes ></Formes>
             </BTab>
             <BTab>
               <template v-slot:title>
@@ -50,7 +50,8 @@
                 <span class="d-none d-sm-inline-block"> Unites</span>
               </template>
               <!-- vrai -->
-              <!-- <Prefecture ></Prefecture>  -->
+              <Unites></Unites>
+             
             </BTab>
            
           </BTabs>
@@ -63,10 +64,11 @@
   import Layout from "../../layouts/main.vue";
   import PageHeader from "@/components/page-header.vue";
   import Loading from '@/components/others/loading.vue';
-  import Region from '../../components/admin/produits/unites.vue';
   import Prefecture from '../../components/admin/produits/categories.vue';
   import Sous from '../../components/admin/produits/produits.vue';
   import SousCat from '../../components/admin/produits/souscat.vue';
+  import Unites from '../../components/admin/produits/unite.vue'
+  import Formes from '../../components/admin/produits/formes.vue'
  
   
  
@@ -77,10 +79,11 @@
       Layout,
       PageHeader,
       Loading,
-      Region,
       Prefecture,
       Sous,
-      SousCat
+      SousCat,
+      Unites,
+      Formes
    
     },
     data() {

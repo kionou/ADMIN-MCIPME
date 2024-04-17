@@ -126,7 +126,7 @@
                                                         </div>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Forme  juridique</dt>
-                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.CodeStatutJuridique }} </dd>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="data.statut_juridique"> {{ data.statut_juridique.NomStatutJuridique }} </dd>
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">

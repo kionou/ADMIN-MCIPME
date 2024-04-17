@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" />
+   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -122,13 +122,17 @@ export default {
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
-     regionOptions:[]
+     regionOptions:[],
+     UserOptionsPersonnels:'',
    }
  },
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+    return `Total des Unités Industrielles = ${this.UserOptionsPersonnels} .  `;
+  },
    totalPages() {
    return Math.ceil(this.pmeOptions.length / this.itemsPerPage);
    },
@@ -144,6 +148,7 @@ async  mounted() {
    await this.fetchRegionOptions()
  },
  methods: {
+  successmsg:successmsg,
   async fetchPmes() {
             try {
               const response = await axios.get('/mcipme', {
@@ -155,6 +160,7 @@ async  mounted() {
             });
                console.log(response.data.data);
                 this.pmeOptions = response.data.data;
+                this.UserOptionsPersonnels = this.pmeOptions.length
                this.loading = false;
             
             } catch (error) {

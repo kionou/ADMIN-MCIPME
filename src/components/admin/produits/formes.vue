@@ -7,7 +7,7 @@
      <BCard no-body>
        <BCardBody class="border-bottom">
          <div class="d-flex align-items-center justify-content-between">
-           <BCardTitle class="mb-0 ">Liste des Produits</BCardTitle>
+           <BCardTitle class="mb-0 ">Liste des Formes de produits</BCardTitle>
 
           
 
@@ -27,67 +27,53 @@
         </div>
        </BCardBody>
       
+       
+       
        <BCardBody v-else>
-            <div class="table-responsive">
-              <BTableSimple class="align-middle mb-0 table-nowrap">
-                <BThead class="table-light">
-                  <BTr>
-                    <BTh>Image</BTh>
-                    <BTh>Nom</BTh>
-                    <BTh>Categorie</BTh>
-                    <BTh>Forme</BTh>
-                    <BTh >Unite</BTh>
-                    <BTh >Actions</BTh>
-                  </BTr>
-                </BThead>
-                <BTbody>
-                  <BTr v-for="product in paginatedItems" :key="product.id" class="product">
-                    <BTd>
-                      <div v-if="product.ImageProduit === null">
-                      <img  src="@/assets/img/guinea.png" alt="product-img" title="product-img" class="avatar-sm"  @click="singleImage = true" />
-                     <vue-easy-lightbox :visible="singleImage" :imgs="imgs1" @hide="singleImage = false"></vue-easy-lightbox>
-                      </div>
-                      <div v-else >
-                        <img :src="product.ImageProduit" alt="product-img" title="product-img" class="avatar-sm" @click="singleImage = true" />
-                        <vue-easy-lightbox :visible="singleImage" :imgs="[product.ImageProduit]" @hide="singleImage = false"></vue-easy-lightbox>
-                      </div>
-                    </BTd>
-                    <BTd>
-                      <h5 class="font-size-14 text-truncate">
-                        <span class="text-dark">{{ product.NomProduit }}</span>
-                      </h5>
-                      <!-- <p class="mb-0">
-                        Color:
-                        <span class="fw-medium">{{ product.Description }}</span>
-                      </p> -->
-                    </BTd>
-                    <BTd><span class="product-price" v-if="product.categorie">{{ product.categorie.NomCategorieProduit }}</span></BTd>
-                    <BTd><span class="product-price" v-if="product.forme">{{ product.forme.Nom }}</span></BTd>
-                    <BTd><span class="product-line-price" v-if="product.unite">{{ product.unite.Nom }}({{ product.unite.Symbol }})</span></BTd>
-                    <BTd>
-                      <ul class="list-unstyled hstack gap-1 mb-0">
-                    
-                    <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                      <div  @click="UpdateUser(product.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
-                    </li>
-                    <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                      <div @click="confirmDelete(product.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
-                    </li>
+         <div class="table-responsive" >
+           <BTableSimple class="align-middle table-nowrap table-hover">
+             <BThead class="table-light" style="">
+               <BTr>
+                 <BTh scope="col" ></BTh>
+                 <BTh scope="col">Nom</BTh>
+                 <BTh scope="col">Description</BTh>
+                 <BTh scope="col">Action</BTh>
+               </BTr>
+             </BThead>
+             <BTbody>
+               <BTr v-for="region in paginatedItems" :key="region.id">
+                 <BTd>
+                  
                    
-                     </ul>
-                    </BTd>
-                  </BTr>
-                </BTbody>
-              </BTableSimple>
-            </div>
-            <BRow>
+                 </BTd>
+               
+                 <BTd>{{ region.Nom }}</BTd>
+                 <BTd>{{ region.Description }}</BTd>
+                
+                 <BTd>
+                   <ul class="list-unstyled hstack gap-1 mb-0">
+                    
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                       <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
+                     </li>
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                       <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                     </li>
+                    
+                   </ul>
+                 </BTd>
+               </BTr>
+             </BTbody>
+           </BTableSimple>
+         </div>
+         <BRow>
            <BCol lg="12">
              <div class="container_pagination">
                <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
              </div>
            </BCol>
          </BRow>
-          </BCardBody>
+       </BCardBody>
      </BCard>
    </BCol>
  </BRow>
@@ -268,8 +254,6 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
-import VueEasyLightbox from "vue-easy-lightbox";
-import img1 from '@/assets/img/guinea.png'
 
 export default {
  components: {
@@ -277,16 +261,14 @@ export default {
  Loading ,
  Pag,
  MazPhoneNumberInput,
- VueEasyLightbox
 },
 data() {
  return {
    loading:true,
    AddUser:false,
    UpdateUser1:false,
-   singleImage: false,
    ToId:'',
-   ProduitOptions:[],
+   CategorieOptions:[],
    currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
@@ -296,7 +278,6 @@ data() {
    formes: [{ Nom: ''  , Description:'', IsActive:true, }],
    error: '',
     errors:[],
-    imgs1: [ 'https://images.unsplash.com/photo-1555431189-0fabf2667795?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', ],
    step1:{ nom:'', },
 
           step2:{
@@ -341,17 +322,19 @@ computed:{
    return this.$store.getters['auth/myAuthenticatedUser'];
  },
  totalPages() {
- return Math.ceil(this.ProduitOptions.length / this.itemsPerPage);
+ return Math.ceil(this.CategorieOptions.length / this.itemsPerPage);
  },
  paginatedItems() {
    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
    const endIndex = startIndex + this.itemsPerPage;
-   return this.ProduitOptions.slice(startIndex, endIndex);
+   return this.CategorieOptions.slice(startIndex, endIndex);
  },
 },
 async mounted() {
  console.log("uusers",this.loggedInUser);
- await this.fetchProduits()
+ await this.fetchCategorieProduits()
+
+
 },
 methods: {
 AddformData() {
@@ -366,16 +349,17 @@ AddformData() {
       
   },
  successmsg:successmsg,
- async fetchProduits() {
+
+ async fetchCategorieProduits() {
   try {
-            const response = await axios.get('/produits', {
+            const response = await axios.get('/formes', {
             headers: {
               Authorization: `Bearer ${this.loggedInUser.token}`, },
              
   
           });
              console.log(response.data.data);
-             this.ProduitOptions = response.data.data;
+             this.CategorieOptions = response.data.data;
              this.loading = false;
           
           } catch (error) {
@@ -387,7 +371,6 @@ AddformData() {
           }
           }
 },
-
 async submitForm() {
 this.errors = [];
 this.formes.forEach((forme, index) => {
@@ -422,7 +405,7 @@ const response = await axios.post('/formes' , formes, {
            headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
   console.log('Réponse du téléversement :', response);
   if (response.data.status === "success") { 
-    await this.fetchProduits()
+    await this.fetchCategorieProduits()
          this.AddUser = false
          this.loading = false
          this.successmsg("Création des formes de produits",'Vos formes de produits ont été crées avec succès !')
@@ -468,7 +451,7 @@ const response = await axios.post('/formes' , formes, {
          this.AddUser = false
          this.loading = false
          this.successmsg("Création de categorie produit",'Votre categorie produit a été crée avec succès !')
-        await this.fetchProduits()
+        await this.fetchCategorieProduits()
 
        } else {
 
@@ -523,7 +506,7 @@ const response = await axios.post('/formes' , formes, {
          });
          console.log('Réponse de suppression:', response);
          if (response.data.status === 'success') {
-         await this.fetchProduits()
+         await this.fetchCategorieProduits()
            this.loading = false
           this.successmsg('Supprimé!', 'Votre forme de produit  a été supprimée.')
  
@@ -547,7 +530,7 @@ const response = await axios.post('/formes' , formes, {
 
        try {
            // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-           const user = this.ProduitOptions.find(user => user.id === id);
+           const user = this.CategorieOptions.find(user => user.id === id);
 
            if (user) {
                // Utilisez les informations récupérées de l'objet user
@@ -598,7 +581,7 @@ const response = await axios.post('/formes' , formes, {
         });
         console.log("Réponse du téléversement :", response);
         if (response.data.status === "success") {
-          await this.fetchProduits()
+          await this.fetchCategorieProduits()
           this.UpdateUser1 = false
          this.loading = false
          this.successmsg("Modification !",'Votre forme de produit  a été modifiée avec succès !')
@@ -628,7 +611,7 @@ const response = await axios.post('/formes' , formes, {
        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       
        const endIndex = startIndex + this.itemsPerPage;
-       return  this.ProduitOptions.slice(startIndex, endIndex);
+       return  this.CategorieOptions.slice(startIndex, endIndex);
      },
 
      async formatValidationErrors(errors) {

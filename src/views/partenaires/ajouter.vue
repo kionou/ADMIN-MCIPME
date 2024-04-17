@@ -89,7 +89,7 @@
                       <BCol md="12">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Directions</label>
-                        <MazSelect label="Sélectionner la direction" v-model="direction" color="info" :options="directionOptions" multiple search />
+                        <MazSelect label="Sélectionner la direction" v-model="direction" no-radius color="info" :options="directionOptions" multiple search />
                        <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
                        <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
                       </div>

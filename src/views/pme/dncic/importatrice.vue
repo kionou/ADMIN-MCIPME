@@ -29,18 +29,18 @@
       <div class="parent" v-for="pme in paginatedItems" :key="pme.id">
        <div class="carde" >
       <div class="content-box">
-          <span class="carde-title">{{ pme.NomMpme }}</span>
+        <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
           <!-- <p class="carde-content">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
           </p> -->
-          <p class="texte-content carde-content">Date creation: <span>{{ pme.AnneeCreation }}</span></p>
+          <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
-          <p class="texte-content">Ville: <span>{{ pme.Ville }}</span></p>
-          <p class="texte-content">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
-          <p class="texte-content">Taille: <span>{{ pme.SigleMpme }}</span></p>
-          <p class="texte-content">Email: <span>{{ pme.AdresseEmail }}</span></p>
-          <p class="texte-content">Contact: <span> {{ pme.NumeroWhatsApp }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Ville: <span>{{ pme.pme.Ville }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+          <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
@@ -73,8 +73,8 @@
           </div>
       </div>
       <div class="date-box">
-         <img v-if="pme.profile === null" src="@/assets/img/guinea.png" alt="">
-         <img v-else :src="pme.profile" alt="">
+         <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
+         <img v-else :src="pme.pme.profile" alt="">
       </div>
   </div>
 </div>
@@ -236,18 +236,13 @@ async  mounted() {
          const endIndex = startIndex + this.itemsPerPage;
          return  this.pmeOptions.slice(startIndex, endIndex);
        },
-  
+     
   async fetchPmes() {
             try {
-              const response = await axios.get('/mcipme', {
-              headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-                
-              },
-    
-            });
+              const response = await axios.get(`/types-entreprises/${1}`, {
+              headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
                console.log(response.data.data);
-               const filteredUsers = response.data.data.filter(user => user.ParentPme === null);
+               const filteredUsers = response.data.data.pmes;
                  console.log(filteredUsers); 
                 this.pmeOptions = filteredUsers;
                 this.UserOptionsPersonnels = filteredUsers.length

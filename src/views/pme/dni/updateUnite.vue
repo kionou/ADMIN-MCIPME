@@ -321,7 +321,7 @@
                                 type="email"
                                 name="email"
                                 id="AdresseEmail"
-                                placeholder="dnpmecl@gmail.com"
+                                placeholder="dnipmecl@gmail.com"
                                 v-model="step1.email"
                                 :class="{ 'error-border': resultError['AdresseEmail'] }"
                                 @input="resultError['AdresseEmail'] = false"
@@ -452,17 +452,11 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <MazSelect
-                  label="Sélectionner votre statut juridique"
-                    v-model="step2.autr_st_juriq"
-                    no-radius  color="info"
-                    :options="StatutJuridiqueOptions"
+                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
                     :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
                     @input="resultError['AutreStatutJuridique'] = false"
-                    search
                   />
-                  <!-- <input type="text" name="AutreStatutJuridique" id="AutreStatutJuridique" placeholder=""
-                                        v-model="step2.autr_st_juriq"> -->
+                 
                 </div>
                 <small v-if="v$.step2.autr_st_juriq.$error">{{
                   v$.step2.autr_st_juriq.$errors[0].$message
@@ -637,16 +631,16 @@
                   <label for="ListeSousSecteurActivite"
                     >Superficie Occuppée  <span class="text-danger">*</span></label
                   >
-                  <MazInput v-model="step2.SuperficieOccuppee"  no-radius type="number"  color="info" placeholder="440.5" />
+                  <MazInput v-model="step2.SuperficieOccupee"  no-radius type="number"  color="info" placeholder="440.5" />
 
                   
                    
                 
-                <small v-if="v$.step2.SuperficieOccuppee.$error">{{
-                  v$.step2.SuperficieOccuppee.$errors[0].$message
+                <small v-if="v$.step2.SuperficieOccupee.$error">{{
+                  v$.step2.SuperficieOccupee.$errors[0].$message
                 }}</small>
-                <small v-if="resultError['SuperficieOccuppee']">
-                  {{ resultError["SuperficieOccuppee"] }}
+                <small v-if="resultError['SuperficieOccupee']">
+                  {{ resultError["SuperficieOccupee"] }}
                 </small>
               </div>
             </div> 
@@ -1963,7 +1957,7 @@ export default {
         distributrice:"",
         types:"",
         CodeZone:"",
-        SuperficieOccuppee:"",
+        SuperficieOccupee:"",
 
         nbre_rccm: "",
         FichierRccm:"",
@@ -2062,7 +2056,7 @@ export default {
       types: {require},
       CodeZone:{require},
       nbre_rccm: {},
-      SuperficieOccuppee:{require},
+      SuperficieOccupee:{require},
       FichierRccm:{},
       nbre_nif: {},
       FichierNif:{},
@@ -2193,7 +2187,7 @@ async mounted() {
         PaysSiegeSocial: this.step2.PaysSiegeSocial,
         types:this.step2.types,
         CodeZone:this.step2.CodeZone,
-        SuperficieOccuppee:this.step2.SuperficieOccuppee,
+        SuperficieOccupee:this.step2.SuperficieOccupee,
         NumeroRccm: this.step2.nbre_rccm,
         FichierRccm: this.step2.FichierRccm,
         NumeroNif: this.step2.nbre_nif,
@@ -2263,9 +2257,9 @@ async mounted() {
         cancelButtonTextColor: '#FF0000',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$router.push({ path: `/detail-importatrice/${this.id}` })
+          this.$router.push({ path: `/detail-industrielle/${this.id}` })
         } else {
-          this.$router.push({ path: `/importatrices`})
+          this.$router.push({ path: `/industrielles`})
 
         }
       });
@@ -2406,6 +2400,7 @@ async mounted() {
         // const userId = 'MPME-1580-2023'
         const response = await axios.get(`/mcipme/${this.id}`);
         this.userData = response.data.data.detail;
+        console.log("UserData:", response.data.data);
         console.log("UserData:", this.userData);
         const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiant');
         const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdate');
@@ -2908,7 +2903,7 @@ async mounted() {
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
       this.step2.types = userData.types;
       this.step2.CodeZone = userData.CodeZone;
-      this.step2.SuperficieOccuppee = userData.SuperficieOccuppee;
+      this.step2.SuperficieOccupee = userData.SuperficieOccupee;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;
@@ -2989,7 +2984,7 @@ async mounted() {
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
       this.step2.types = userData.types;
       this.step2.CodeZone = userData.CodeZone;
-      this.step2.SuperficieOccuppee = userData.SuperficieOccuppee;
+      this.step2.SuperficieOccupee = userData.SuperficieOccupee;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;

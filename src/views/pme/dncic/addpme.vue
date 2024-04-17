@@ -164,7 +164,7 @@
                                 type="text"
                                 name="SigleMpme"
                                 id="SigleMpme"
-                                placeholder="DNPMECL"
+                                placeholder="DNCIC"
                                 v-model="step1.sigle_mpme"
                                 :class="{ 'error-border': resultError['SigleMpme'] }"
                                 @input="resultError['SigleMpme'] = false"
@@ -186,7 +186,7 @@
                                 type="text"
                                 name="nom"
                                 id="nom"
-                                placeholder="DNPMECL"
+                                placeholder="DNCIC"
                                 v-model="step1.nom"
                                 :class="{ 'error-border': resultError['NomMpme'] }"
                                 @input="resultError['NomMpme'] = false"
@@ -321,7 +321,7 @@
                                 type="email"
                                 name="email"
                                 id="AdresseEmail"
-                                placeholder="dnpmecl@gmail.com"
+                                placeholder="dncicmecl@gmail.com"
                                 v-model="step1.email"
                                 :class="{ 'error-border': resultError['AdresseEmail'] }"
                                 @input="resultError['AdresseEmail'] = false"
@@ -452,14 +452,9 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <MazSelect
-                  label="Sélectionner votre statut juridique"
-                    v-model="step2.autr_st_juriq"
-                    no-radius  color="info"
-                    :options="StatutJuridiqueOptions"
+                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
                     :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
                     @input="resultError['AutreStatutJuridique'] = false"
-                    search
                   />
                   <!-- <input type="text" name="AutreStatutJuridique" id="AutreStatutJuridique" placeholder=""
                                         v-model="step2.autr_st_juriq"> -->

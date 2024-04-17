@@ -126,7 +126,7 @@
                                                         </div>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Forme  juridique</dt>
-                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.CodeStatutJuridique }} </dd>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="data.statut_juridique"> {{ data.statut_juridique.NomStatutJuridique }} </dd>
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
@@ -136,14 +136,18 @@
                                                         </div>
 
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Téléphone WhathApp</dt>
-                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroWhatsApp }} </dd>
+                                                            <dt class="text-sm font-medium text-gray-500">Pays du Siège Social</dt>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.PaysSiegeSocial }} </dd>
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6  ">
-                                                            <dt class="text-sm font-medium text-gray-500">Téléphone Secondaire</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Zone industrielle</dt>
                                                             <dd
-                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTelephoneSecondaire }}</dd>
+                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.CodeZone }} </dd>
+                                                        </div>
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                                            <dt class="text-sm font-medium text-gray-500">Superficie Occupée</dt>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SuperficieOccupee }} ha</dd>
                                                         </div>
 
                                                         
@@ -204,6 +208,16 @@
                                                 <div class="border-t border-gray-200">
                                                     <dl>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                                            <dt class="text-sm font-medium text-gray-500">Téléphone WhathApp</dt>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroWhatsApp }} </dd>
+                                                        </div>
+                                                        <div
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6  ">
+                                                            <dt class="text-sm font-medium text-gray-500">Téléphone Secondaire</dt>
+                                                            <dd
+                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTelephoneSecondaire }}</dd>
+                                                        </div>
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Adresse Email</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.AdresseEmail }} </dd>
                                                         </div>
@@ -222,9 +236,9 @@
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Pays du Siège Social</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Numero de la TVA</dt>
                                                             <dd
-                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.PaysSiegeSocial }}</dd>
+                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTva }}</dd>
                                                         </div>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
                                                             <dt class="text-sm font-medium text-gray-500">Numero Nif</dt>
@@ -241,12 +255,7 @@
                                                             <dt class="text-sm font-medium text-gray-500">Numéro Rccm</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroRccm }} </dd>
                                                         </div>
-                                                        <div
-                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6  ">
-                                                            <dt class="text-sm font-medium text-gray-500">Numero de la TVA</dt>
-                                                            <dd
-                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTva }}</dd>
-                                                        </div>
+                                                       
 
                                                         
                                                     </dl>

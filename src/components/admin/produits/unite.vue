@@ -1,12 +1,15 @@
 <template >
-    <Layout>
-     <Loading v-if="loading" style="z-index: 99999;"></Loading>
+    <div>
+      <Loading v-if="loading" style="z-index: 99999;"></Loading>
+   
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des unités de mesure</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des Unités de mesures</BCardTitle>
+
+            
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -31,34 +34,30 @@
              <BTableSimple class="align-middle table-nowrap table-hover">
                <BThead class="table-light" style="">
                  <BTr>
-                   <BTh scope="col" style="width: 70px;" ></BTh>
-                   <BTh scope="col">Symbole</BTh>
+                   <BTh scope="col" ></BTh>
                    <BTh scope="col">Nom</BTh>
+                   <BTh scope="col">Symboles</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
                <BTbody>
                  <BTr v-for="region in paginatedItems" :key="region.id">
                    <BTd>
-                     
-                     
-                   </BTd>
-                   <BTd>
                     
-                    {{ region.CodeRegion }}
+                     
                    </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
-                   
-                  
+                 
+                   <BTd>{{ region.Nom }}</BTd>
+                   <BTd>{{ region.Symbol }}</BTd>
                   
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                       
                      </ul>
@@ -80,7 +79,7 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
      <div>
    
    <div class="account-pages " style="width:100%;">
@@ -109,38 +108,55 @@
                  </span>
                </div>
                  </router-link>
+                 <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
+                    <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                  </li>
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">symbole</label>
-                     <MazInput v-model="step1.symbole"  no-radius type="text" name="symbole"  color="info" placeholder="001" />
-                      <small v-if="v$.step1.symbole.$error">{{v$.step1.symbole.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                
+                <BRow v-for="(unite, index) in unites" :key="unite.id">
+                  <BCol md="4" class="d-flex align-items-center">
+                     <div class="mb-3 position-relative w-100">
+                       <label for="userpassword">Nom Unite</label>
+                     <MazInput v-model="unite.Nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="errors[index] && errors[index].Nom">{{ errors[index].Nom }}</small>
+                      <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
 
                      </div>
+                    
                   </BCol>
-                </BRow>
-                <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                  <BCol md="4" class="d-flex align-items-center">
+                     <div class="mb-3 position-relative w-100">
+                       <label for="userpassword">Symbole Unite</label>
+                     <MazInput v-model="unite.Symbol"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="errors[index] && errors[index].Symbol">{{ errors[index].Symbol }}</small>
+                      <small v-if="resultError['Symbol']"> {{ resultError["Symbol"] }} </small>
 
                      </div>
+                    
                   </BCol>
+                  <BCol md="4" class="d-flex align-items-center">
+                     <div class="mb-3 position-relative w-100">
+                       <label for="userpassword">Description Unite</label>
+                     <MazInput v-model="unite.Description"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="errors[index] && errors[index].Description">{{ errors[index].Description }}</small>
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+
+                     </div>
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
+                         <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                       </li>
+                  </BCol>
+                 
+                
                    </BRow>
-                  
 
-
+                   
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
-                       <button class="" @click="HamdleAddUser()">Valider</button>
+                       <button class="" @click="submitForm()">Valider</button>
                       </div>
                      </BCol>
                    </BRow>
@@ -169,7 +185,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une unité de mesure</h5>
+                     <h5 class="text-primary">Modifier une unités de mesure </h5>
                      
                    </div>
                  </BCol>
@@ -188,31 +204,30 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
+                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">symbole</label>
-                     <MazInput v-model="step2.symbole"  no-radius type="text" name="symbole"  color="info" placeholder="001" />
-                      <small v-if="v$.step2.symbole.$error">{{v$.step2.symbole.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                       <label for="userpassword">Nom Unite</label>
+                     <MazInput v-model="step2.Nom"  no-radius type="text" name="Nom"  color="info" placeholder="0001" />
+                      <small v-if="v$.step2.Nom.$error">{{v$.step2.Nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
 
                      </div>
                   </BCol>
-
-                 
-                   </BRow>
-                   <BCol md="12">
+                </BRow>
+                <BRow>
+                  <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                       <label for="userpassword">Symbole Unite</label>
+                     <MazInput v-model="step2.Symbol"  no-radius type="text" name="Symbol"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.Symbol.$error">{{v$.step2.Symbol.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Symbol']"> {{ resultError["Symbol"] }} </small>
 
                      </div>
                   </BCol>
-                   <BRow>
-                    
                    </BRow>
+
+                  
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -232,9 +247,11 @@
    </div>
  </div>
    </BModal>
+    </div>
+    
    
 
- </Layout>
+
 </template>
 <script>
 
@@ -250,7 +267,7 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-   
+  
    Loading ,
    Pag,
    MazPhoneNumberInput,
@@ -261,32 +278,30 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
+     CategorieOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
+      IsActive:'',
      v$: useVuelidate(),
-       error:'',
-     step1:{
-            symbole:'',
-            nom:'',
-  
-          },
+     unites: [{ Nom: '' , Symbol:'' , Description:'', IsActive:true, }],
+     error: '',
+      errors:[],
+     step1:{ nom:'', },
 
             step2:{
-             symbole:'',
-            nom:'',
+           
+              Nom:'',
+            Symbol:'',
+           
            
        },
    }
  },
  validations: {
    step1:{
-     symbole: {
-     require
      
-   },
    nom: {
      require,
      lgmin: lgmin(2),
@@ -295,14 +310,16 @@ export default {
   
    },
    step2:{
-     symbole: {
-     require
      
-   },
-   nom: {
+    Nom: {
      require,
      lgmin: lgmin(2),
      lgmax: lgmax(20),
+   },
+   Symbol: {
+     require,
+     lgmin: lgmin(1),
+     lgmax: lgmax(5),
    },
   
            
@@ -316,74 +333,140 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+   return Math.ceil(this.CategorieOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.regionOptions.slice(startIndex, endIndex);
+     return this.CategorieOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchRegionOptions()
+   await this.fetchCategorieProduits()
+  
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
-   successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchRegionOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
-         
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
-        this.loading = false
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des pays :",
-          error.message
-        );
-      }
+  AddformData() {
+      this.unites.push({ Nom: '' , Symbol:'' , Description:'', IsActive:true });
     },
+  
+    deleteRow(index) {
+      console.log(index);
+      if(index !== 0){
+        this.unites.splice(index, 1);
+      }
+        
+    },
+   successmsg:successmsg,
+   async fetchCategorieProduits() {
+    try {
+              const response = await axios.get('/unites', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`, },
+               
+    
+            });
+               console.log(response.data.data);
+               this.CategorieOptions = response.data.data;
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+},
+async submitForm() {
+  this.errors = [];
+  this.unites.forEach((unite, index) => {
+  const errors = {};
+  if (!unite.Nom) {
+    errors.Nom = 'Ce champ est obligatoire!';
+    }
+    if (!unite.Symbol) {
+    errors.Symbol = 'Ce champ est obligatoire!';
+    }
+    
+  this.errors[index] = errors;
+});
+// Vérifiez s'il y a des erreurs
+if (this.errors.some((errors) => errors.Nom || errors.Symbol)) {
+  return; // Ne poursuivez pas la soumission si des erreurs sont présentes
+} else {
+         this.loading = true
+        console.log('bonjour', this.unites);
+        this.unites.forEach((unite, index) => {
+        console.log( 'this.idOffre',{ 'unites':unite.Nom } );
+        let data = {
+          unites: this.unites
+        }
+         this.submitApi(data)
+      });
+    }     
+    },
+    async submitApi(unites){
+
+
+try {
+  const response = await axios.post('/unites' , unites, {
+             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
+    console.log('Réponse du téléversement :', response);
+    if (response.data.status === "success") { 
+      await this.fetchCategorieProduits()
+           this.AddUser = false
+           this.loading = false
+           this.successmsg("Création des unités de mesures",'Vos unités de mesures ont été crées avec succès !')
+         
+
+         } else {
+
+         }
+   } catch (error) {
+   console.log('response.login', error); 
+
+   this.loading = false
+   if (error.response.data.status === "error") {
+   return this.error = error.response.data.message
+
+   } else {
+     this.formatValidationErrors(error.response.data.errors);
+   }
+
+    } 
+  
+
+},
+
+
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()
     if (this.v$.$errors.length == 0 ) {
-       this.loading = true
-         let DataUser = {
-           CodeRegion:this.step1.code,
-           NomRegion:this.step1.nom,
-         }
-         console.log("eeeee",DataUser);
+          console.log(' this.fields', this.fields);
+        //  this.loading = true
+        //  let DataUser = {
+        //   NomCategorieProduit:this.step1.nom, 
+        //  }
+        //  console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/regions' , DataUser, {
-             headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-   
-   
-           });
+         const response = await axios.post('/type-produits' , DataUser, {
+             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
          console.log('response.login', response.data); 
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de region",'Votre region a été crée avec succès !')
-           await this.fetchRegionOptions()
+           this.successmsg("Création de categorie produit",'Votre categorie produit a été crée avec succès !')
+          await this.fetchCategorieProduits()
 
          } else {
 
          }
-
-
-
    } catch (error) {
    console.log('response.login', error); 
 
@@ -423,7 +506,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/regions/${id}`, {
+           const response = await axios.delete(`/unites/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -434,9 +517,9 @@ async mounted() {
            });
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
+           await this.fetchCategorieProduits()
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-            await this.fetchRegionOptions()
+            this.successmsg('Supprimé!', 'Votre unite de mesure  a été supprimée.')
    
            } else {
              console.log('error', response.data)
@@ -458,15 +541,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.regionOptions.find(user => user.id === id);
+             const user = this.CategorieOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
-
-            this.step2.code = user.CodeRegion,
-            this.step2.nom = user.NomRegion,
-            this.ToId = user.CodeRegion
+                      this.step2.Nom = user.Nom,
+                      this.step2.Symbol = user.Symbol,
+                      this.ToId = user.id,
+                      this.IsActive = user.IsActive
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -488,15 +571,20 @@ async mounted() {
          this.loading = true;
       
                const dataCath = {
-   
-           CodeRegion:this.step2.code,
-           NomRegion:this.step2.nom,
-           Statut:1
+                unites:[
+                  {
+                    Nom:this.step2.Nom,
+                     Symbol:this.step2.Symbol,
+                     IsActive:this.IsActive,
+                     id:this.ToId
+                  }
+                ]
+                
              }
-             console.log('dataCath',dataCath);
+            console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
+          const response = await axios.post(`/unites/update`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -504,11 +592,10 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchRegionOptions()
+            await this.fetchCategorieProduits()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
-           
+           this.successmsg("Modification d'une unite de mesure",'Votre unite de mesure  a été modifiée avec succès !')
             
           } 
         } catch (error) {
@@ -535,7 +622,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.regionOptions.slice(startIndex, endIndex);
+         return  this.CategorieOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -556,6 +643,8 @@ async mounted() {
      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
      console.log("resultError", this.resultError);
    },
+
+  
  },
 }
 </script>

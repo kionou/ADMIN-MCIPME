@@ -321,7 +321,7 @@
                                 type="email"
                                 name="email"
                                 id="AdresseEmail"
-                                placeholder="dnpmecl@gmail.com"
+                                placeholder="dncicmecl@gmail.com"
                                 v-model="step1.email"
                                 :class="{ 'error-border': resultError['AdresseEmail'] }"
                                 @input="resultError['AdresseEmail'] = false"
@@ -452,15 +452,11 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <MazSelect
-                  label="Sélectionner votre statut juridique"
-                    v-model="step2.autr_st_juriq"
-                    no-radius  color="info"
-                    :options="StatutJuridiqueOptions"
+                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
                     :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
                     @input="resultError['AutreStatutJuridique'] = false"
-                    search
                   />
+                 
                   <!-- <input type="text" name="AutreStatutJuridique" id="AutreStatutJuridique" placeholder=""
                                         v-model="step2.autr_st_juriq"> -->
                 </div>
@@ -583,7 +579,7 @@
             </div> -->
             <div class="col">
                 <div class="input-groupe">
-                  <label for="ListeSousSecteurActivite"
+                  <label for="types"
                     >Quel est le type de votre entreprise ?  <span class="text-danger">*</span></label
                   >
                   <MazSelect
@@ -1918,7 +1914,7 @@ export default {
         an_prod_1: "", 
         PaysSiegeSocial: "Guinea",
         distributrice:"",
-        types:"",
+        types:[],
 
         nbre_rccm: "",
         FichierRccm:"",
@@ -2213,7 +2209,7 @@ async mounted() {
         cancelButtonTextColor: '#FF0000',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$router.push({ path: `/detail-importatrice/${this.id}` })
+          this.$router.push({ path: `/detail-entreprises/${this.id}` })
         } else {
           this.$router.push({ path: `/importatrices`})
 
@@ -2352,11 +2348,14 @@ async mounted() {
     successmsg:successmsg,
     async fetchgetOneMpme() {
       try {
-        const userId = this.loggedInUser.id;
+        const userId = this.loggedInUser.id; 
         // const userId = 'MPME-1580-2023'
         const response = await axios.get(`/mcipme/${this.id}`);
         this.userData = response.data.data.detail;
         console.log("UserData:", this.userData);
+        console.log("UserDatatype_entreprise:", this.userData.type_entreprises);
+       
+
         const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiant');
         const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdate');
         console.log("UserData:", CodeIdentifiant);
@@ -2480,10 +2479,13 @@ async mounted() {
         console.log("response", response);
         if (response.data.status === 'success') {
           console.log("Données MPME mises à jour avec succès !",response.data.data);
-         this.EntrepriseOptions = response.data.data.map((country) => ({
-        label:country. IntituleType,
-        value: country.id,
-      }));
+         this.EntrepriseOptions = response.data.data.map((option) => {
+          return {
+            label: option.IntituleType,
+            value: option.id,
+          };
+        });
+    
          
         } 
       } catch (error) {
@@ -2776,7 +2778,7 @@ async mounted() {
     },
    async getSuivant(mpmeData){
          localStorage.setItem('tempMpmeDataUpdate', JSON.stringify(mpmeData));
-          localStorage.setItem('CodeIdentifiant', this.loggedInUser.id);
+          localStorage.setItem('CodeIdentifiant', this.id);
 
            const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
@@ -2822,7 +2824,8 @@ async mounted() {
       this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step2.types = userData.types;
+       this.step2.types = userData.types;
+       
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;
@@ -2901,7 +2904,7 @@ async mounted() {
       // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step2.types = userData.types;
+      // this.step2.types = userData.types;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;
@@ -2911,12 +2914,16 @@ async mounted() {
 
       if (userData.ListeSousSecteurActivite.includes("|")) {
         this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split("|");
+        
       } else if (userData.ListeSousSecteurActivite.includes(",")) {
         this.step2.selectedSousSecteurs = JSON.parse(userData.ListeSousSecteurActivite);
       } else {
         this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split(" ");
       }
-    
+      this.step2.types =  userData.type_entreprises.map(field => String(field.TypeEnterpriseId));
+
+
+
       this.step3.NbreEmployeGuinneF = userData.NbreEmployeGuinneF;
       this.step3.NbreEmployeGuinneH = userData.NbreEmployeGuinneH;
       this.step3.NbreEmploye = userData.NbreEmploye;

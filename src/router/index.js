@@ -147,13 +147,6 @@ const router = createRouter({
       props: true,
       component: () => import("../views/pme/dncic/detail.vue"),
     },
-    {
-      path: "/detail-distributrice/:id",
-      name: "detail-distributrice",
-      meta: { requiresAuth: true },
-      props: true,
-      component: () => import("../views/pme/dncic/detailDistri.vue"),
-    },
    
     // To finish pme
 
@@ -244,6 +237,14 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/produit/default.vue"),
     },
+    {
+      path: "/produits/ajouter",
+      name: "produits-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/produit/add.vue"),
+    },
+
+    // To start demandes
     {
       path: "/demandes",
       name: "demandes",
