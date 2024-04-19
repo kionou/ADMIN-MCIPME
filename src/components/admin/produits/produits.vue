@@ -251,6 +251,8 @@ data() {
    CategorieOptions:[],
        FormesOptions:[],
        UnitesOptions:[],
+       ImageBD:'',
+       selectedFile:'',
     resultError: {},
     IsActive:'',
    v$: useVuelidate(),
@@ -498,7 +500,8 @@ async UpdateUser(id) {
                     this.step2.UniteProduit = user.unite.id,
                     this.step2.FormeProduit = user.forme.id,
                     this.ToId = user.id,
-                    this.IsActive = user.IsActive
+                    this.IsActive = user.IsActive,
+                    this.ImageBD = user.ImageProduit
            } else {
                console.log('Utilisateur non trouvé avec l\'ID', id);
            }
@@ -511,14 +514,7 @@ async UpdateUser(id) {
 },
 
  async  submitUpdate(){
-  // formData.append('NomProduit', this.step2.NomProduit),
-  //                   formData.append('Description', this.step2.Description),
-  //                   formData.append('CategorieProduit', this.step2.CategorieProduit),
-  //                   formData.append('UniteProduit', this.step2.UniteProduit),
-  //                   formData.append('FormeProduit', this.step2.FormeProduit),
-  //                   formData.append('Image', this.step2.Image),
-  //                   formData.append('IsActive', this.step2.IsActive),
-  //                   formData.append('id', this.step2.ToId),
+  
  
    this.v$.step2.$touch();
     console.log("bonjour");
@@ -526,7 +522,9 @@ async UpdateUser(id) {
     if (this.v$.$errors.length == 0) {
       console.log("bonjour");
        this.loading = true;
-             const dataCath = {
+       if(this.step2.Image === null){
+      console.log("bonjour nulll");
+      const dataCath = {
               products:[
                 {
                   
@@ -535,7 +533,7 @@ async UpdateUser(id) {
                    CategorieProduit:this.step2.CategorieProduit,
                    UniteProduit:this.step2.UniteProduit,
                    FormeProduit:this.step2.FormeProduit,
-                   Image: this.Image,
+                   ImageProduit:  this.ImageBD ,
                    IsActive:this.IsActive,
                    id:this.ToId
                 }
@@ -543,15 +541,38 @@ async UpdateUser(id) {
               
            }
           console.log('dataCath',dataCath);
+       }else{
+      console.log("bonjour ok");
+
+      const dataCath = {
+              products:[
+                {
+                  
+                  NomProduit:this.step2.NomProduit,
+                   Description:this.step2.Description,
+                   CategorieProduit:this.step2.CategorieProduit,
+                   UniteProduit:this.step2.UniteProduit,
+                   FormeProduit:this.step2.FormeProduit,
+                   ImageProduit:  this.step2.Image,
+                   IsActive:this.IsActive,
+                   id:this.ToId
+                }
+              ]
+              
+           }
+          console.log('dataCath',dataCath);
+
+       }
+          
  
       try {
-        const response = await axios.post(`/produits/update`,dataCath, {
-          headers: {
+        // const response = await axios.post(`/produits/update`,dataCath, {
+        //   headers: {
            
-            Authorization: `Bearer ${this.loggedInUser.token}`,
-            'Content-Type': 'multipart/form-data'
-          },
-        });
+        //     Authorization: `Bearer ${this.loggedInUser.token}`,
+        //     'Content-Type': 'multipart/form-data'
+        //   },
+        // });
         console.log("Réponse du téléversement :", response);
         if (response.data.status === "success") {
           await this.fetchProduits()
@@ -578,8 +599,42 @@ async UpdateUser(id) {
   const file = event.target.files[0];
   console.log("Selected file:", file);
   // Stockez l'image sélectionnée dans selectedImages à l'index approprié
-      this.Image = file
- 
+  submitFile(file)
+
+},
+async submitFile(file ){
+  const formData = new FormData();
+formData.append('Photo',file);
+formData.append('id',this.ToId);
+
+
+try {
+const response = await axios.post('/produits/upload' , formData, {
+     headers: { Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'multipart/form-data'
+    }});
+  console.log('Réponse du téléversement :', response);
+  if (response.data.status === "success") { 
+        this.selectedFile = response.data.data.url
+        this.step2.Image =  this.selectedFile
+       
+
+       } else {
+
+       }
+ } catch (error) {
+ console.log('response.login', error); 
+
+ this.loading = false
+ if (error.response.data.status === "error") {
+ return this.error = error.response.data.message
+
+ } else {
+   this.formatValidationErrors(error.response.data.errors);
+ }
+
+  } 
+
 
 },
        updateCurrentPage(pageNumber) {

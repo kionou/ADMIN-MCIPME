@@ -38,7 +38,7 @@
                 <form class="form" >
                 <!-- Étape 1 -->
                 <div v-if="currentStep === 1">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -373,7 +373,7 @@
 
                 <!-- Étape 2 -->
                 <div v-if="currentStep === 2">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -798,7 +798,7 @@
                 </div>
                 <!-- Étape 3 -->
                 <div v-if="currentStep === 3">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1051,7 +1051,7 @@
                  </div>
             <!-- Étape 4 -->
             <div v-if="currentStep === 4">
-                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1429,7 +1429,7 @@
             </div>
             <!-- Étape 5 -->
             <div v-if="currentStep === 5">
-                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1672,7 +1672,7 @@
 
                 <!-- Étape 6 -->
                 <div v-if="currentStep === 6">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">

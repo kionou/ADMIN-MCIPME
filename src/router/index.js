@@ -223,6 +223,7 @@ const router = createRouter({
       path: "/zone-industrielle/update/:id",
       name: "update-zone-industrielle",
       meta: { requiresAuth: true },
+      props:true,
       component: () => import("../views/zone/update.vue"),
     },
 

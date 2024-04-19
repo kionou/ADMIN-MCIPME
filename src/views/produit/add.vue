@@ -76,7 +76,7 @@
                           <input type="file" name="file"   @change="handleFileChange(product, $event)"  accept="image/*" />
                         </div>
                      </div>
-                     <small v-if="resultError['Image']"> {{ resultError["Image"] }} </small>
+                     <small v-if="resultError['ImageProduit']"> {{ resultError["ImageProduit"] }} </small>
                   </BCol>
                          </BRow>
 
@@ -229,8 +229,9 @@ export default {
        CategorieOptions:[],
        FormesOptions:[],
        UnitesOptions:[],
+       
       
-       products: [{ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', Image:null, IsActive:true, }],
+       products: [{ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', ImageProduit:null, IsActive:true, }],
      error: '',
      errors:[],
      AddPartenaire:false
@@ -251,7 +252,7 @@ export default {
      require,
    },
    selectedFile: {
-     require,
+   
      
    },
    description: {
@@ -285,7 +286,7 @@ async mounted() {
 
   methods: {
     AddformData() {
-    this.products.push({ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', Image:null, IsActive:true, });
+    this.products.push({ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', ImageProduit:null, IsActive:true, });
   },
 
   deleteRow(index) {
@@ -300,7 +301,42 @@ async mounted() {
   const file = event.target.files[0];
   console.log("Selected file:", file);
   // Stockez l'image sélectionnée dans selectedImages à l'index approprié
-  product.Image = file;
+  // product.Image = file;
+  this.submitFile(file ,product)
+
+},
+async submitFile(file ,product){
+  const formData = new FormData();
+formData.append('Photo',file);
+
+
+try {
+const response = await axios.post('/produits/upload' , formData, {
+     headers: { Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'multipart/form-data'
+    }});
+  console.log('Réponse du téléversement :', response);
+  if (response.data.status === "success") { 
+        this.selectedFile = response.data.data.url
+        product.ImageProduit =  this.selectedFile
+       
+
+       } else {
+
+       }
+ } catch (error) {
+ console.log('response.login', error); 
+
+ this.loading = false
+ if (error.response.data.status === "error") {
+ return this.error = error.response.data.message
+
+ } else {
+   this.formatValidationErrors(error.response.data.errors);
+ }
+
+  } 
+
 
 },
    async fetchCategorie() {
@@ -419,46 +455,27 @@ this.errors[index] = errors;
 if (this.errors.some((errors) => errors.NomProduit || errors.UniteProduit || errors.CategorieProduit || errors.FormeProduit  )) {
 return; // Ne poursuivez pas la soumission si des erreurs sont présentes
 } else {
-  //                   formData.append('NomProduit', this.step2.NomProduit),
-  //                   formData.append('Description', this.step2.Description),
-  //                   formData.append('CategorieProduit', this.step2.CategorieProduit),
-  //                   formData.append('UniteProduit', this.step2.UniteProduit),
-  //                   formData.append('FormeProduit', this.step2.FormeProduit),
-  //                   formData.append('Image', this.step2.Image),
-  //                   formData.append('IsActive', this.step2.IsActive),
-  //                   formData.append('id', this.step2.ToId),
-       this.loading = true
-      console.log('this.products', this.products);
-      const productsData = [];
+       this.loading = true;
+       console.log('this.products', this.products);
+         
+      //  let prod = {
+      //       NomProduit: product.NomProduit,
+      //       Description: product.Description,
+      //       CategorieProduit: product.CategorieProduit,
+      //       UniteProduit: product.UniteProduit,
+      //       FormeProduit: product.FormeProduit,
+      //       Image: base64Image, 
+      //       IsActive: true,
+      //   };
 
-// Parcourir chaque produit dans this.products
-    this.products.forEach(product => {
-  // Créer un nouvel objet FormData pour chaque produit
-  const formData = new FormData();
+        
 
-  // Ajouter les données du produit à FormData
-  formData.append('NomProduit', product.NomProduit);
-  formData.append('Description', product.Description);
-  formData.append('CategorieProduit', product.CategorieProduit);
-  formData.append('UniteProduit', product.UniteProduit);
-  formData.append('FormeProduit', product.FormeProduit);
-  formData.append('Image', product.Image);
-  formData.append('IsActive', true); // Supposons que IsActive soit toujours true pour tous les produits
+          const dataToSend = {
+             products: this.products
+        };
+          console.log('Data to send:', dataToSend);
+            this.submitApi(dataToSend);
 
-  // Ajouter le FormData du produit à la liste des données de produits
-        productsData.push(formData);
-});
-
-// Créer un objet contenant la liste des données de produits
-       const dataToSend = { products: productsData };
-
-// Afficher les données à envoyer (facultatif)
-          // console.log('Data to send:', dataToSend);
-
-// Appeler votre fonction pour soumettre les données à votre API
-
-
-this.submitApi(dataToSend);
   }     
   },
   async submitApi(produits){
@@ -467,13 +484,13 @@ this.submitApi(dataToSend);
 try {
 const response = await axios.post('/produits' , produits, {
      headers: { Authorization: `Bearer ${this.loggedInUser.token}`,
-           'Content-Type': 'multipart/form-data'
+            // 'Content-Type': 'multipart/form-data'
     }});
   console.log('Réponse du téléversement :', response);
   if (response.data.status === "success") { 
          this.loading = false
          this.successmsg("Création des  produits",'Vos  produits ont été crées avec succès !')
-        //  this.$router.push("/produits");
+          this.$router.push("/produits");
        
 
        } else {

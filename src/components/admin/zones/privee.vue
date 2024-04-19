@@ -180,24 +180,24 @@
                                                      <dl>
                                                          <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                              <dt class="text-sm font-medium text-gray-500"> Region</dt>
-                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ zone.IntituleZone }} </dd>
+                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.quartier ">{{zone.quartier.sous_prefecture.prefecture.region.NomRegion }}</dd>
                                                          </div>
                                                          <div
                                                              class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                              <dt class="text-sm font-medium text-gray-500">Prefecture</dt>
                                                              <dd
-                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.Quartier">{{ zone.Quartier.nomPrefecture }}</dd>
+                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.quartier">{{zone.quartier.sous_prefecture.prefecture.NomPrefecture }}</dd>
                                                          </div>
  
                                                          <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                              <dt class="text-sm font-medium text-gray-500"> Sous Prefecture</dt>
-                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.Quartier">{{zone.Quartier.nomSousPrefecture }}</dd>
+                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.quartier">{{zone.quartier.sous_prefecture.NomSousPrefecture }}</dd>
                                                          </div>
                                                          <div
                                                              class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                              <dt class="text-sm font-medium text-gray-500">Quartier </dt>
                                                              <dd
-                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.Quartier">{{zone.Quartier.nomQuartier }}</dd>
+                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="zone.quartier ">{{zone.quartier.NomQuartier }}</dd>
                                                          </div>
                                                          <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                              <dt class="text-sm font-medium text-gray-500">Couleur</dt>
@@ -229,7 +229,7 @@
       </BContainer>
     </div>
   </div>
-    </BModal>
+    </BModal> 
  
     <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
       <div>
@@ -411,7 +411,6 @@
     console.log("uusers",this.loggedInUser);
    await this.fetchRegionOptions()
    await this.fetchZone()
-   await this.UpdateZone()
   },
   methods: {
     validatePasswordsMatch() {
@@ -445,86 +444,113 @@
        }
   },
  
-  async fetchQuartier(code) {
-      try {
-         const response = await axios.get(`quartiers/${code}`, {
-           headers: {
-            
-             Authorization: `Bearer ${this.loggedInUser.token}`,
-           },
-         });
-         console.log("Réponse du téléversement :", response);
-         if (response.data.status === "success") {
-          const data = response.data.data;
-             const nomQuartier = data.NomQuartier;
-             const codeSousPrefecture = data.CodeSousPrefecture;
-             const sousPrefectureData = codeSousPrefecture ? await this.fetchSousPrefecture(codeSousPrefecture) : null;
-             const nomSousPrefecture = sousPrefectureData ? sousPrefectureData.nomSousPrefecture : null;
-             const nomPrefecture = sousPrefectureData ? sousPrefectureData.nomPrefecture : null;
-             return { nomQuartier, nomSousPrefecture, nomPrefecture };
-             this.loading = false; // Ne mettez pas cette ligne ici, car elle ne sera pas exécutée après le return
-            
-        
-           this.loading =false
-         } 
-       } catch (error) {
-         console.error("Erreur lors du téléversement :", error);
-         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                 await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-               this.$router.push("/");  //a revoir
-             }
-       }
-  },
-  async fetchSousPrefecture(codeSousPrefecture) {
-   console.log(codeSousPrefecture);
-     try {
-         const response = await axios.get(`sous-prefectures/${codeSousPrefecture}`, {
-             headers: {
-                 Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-         });
-         console.log("Réponse du téléversement pour la sous-préfecture:", response);
-         if (response.data.status === "success") {
-           const data = response.data.data;
-             const nomSousPrefecture = data.NomSousPrefecture;
-             const codePrefecture = data.CodePrefecture;
-             const nomPrefecture = codePrefecture ? await this.fetchPrefecture(codePrefecture) : null;
-             return { nomSousPrefecture, nomPrefecture };
-         }
-     } catch (error) {
-         console.error("Erreur lors du téléversement pour la sous-préfecture:", error);
-         if (error.response && error.response.status === 401) {
-             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-             this.$router.push("/");
-         } else {
-             // Gérer d'autres erreurs
-         }
-         throw error;
-     }
- },
- async fetchPrefecture(codePrefecture) {
-     try {
-         const response = await axios.get(`prefectures/${codePrefecture}`, {
-             headers: {
-                 Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-         });
-         console.log("Réponse du téléversement pour la préfecture :", response);
-         if (response.data.status === "success") {
-             return response.data.data.NomPrefecture;
-         }
-     } catch (error) {
-         console.error("Erreur lors du téléversement pour la préfecture :", error);
-         if (error.response && error.response.status === 401) {
-             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-             this.$router.push("/");
-         } else {
-             // Gérer d'autres erreurs
-         }
-         throw error;
-     }
- },
- 
+  async fetchPrefecture(codePrefecture) {
+    try {
+        const response = await axios.get(`prefectures/${codePrefecture}`, {
+            headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+        });
+        console.log("Réponse du téléversement pour la préfecture :", response);
+        if (response.data.status === "success") {
+            const data = response.data.data;
+            const nomPrefecture = data.NomPrefecture;
+            const codeRegion = data.CodeRegion;
+            const nomRegion = codeRegion ? await this.fetchRegion(codeRegion) : null;
+            return { nomPrefecture, nomRegion };
+        }
+    } catch (error) {
+        console.error("Erreur lors du téléversement pour la préfecture :", error);
+        if (error.response && error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");
+        } else {
+            // Gérer d'autres erreurs
+        }
+        throw error;
+    }
+},
+
+async fetchSousPrefecture(codeSousPrefecture) {
+    try {
+        const response = await axios.get(`sous-prefectures/${codeSousPrefecture}`, {
+            headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+        });
+        console.log("Réponse du téléversement pour la sous-préfecture :", response);
+        if (response.data.status === "success") {
+            const data = response.data.data;
+            const nomSousPrefecture = data.NomSousPrefecture;
+            const codePrefecture = data.CodePrefecture;
+            const nomPrefecture = await this.fetchPrefecture(codePrefecture);
+            return { nomSousPrefecture, nomPrefecture };
+        }
+    } catch (error) {
+        console.error("Erreur lors du téléversement pour la sous-préfecture :", error);
+        if (error.response && error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");
+        } else {
+            // Gérer d'autres erreurs
+        }
+        throw error;
+    }
+},
+
+async fetchQuartier(code) {
+    try {
+        const response = await axios.get(`quartiers/${code}`, {
+            headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+        });
+        console.log("Réponse du téléversement pour le quartier :", response);
+        if (response.data.status === "success") {
+            const data = response.data.data;
+            console.log('dataquartier',data)
+            const nomQuartier = data.NomQuartier;
+            const codeSousPrefecture = data.CodeSousPrefecture;
+            const codePrefecture = data.CodePrefecture;
+            const nomSousPrefecture = await this.fetchSousPrefecture(codeSousPrefecture);
+            const nomPrefecture = codePrefecture ? await this.fetchPrefecture(codePrefecture) : null;
+            return { nomQuartier, nomSousPrefecture, nomPrefecture };
+        }
+    } catch (error) {
+        console.error("Erreur lors du téléversement pour le quartier :", error);
+        if (error.response && error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");
+        } else {
+            // Gérer d'autres erreurs
+        }
+        throw error;
+    }
+},
+
+ async fetchRegion(codeRegion) {
+    try {
+        const response = await axios.get(`regions/${codeRegion}`, {
+            headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+        });
+        console.log("Réponse du téléversement pour la région :", response);
+        if (response.data.status === "success") {
+            return response.data.data.NomRegion;
+        }
+    } catch (error) {
+        console.error("Erreur lors du téléversement pour la région :", error);
+        if (error.response && error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");
+        } else {
+            // Gérer d'autres erreurs
+        }
+        throw error;
+    }
+},
+
  
     async fetchRegionOptions() {
        // Renommez la méthode pour refléter qu'elle récupère les options de pays
@@ -646,28 +672,37 @@
         async ViewDetail(id) {
            this.AddUser = true;
            this.loading = true;
- 
-           try {
-             const zone = this.zoneOptions.find(zone => zone.id === id);
- 
-               if (zone) {
+           const response = await axios.get(`/zone-industrielles/${id}`,{
+           headers: {Authorization: `Bearer ${this.loggedInUser.token}`, },
+         });
+
+          try {
+            console.log("Réponse du téléversement :", response);
+         if (response.data.status === "success") {
+           this.loading = false
+            const zone = response.data.data
+            console.log('Informations de l\'utilisateur:', zone);
+            if (zone) {
                    // Utilisez les informations récupérées de l'objet zone
                    console.log('Informations de la zone:', zone);
-                   // Chargez les détails du quartier correspondant
-                   zone.Quartier = await this.fetchQuartier(zone.CodeQuartier);
-                   zone.SousPrefecture = await this.fetchSousPrefecture(zone.CodeSousPrefecture);
-                   // Assignez la zone actuelle avec les détails mis à jour
                    this.zone = zone;
                    this.loading = false;
                } else {
                    console.log('Zone non trouvée avec l\'ID', id);
                }
                  this.loading = false;
-           } catch (error) {
-               console.error('Erreur lors de la mise à jour du document:', error);
-              
-               this.loading = false;
-           }
+
+           
+         }  else {
+                  console.log('Utilisateur non trouvé avec l\'ID', this.id);
+              }
+              this.loading = false;
+          } catch (error) {
+              console.error('Erreur lors de la mise à jour du document:', error);
+             
+              this.loading = false;
+          }
+ 
  },
  async UpdateUser(id) {
          this.UpdateUser1 = true;

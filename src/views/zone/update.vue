@@ -21,7 +21,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une zone industrielle</h5>
+                     <h5 class="text-primary">Modifier une zone industrielle</h5>
                      
                    </div>
                  </BCol>
@@ -300,13 +300,13 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { number } from 'maz-ui'
 
 export default {
-    props:['id'],
    components: {
    Layout,
    PageHeader,
    Loading ,
    Pag, ckeditor: CKEditor.component
  },
+ props:['id'],
  data() {
    return { 
     
@@ -390,7 +390,7 @@ export default {
      require,
    },
    selectedFile: {
-     require,
+     
      
    },
    Couleur: {
@@ -441,6 +441,7 @@ async mounted() {
    },
    async UpdateZone() {
           this.loading = true;
+          console.log(this.id);
           const response = await axios.get(`/zone-industrielles/${this.id}`,{
            headers: {Authorization: `Bearer ${this.loggedInUser.token}`, },
          });
@@ -449,17 +450,19 @@ async mounted() {
             console.log("Réponse du téléversement :", response);
          if (response.data.status === "success") {
            this.loading = false
-            const partenaire = response.data
+            const partenaire = response.data.data
             console.log('Informations de l\'utilisateur:', partenaire);
 
-            this.code = partenaire.CodePartenaire,
-            this.nom = partenaire.NomPartenaire,
-            this.description = partenaire.Description,
-            this.selectedFile = partenaire.image,
-            this.url = partenaire.SiteWeb,
+            this.code = partenaire.CodeZone,
+            this.nom = partenaire.IntituleZone,
+            this.TypeZone = partenaire.TypeZone,
+            this.selectedFile = partenaire.Shapefile,
+            this.SuperficieTotal = partenaire.SuperficieTotal,
+            this.Couleur = partenaire.Couleur,
             this.ToId = partenaire.id,
-            this.StatutPartenaire = partenaire.StatutPartenaire,
-            this.direction = partenaire.Direction
+            this.Observation = partenaire.Observation
+            await this.fetchQuartier(partenaire.CodeQuartier).nomQuartier;
+             await this.fetchSousPrefecture(partenaire.CodeSousPrefecture);
            
          }  else {
                   console.log('Utilisateur non trouvé avec l\'ID', this.id);
@@ -573,7 +576,7 @@ async mounted() {
         }));
         console.log("Données de localitézzz :",options );
 
-        this.prefectureOptions1 = options;
+        this.prefectureOptions = options;
         this.loading = false;
       } catch (error) {
         console.error("Erreur lors de la récupération des données de localité :", error);
@@ -601,6 +604,7 @@ async mounted() {
         console.error("Erreur lors de la récupération des données de localité :", error);
       }
     },
+
 
     async handleOptionCommune(option) {
       this.loading = true;
@@ -631,11 +635,12 @@ async mounted() {
        formData.append("IntituleZone", this.nom);
        formData.append("SuperficieTotal", this.SuperficieTotal);
        formData.append("TypeZone", this.TypeZone);
-       formData.append("Shape", this.selectedFile);
+      //  formData.append("Shape", this.selectedFile);
        formData.append("CodeZone", this.code);
        formData.append("Observation", this.Observation);
        formData.append( "CodeQuartier",this.CodeQuartier )
        formData.append( "Couleur",this.Couleur )
+       formData.append( "id", this.ToId )
         
        console.log(formData);
        console.log(
@@ -645,7 +650,7 @@ async mounted() {
        );
 
        try {
-         const response = await axios.post("/zone-industrielles", formData, {
+         const response = await axios.post(`zone-industrielles/${this.id}/update`, formData, {
            headers: {
              "Content-Type": "multipart/form-data",
              Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -654,7 +659,8 @@ async mounted() {
          console.log("Réponse du téléversement :", response);
          if (response.data.status === "success") {
            this.loading = false
-           this.successmsg("Création de la zone industrielle",'Votre zone industrielle a été crée avec succès !')
+           this.successmsg("Modification !",'Votre zone industrielle  a été modifiée avec succès !')
+           
            this.$router.push({ path: '/zone-industrielle' })
            
          } 
@@ -674,6 +680,142 @@ async mounted() {
        console.log("cest pas bon ", this.v$.$errors);
      }
    },
+   async fetchQuartier(code) {
+      try {
+         const response = await axios.get(`quartiers/${code}`, {
+           headers: {
+            
+             Authorization: `Bearer ${this.loggedInUser.token}`,
+           },
+         });
+         console.log("Réponse du téléversement :", response);
+         if (response.data.status === "success") {
+          const data = response.data.data;
+             const nomQuartier = data.CodeQuartier;
+             this.CodeQuartier = nomQuartier
+             const codeSousPrefecture = data.CodeSousPrefecture;
+             const sousPrefectureData = codeSousPrefecture ? await this.fetchSousPrefecture(codeSousPrefecture) : null;
+             const nomSousPrefecture = sousPrefectureData ? sousPrefectureData.nomSousPrefecture : null;
+             const nomPrefecture = sousPrefectureData ? sousPrefectureData.nomPrefecture : null;
+             return { nomQuartier, nomSousPrefecture, nomPrefecture };
+             this.loading = false; // Ne mettez pas cette ligne ici, car elle ne sera pas exécutée après le return
+            
+        
+           this.loading =false
+         } 
+       } catch (error) {
+         console.error("Erreur lors du téléversement :", error);
+         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                 await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+               this.$router.push("/");  //a revoir
+             }
+       }
+  },
+  async fetchSousPrefecture(codeSousPrefecture) {
+   console.log(codeSousPrefecture);
+     try {
+         const response = await axios.get(`sous-prefectures/${codeSousPrefecture}`, {
+             headers: {
+                 Authorization: `Bearer ${this.loggedInUser.token}`,
+             },
+         });
+         console.log("Réponse du téléversement pour la sous-préfecture:", response);
+         if (response.data.status === "success") {
+           const data = response.data.data;
+             const nomSousPrefecture = data.CodeSousPrefecture;
+             this.commune = nomSousPrefecture
+             const codePrefecture = data.CodePrefecture;
+             const nomPrefecture = codePrefecture ? await this.fetchPrefecture(codePrefecture) : null;
+             return { nomSousPrefecture, nomPrefecture };
+         }
+     } catch (error) {
+         console.error("Erreur lors du téléversement pour la sous-préfecture:", error);
+         if (error.response && error.response.status === 401) {
+             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+             this.$router.push("/");
+         } else {
+             // Gérer d'autres erreurs
+         }
+         throw error;
+     }
+ },
+ async fetchPrefecture(codePrefecture) {
+     try {
+         const response = await axios.get(`prefectures/${codePrefecture}`, {
+             headers: {
+                 Authorization: `Bearer ${this.loggedInUser.token}`,
+             },
+         });
+         console.log("Réponse du téléversement pour la préfecture :", response);
+         if (response.data.status === "success") {
+             
+             const data = response.data.data;
+             const nomPrefecture = data.CodePrefecture;
+             this.prefecture = nomPrefecture
+             const codeRegion = data.CodeRegion;
+              codeRegion ? await this.fetchRegion(codeRegion) : null;
+         }
+     } catch (error) {
+         console.error("Erreur lors du téléversement pour la préfecture :", error);
+         if (error.response && error.response.status === 401) {
+             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+             this.$router.push("/");
+         } else {
+             // Gérer d'autres erreurs
+         }
+         throw error;
+     }
+ },
+ async fetchRegion(codeRegion) {
+     try {
+         const response = await axios.get(`regions/${codeRegion}`, {
+             headers: {
+                 Authorization: `Bearer ${this.loggedInUser.token}`,
+             },
+         });
+         console.log("Réponse du téléversement pour la préfecture :", response);
+         if (response.data.status === "success") {
+             
+             const data = response.data.data;
+             const nomRegion = data.CodeRegion;
+             console.log('nomRegion',nomRegion)
+             this.region = nomRegion
+             
+         }
+     } catch (error) {
+         console.error("Erreur lors du téléversement pour la préfecture :", error);
+         if (error.response && error.response.status === 401) {
+             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+             this.$router.push("/");
+         } else {
+             // Gérer d'autres erreurs
+         }
+         throw error;
+     }
+ },
+ 
+ 
+    async fetchRegionOptions() {
+       // Renommez la méthode pour refléter qu'elle récupère les options de pays
+       try {
+         await this.$store.dispatch("fetchRegionOptions");
+         const options = JSON.parse(
+           JSON.stringify(this.$store.getters["getRegionOptions2"])
+          
+         ); // Accéder aux options des pays via le getter
+         console.log(options);
+         this.regionOptions = options.map((country) => ({
+        label:country. NomRegion,
+        value: country.CodeRegion,
+      }));; // Affecter les options à votre propriété sortedCountryOptions
+         this.loading = false
+       } catch (error) {
+         console.error(
+           "Erreur lors de la récupération des options des pays :",
+           error.message
+         );
+       }
+     },
 
    async formatValidationErrors(errors) {
      const formattedErrors = {};
