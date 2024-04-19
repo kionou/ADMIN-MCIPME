@@ -107,7 +107,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un indicateur</h5>
+                     <h5 class="text-primary">Ajouter une direction</h5>
                      
                    </div>
                  </BCol>
@@ -194,7 +194,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un indicateur</h5>
+                     <h5 class="text-primary">Modifier une direction</h5>
                      
                    </div>
                  </BCol>
@@ -327,7 +327,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   
@@ -340,7 +340,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   

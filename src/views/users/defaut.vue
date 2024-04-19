@@ -399,12 +399,12 @@ export default {
       nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     prenom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     email: {
       require,

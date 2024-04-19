@@ -106,7 +106,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -222,7 +222,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -393,12 +393,12 @@ export default {
       nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+    
     },
     prenom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+     
     },
     email: {
       require,
@@ -411,25 +411,25 @@ export default {
     password: {
       require,
       lgmin: lgmin(8),
-      lgmax: lgmax(20),
+      lgmax: lgmax(100),
       
     },
     confirm_password: {
       require,
       lgmin: lgmin(8),
-      lgmax: lgmax(20),
+      lgmax: lgmax(190),
     },
     },
     step2:{
       nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     prenom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     email: {
       require,
@@ -442,9 +442,6 @@ export default {
    
             
         },
-      
-
-    
   },
   computed:{
     loggedInUser() {

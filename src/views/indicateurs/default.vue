@@ -327,7 +327,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   
@@ -340,7 +340,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   

@@ -15,7 +15,7 @@
               <BCol xxl="4" lg="9" class=" me-3">
              <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
-             <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+             <div @click="$router.push({ path: '/produits/ajouter' })" class="btn btn-primary">Ajouter</div>
              
            </div>
          </div>
@@ -93,20 +93,21 @@
  </BRow>
 
 
- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+
+ <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18"  size="lg" >
    <div>
  
  <div class="account-pages " style="width:100%;">
    <BContainer>
      <BRow >
        <BCol >
-         <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+         <BCard no-body class="" style=" box-shadow:none !important;
           border: 1px solid #c9d1d9 !important;">
            <div class="bg-primary-subtle">
              <BRow>
                <BCol cols="12 text-center">
                  <div class="modalheader p-4">
-                   <h5 class="text-primary">Ajouter une forme de produit</h5>
+                   <h5 class="text-primary">Modifier un produit </h5>
                    
                  </div>
                </BCol>
@@ -122,115 +123,72 @@
                </span>
              </div>
                </router-link>
-               <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
-                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
-                </li>
              </div>
              <div class="p-2">
                <BForm class="form-horizontal">
-              
-              <BRow v-for="(forme, index) in formes" :key="forme.id">
-                <BCol md="6" class="d-flex align-items-center">
-                   <div class="mb-3 position-relative w-100">
-                     <label for="userpassword">Nom Forme</label>
-                   <MazInput v-model="forme.Nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                    <small v-if="errors[index] && errors[index].Nom">{{ errors[index].Nom }}</small>
-                    <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
-
-                   </div>
-                  
-                </BCol>
-                <BCol md="6" class="d-flex align-items-center">
-                   <div class="mb-3 position-relative w-100">
-                     <label for="userpassword">Description Forme</label>
-                   <MazInput v-model="forme.Description"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                    <small v-if="errors[index] && errors[index].Description">{{ errors[index].Description }}</small>
-                    <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
-
-                   </div>
-                   <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
-                       <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
-                     </li>
-                </BCol>
-               
-              
-                 </BRow>
-
                  
-                 <BRow class="mb-0">
-                   <BCol cols="12" class="text-end">
-                     <div class="boutton">
-                     <button class="" @click="submitForm()">Valider</button>
-                    </div>
-                   </BCol>
-                 </BRow>
-               </BForm>
-             </div>
-           </BCardBody>
-         </BCard>
-         
-       </BCol>
-     </BRow>
-   </BContainer>
- </div>
-</div>
- </BModal>
+                <BRow >
+                     <BCol md="4">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Nom Produit</label>
+                     <MazInput v-model="step2.NomProduit"  no-radius type="text"  color="info" placeholder="mcimpe" />
+                      <small v-if="v$.step2.NomProduit.$error">{{v$.step2.NomProduit.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomProduit']"> {{ resultError["NomProduit"] }} </small>
+                     </div>
+                  </BCol>
 
- <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
-   <div>
- 
- <div class="account-pages " style="width:100%;">
-   <BContainer>
-     <BRow >
-       <BCol >
-         <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-          border: 1px solid #c9d1d9 !important;">
-           <div class="bg-primary-subtle">
-             <BRow>
-               <BCol cols="12 text-center">
-                 <div class="modalheader p-4">
-                   <h5 class="text-primary">Modifier une forme de produit </h5>
-                   
-                 </div>
-               </BCol>
-               
-             </BRow>
-           </div>
-           <BCardBody class="pt-0">
-             <div>
-               <router-link to="#">
-                 <div class="avatar-md profile-user-wid ">
-               <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                 <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-               </span>
-             </div>
-               </router-link>
-             </div>
-             <div class="p-2">
-               <BForm class="form-horizontal">
-                  <BRow>
-                   <BCol md="12">
+                  <BCol md="4">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Description</label>
+                     <MazInput v-model="step2.Description"  no-radius type="text"  color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.Description.$error">{{v$.step2.Description.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                     </div>
+                  </BCol>
+
+                  <BCol md="4">
+                   <label for="userpassword">Image Produit</label>
+                     <div class="mb-3 position-relative">
+                        <div class="input-groupe">
+                          <input type="file" name="file"   @change="handleFileChange($event)"  accept="image/*" />
+                        </div>
+                     </div>
+                     <small v-if="resultError['Image']"> {{ resultError["Image"] }} </small>
+                  </BCol>
+                </BRow>
+                <BRow>
+                  
+                  <BCol md="4">
                    <div class="mb-3 position-relative">
-                     <label for="userpassword">Nom forme</label>
-                   <MazInput v-model="step2.Nom"  no-radius type="text" name="Nom"  color="info" placeholder="0001" />
-                    <small v-if="v$.step2.Nom.$error">{{v$.step2.Nom.$errors[0].$message}}</small> 
-                    <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
+                     <label for="userpassword">Categorie Produit</label>
+                     <MazSelect label="Sélectionner la Sous Categorie" v-model="step2.CategorieProduit" color="info" no-radius :options="CategorieOptions"  search />
+                    <small v-if="v$.step2.CategorieProduit.$error">{{v$.step2.CategorieProduit.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CategorieProduit']"> {{ resultError["CategorieProduit"] }} </small>
+                  <!-- <small v-if="errors[index] && errors[index].CategorieProduit">{{ errors[index].CategorieProduit }}</small> -->
 
                    </div>
                 </BCol>
-              </BRow>
-              <BRow>
-                <BCol md="12">
+                <BCol md="4">
                    <div class="mb-3 position-relative">
-                     <label for="userpassword">Description</label>
-                   <MazInput v-model="step2.Description"  no-radius type="text" name="Description"   color="info" placeholder="exemple" />
-                    <small v-if="v$.step2.Description.$error">{{v$.step2.Description.$errors[0].$message}}</small> 
-                    <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                     <label for="userpassword">Forme Produit</label>
+                     <MazSelect label="Sélectionner la Forme" v-model="step2.FormeProduit" color="info" no-radius :options="FormesOptions"  search />
+                    <small v-if="v$.step2.FormeProduit.$error">{{v$.step2.FormeProduit.$errors[0].$message}}</small> 
+                    <small v-if="resultError['FormeProduit']"> {{ resultError["FormeProduit"] }} </small>
+                  <!-- <small v-if="errors[index] && errors[index].FormeProduit">{{ errors[index].FormeProduit }}</small> -->
+
+                   </div>
+                </BCol>
+                <BCol md="4">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Unite Produit</label>
+                     <MazSelect label="Sélectionner l'Unite" v-model="step2.UniteProduit" color="info" no-radius :options="UnitesOptions"  search />
+                    <small v-if="v$.step2.UniteProduit.$error">{{v$.step2.UniteProduit.$errors[0].$message}}</small> 
+                    <small v-if="resultError['UniteProduit']"> {{ resultError["UniteProduit"] }} </small>
+                  <!-- <small v-if="errors[index] && errors[index].UniteProduit">{{ errors[index].UniteProduit }}</small> -->
 
                    </div>
                 </BCol>
                  </BRow>
-
                 
 
                  <BRow class="mb-0">
@@ -290,6 +248,9 @@ data() {
    currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
+   CategorieOptions:[],
+       FormesOptions:[],
+       UnitesOptions:[],
     resultError: {},
     IsActive:'',
    v$: useVuelidate(),
@@ -301,8 +262,12 @@ data() {
 
           step2:{
          
-            Nom:'',
+            NomProduit:'',
             Description:'',
+            Image:'',
+            CategorieProduit:'',
+            FormeProduit:'',
+            UniteProduit:'',
          
          
      },
@@ -314,20 +279,32 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
 
  },
  step2:{
    
-  Nom: {
+  NomProduit: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
  Description: {
    lgmin: lgmin(1),
-   lgmax: lgmax(5),
+   lgmax: lgmax(1000),
+ },
+ Image: {
+   
+ },
+ CategorieProduit: {
+  require
+ },
+ FormeProduit: {
+  require
+ },
+ UniteProduit: {
+  require
  },
 
          
@@ -352,19 +329,12 @@ computed:{
 async mounted() {
  console.log("uusers",this.loggedInUser);
  await this.fetchProduits()
+ await this.fetchCategorie()
+   await this.fetchFormes()
+   await this.fetchUnites()
 },
 methods: {
-AddformData() {
-    this.formes.push({ Nom: ''  , Description:'', IsActive:true });
-  },
 
-  deleteRow(index) {
-    console.log(index);
-    if(index !== 0){
-      this.formes.splice(index, 1);
-    }
-      
-  },
  successmsg:successmsg,
  async fetchProduits() {
   try {
@@ -387,110 +357,80 @@ AddformData() {
           }
           }
 },
-
-async submitForm() {
-this.errors = [];
-this.formes.forEach((forme, index) => {
-const errors = {};
-if (!forme.Nom) {
-  errors.Nom = 'Ce champ est obligatoire!';
-  }
- 
+async fetchCategorie() {
+  try {
+            const response = await axios.get('/sous-produits', {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`, },
+             });
+             console.log(response.data.data);
+             this.CategorieOptions = response.data.data.map(sousprefecture => ({
+                label: sousprefecture.NomCategorieProduit,
+                value: sousprefecture.id,  }));
+                 this.loading = false;
+          
+          } catch (error) {
+            console.error('errorqqqqq',error);
+          
+            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          }
+},
+async fetchFormes() {
+  try {
+            const response = await axios.get('/formes', {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`, },
+             
   
-this.errors[index] = errors;
-});
-// Vérifiez s'il y a des erreurs
-if (this.errors.some((errors) => errors.Nom )) {
-return; // Ne poursuivez pas la soumission si des erreurs sont présentes
-} else {
-       this.loading = true
-      console.log('bonjour', this.formes);
-      this.formes.forEach((forme, index) => {
-      console.log( 'this.idOffre',{ 'formes':forme.Nom } );
-      let data = {
-        formes: this.formes
-      }
-       this.submitApi(data)
-    });
-  }     
-  },
-  async submitApi(formes){
-
-
-try {
-const response = await axios.post('/formes' , formes, {
-           headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
-  console.log('Réponse du téléversement :', response);
-  if (response.data.status === "success") { 
-    await this.fetchProduits()
-         this.AddUser = false
-         this.loading = false
-         this.successmsg("Création des formes de produits",'Vos formes de produits ont été crées avec succès !')
-       
-
-       } else {
-
-       }
- } catch (error) {
- console.log('response.login', error); 
-
- this.loading = false
- if (error.response.data.status === "error") {
- return this.error = error.response.data.message
-
- } else {
-   this.formatValidationErrors(error.response.data.errors);
- }
-
-  } 
-
-
+          });
+             console.log(response.data.data);
+             this.FormesOptions = response.data.data.map(sousprefecture => ({
+                label: sousprefecture. Nom,
+                value: sousprefecture.id,
+      
+          }));
+             this.loading = false;
+          
+          } catch (error) {
+            console.error('errorqqqqq',error);
+          
+            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          }
+},
+async fetchUnites() {
+  try {
+            const response = await axios.get('/unites', {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`, },
+             
+  
+          });
+             console.log(response.data.data);
+             this.UnitesOptions = response.data.data.map(sousprefecture => ({
+                label: sousprefecture. Nom,
+                value: sousprefecture.id,
+      
+          }));
+             this.loading = false;
+          
+          } catch (error) {
+            console.error('errorqqqqq',error);
+          
+            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          }
 },
 
 
- async HamdleAddUser(){
-   this.error = '',
-   this.resultError= '',
-  this.v$.step1.$touch()
-  if (this.v$.$errors.length == 0 ) {
-        console.log(' this.fields', this.fields);
-      //  this.loading = true
-      //  let DataUser = {
-      //   NomCategorieProduit:this.step1.nom, 
-      //  }
-      //  console.log("eeeee",DataUser);
-       try {
-      
-       const response = await axios.post('/type-produits' , DataUser, {
-           headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
-       console.log('response.login', response.data); 
-       if (response.data.status === "success") { 
-         this.AddUser = false
-         this.loading = false
-         this.successmsg("Création de categorie produit",'Votre categorie produit a été crée avec succès !')
-        await this.fetchProduits()
-
-       } else {
-
-       }
- } catch (error) {
- console.log('response.login', error); 
-
- this.loading = false
- if (error.response.data.status === "error") {
- return this.error = error.response.data.message
-
- } else {
-   this.formatValidationErrors(error.response.data.errors);
- }
- }
-     }else{
-     
-     console.log('pas bon', this.v$.$errors);
-     
-     } 
-       },
-       async confirmDelete(id) {
+async confirmDelete(id) {
    // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
    const result = await Swal.fire({
      title: 'Êtes-vous sûr?',
@@ -506,13 +446,13 @@ const response = await axios.post('/formes' , formes, {
    if (result.isConfirmed) {
      this.DeleteUser(id);
    }
-       },
-       async DeleteUser(id) {
+},
+async DeleteUser(id) {
         this.loading = true
        
        try {
          // Faites une requête pour supprimer l'élément avec l'ID itemId
-         const response = await axios.delete(`/formes/${id}`, {
+         const response = await axios.delete(`/produits/${id}`, {
            headers: {
              Authorization: `Bearer ${this.loggedInUser.token}`,
              
@@ -523,9 +463,9 @@ const response = await axios.post('/formes' , formes, {
          });
          console.log('Réponse de suppression:', response);
          if (response.data.status === 'success') {
-         await this.fetchProduits()
+          await this.fetchProduits()
            this.loading = false
-          this.successmsg('Supprimé!', 'Votre forme de produit  a été supprimée.')
+          this.successmsg('Supprimé!', 'Votre  produit  a été supprimé.')
  
          } else {
            console.log('error', response.data)
@@ -540,8 +480,8 @@ const response = await axios.post('/formes' , formes, {
          
        }
  
-     },
-     async UpdateUser(id) {
+},
+async UpdateUser(id) {
        this.UpdateUser1 = true;
        this.loading = true;
 
@@ -552,8 +492,11 @@ const response = await axios.post('/formes' , formes, {
            if (user) {
                // Utilisez les informations récupérées de l'objet user
                console.log('Informations de l\'utilisateur:', user);
-                    this.step2.Nom = user.Nom,
+                    this.step2.NomProduit = user.NomProduit,
                     this.step2.Description = user.Description,
+                    this.step2.CategorieProduit = user.categorie.id,
+                    this.step2.UniteProduit = user.unite.id,
+                    this.step2.FormeProduit = user.forme.id,
                     this.ToId = user.id,
                     this.IsActive = user.IsActive
            } else {
@@ -568,6 +511,14 @@ const response = await axios.post('/formes' , formes, {
 },
 
  async  submitUpdate(){
+  // formData.append('NomProduit', this.step2.NomProduit),
+  //                   formData.append('Description', this.step2.Description),
+  //                   formData.append('CategorieProduit', this.step2.CategorieProduit),
+  //                   formData.append('UniteProduit', this.step2.UniteProduit),
+  //                   formData.append('FormeProduit', this.step2.FormeProduit),
+  //                   formData.append('Image', this.step2.Image),
+  //                   formData.append('IsActive', this.step2.IsActive),
+  //                   formData.append('id', this.step2.ToId),
  
    this.v$.step2.$touch();
     console.log("bonjour");
@@ -575,12 +526,16 @@ const response = await axios.post('/formes' , formes, {
     if (this.v$.$errors.length == 0) {
       console.log("bonjour");
        this.loading = true;
-    
              const dataCath = {
-              formes:[
+              products:[
                 {
-                  Nom:this.step2.Nom,
+                  
+                  NomProduit:this.step2.NomProduit,
                    Description:this.step2.Description,
+                   CategorieProduit:this.step2.CategorieProduit,
+                   UniteProduit:this.step2.UniteProduit,
+                   FormeProduit:this.step2.FormeProduit,
+                   Image: this.Image,
                    IsActive:this.IsActive,
                    id:this.ToId
                 }
@@ -590,10 +545,11 @@ const response = await axios.post('/formes' , formes, {
           console.log('dataCath',dataCath);
  
       try {
-        const response = await axios.post(`/formes/update`,dataCath, {
+        const response = await axios.post(`/produits/update`,dataCath, {
           headers: {
            
             Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'multipart/form-data'
           },
         });
         console.log("Réponse du téléversement :", response);
@@ -617,6 +573,15 @@ const response = await axios.post('/formes' , formes, {
       console.log("cest pas bon ", this.v$.$errors);
     }
    },
+   handleFileChange(event) {
+  console.log("File input change");
+  const file = event.target.files[0];
+  console.log("Selected file:", file);
+  // Stockez l'image sélectionnée dans selectedImages à l'index approprié
+      this.Image = file
+ 
+
+},
        updateCurrentPage(pageNumber) {
        this.currentPage = pageNumber;
        window.scrollTo({

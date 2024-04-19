@@ -122,7 +122,7 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" :options="sousCategoriesData" search />
+                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" no-radius :options="sousCategoriesData" search />
                       <small v-if="v$.step1.dossier.$error">{{v$.step1.dossier.$errors[0].$message}}</small> 
                       <small v-if="resultError['SousCategorieDocument']"> {{ resultError["SousCategorieDocument"] }} </small>
 
@@ -223,7 +223,7 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" color="info" :options="sousCategoriesData" search />
+                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" no-radius color="info" :options="sousCategoriesData" search />
                       <small v-if="v$.step2.dossier.$error">{{v$.step2.dossier.$errors[0].$message}}</small> 
                       <small v-if="resultError['SousCategorieDocument']"> {{ resultError["SousCategorieDocument"] }} </small>
 
@@ -352,7 +352,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    origine: {
      require
@@ -371,7 +371,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    origine: {
      require

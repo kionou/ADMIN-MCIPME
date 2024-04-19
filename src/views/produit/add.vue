@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Partenaires" pageTitle="Tableau de bord" />
+   <PageHeader title="Produits" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -15,13 +15,13 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un partenaire</h5>
+                     <h5 class="text-primary">Ajouter un produit</h5>
                      
                    </div>
                  </BCol>
@@ -37,76 +37,102 @@
                  </span>
                </div>
                  </router-link>
+                 <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
+                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                </li>
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
+                    <BRow  v-for="(product, index) in products" :key="product.id" class="align-items-center p-2 border border-secondary rounded-2 mb-3" >
+                        
+                        <BCol md="11">
+                            <span class="nombre">
+                            {{index + 1}}
+                        </span>
+                        <BRow >
                      <BCol md="4">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom Produit</label>
-                     <MazInput v-model="code"  no-radius type="text"  color="info" placeholder="mcimpe" />
-                      <small v-if="v$.code.$error">{{v$.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePartenaire']"> {{ resultError["CodePartenaire"] }} </small>
+                     <MazInput v-model="product.NomProduit"  no-radius type="text"  color="info" placeholder="mcimpe" />
+                      <!-- <small v-if="v$.NomProduit.$error">{{v$.NomProduit.$errors[0].$message}}</small>  -->
+                    <small v-if="errors[index] && errors[index].NomProduit">{{ errors[index].NomProduit }}</small>
+                      <small v-if="resultError['NomProduit']"> {{ resultError["NomProduit"] }} </small>
                      </div>
                   </BCol>
 
                   <BCol md="4">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Description</label>
-                     <MazInput v-model="nom"  no-radius type="text"  color="info" placeholder="exemple" />
-                      <small v-if="v$.nom.$error">{{v$.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomPartenaire']"> {{ resultError["NomPartenaire"] }} </small>
+                     <MazInput v-model="product.Description"  no-radius type="text"  color="info" placeholder="exemple" />
+                      <!-- <small v-if="v$.Description.$error">{{v$.Description.$errors[0].$message}}</small>  -->
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
                      </div>
                   </BCol>
 
                   <BCol md="4">
                    <label for="userpassword">Image Produit</label>
                      <div class="mb-3 position-relative">
-                       <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
-                       accept="image/*"
-                       @change="handleFileChange" />
-                     <label for="file">
-                       <i class="dripicons-cloud-download"></i>
-                     Joindre une pièce
-                     </label>
+                        <div class="input-groupe">
+                          <input type="file" name="file"   @change="handleFileChange(product, $event)"  accept="image/*" />
+                        </div>
                      </div>
-                     <small v-if="resultError['image']"> {{ resultError["image"] }} </small>
+                     <small v-if="resultError['Image']"> {{ resultError["Image"] }} </small>
                   </BCol>
-                   </BRow>
+                         </BRow>
 
                    <BRow>
+                  
                     <BCol md="4">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Categorie Produit</label>
-                       <MazSelect label="Sélectionner la Categorie" v-model="direction" color="info" no-radius :options="CategorieOptions" multiple search />
-                      <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
+                       <MazSelect label="Sélectionner la Sous Categorie" v-model="product.CategorieProduit" color="info" no-radius :options="CategorieOptions"  search />
+                      <!-- <small v-if="v$.CategorieProduit.$error">{{v$.CategorieProduit.$errors[0].$message}}</small>  -->
+                      <small v-if="resultError['CategorieProduit']"> {{ resultError["CategorieProduit"] }} </small>
+                    <small v-if="errors[index] && errors[index].CategorieProduit">{{ errors[index].CategorieProduit }}</small>
+
                      </div>
                   </BCol>
                   <BCol md="4">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Forme Produit</label>
-                       <MazSelect label="Sélectionner la Forme" v-model="direction" color="info" no-radius :options="FormesOptions" multiple search />
-                      <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
+                       <MazSelect label="Sélectionner la Forme" v-model="product.FormeProduit" color="info" no-radius :options="FormesOptions"  search />
+                      <!-- <small v-if="v$.FormeProduit.$error">{{v$.FormeProduit.$errors[0].$message}}</small>  -->
+                      <small v-if="resultError['FormeProduit']"> {{ resultError["FormeProduit"] }} </small>
+                    <small v-if="errors[index] && errors[index].FormeProduit">{{ errors[index].FormeProduit }}</small>
+
                      </div>
                   </BCol>
                   <BCol md="4">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Unite Produit</label>
-                       <MazSelect label="Sélectionner l'Unite" v-model="direction" color="info" no-radius :options="UnitesOptions" multiple search />
-                      <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
+                       <MazSelect label="Sélectionner l'Unite" v-model="product.UniteProduit" color="info" no-radius :options="UnitesOptions"  search />
+                      <!-- <small v-if="v$.UniteProduit.$error">{{v$.UniteProduit.$errors[0].$message}}</small>  -->
+                      <small v-if="resultError['UniteProduit']"> {{ resultError["UniteProduit"] }} </small>
+                    <small v-if="errors[index] && errors[index].UniteProduit">{{ errors[index].UniteProduit }}</small>
+
                      </div>
                   </BCol>
                    </BRow>
-                   <BRow class="mb-0">
+                  
+                        </BCol>
+                            <BCol md="1">
+                            <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
+                             <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                            </li>
+                            </BCol>
+                           
+                    </BRow>
+
+
+                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
-                       <button class="" @click="SubmitPartenaire()">Valider</button>
+                       <button class="" @click="submitForm()">Valider</button>
                       </div>
                      </BCol>
                    </BRow>
+                    
+
                  </BForm>
                </div>
              </BCardBody>
@@ -114,6 +140,55 @@
            
          </BCol>
        </BRow>
+
+       <BCol lg="6">
+        <BCard no-body>
+          <BCardBody>
+            <BCardTitle>Accordion example</BCardTitle>
+            <p class="card-title-desc">Extend the default collapse behavior to create an accordion.</p>
+            <div role="tablist">
+              <BCard no-body class="mb-1 shadow-none">
+                <BCardHeader  header-tag="header" role="tab">
+                  <h6 class="m-0">
+                    <BLink v-b-toggle.accordion-1 class="text-dark" href="javascript: void(0);">Collapsible Group Item #1</BLink>
+                  </h6>
+                </BCardHeader >
+                <BCollapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+                  <BCardBody>
+                    <BCardText>{{ text }}</BCardText>
+                  </BCardBody>
+                </BCollapse>
+              </BCard>
+
+              <BCard no-body class="mb-1">
+                <BCardHeader header-tag="header" role="tab">
+                  <h6 class="m-0">
+                    <BLink v-b-toggle.accordion-2 class="text-dark" href="javascript: void(0);">Collapsible Group Item #2</BLink>
+                  </h6>
+                </BCardHeader >
+                <BCollapse id="accordion-2" accordion="my-accordion" role="tabpanel">
+                  <BCardBody>
+                    <BCardText>cccc</BCardText>
+                  </BCardBody>
+                </BCollapse>
+              </BCard>
+
+              <BCard no-body class="mb-1">
+                <BCardHeader  header-tag="header" role="tab">
+                  <h6 class="m-0">
+                    <BLink v-b-toggle.accordion-3 class="text-dark" href="javascript: void(0);">Collapsible Group Item #3</BLink>
+                  </h6>
+                </BCardHeader >
+                <BCollapse id="accordion-3" accordion="my-accordion" role="tabpanel">
+                  <BCardBody>
+                    <BCardText>cccc</BCardText>
+                  </BCardBody>
+                </BCollapse>
+              </BCard>
+            </div>
+          </BCardBody>
+        </BCard>
+      </BCol>
      </BContainer>
    </div>
  </div> 
@@ -149,17 +224,15 @@ export default {
        resultError: {},
      v$: useVuelidate(),
        error:'',
-       code:'',
-       nom:'',
-       url:'',
        selectedFile:'',
-       description:'',
        direction:[],
        CategorieOptions:[],
        FormesOptions:[],
        UnitesOptions:[],
-       type:'',
-       directionOptions:[],
+      
+       products: [{ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', Image:null, IsActive:true, }],
+     error: '',
+     errors:[],
      AddPartenaire:false
    }
  },
@@ -167,12 +240,12 @@ export default {
      code: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    url: {
      require,
@@ -211,16 +284,28 @@ async mounted() {
  },
 
   methods: {
+    AddformData() {
+    this.products.push({ NomProduit: ''  , Description:'', UniteProduit:'', CategorieProduit:'', FormeProduit:'', Image:null, IsActive:true, });
+  },
+
+  deleteRow(index) {
+    console.log(index);
+    if(index !== 0){
+      this.products.splice(index, 1);
+    }
+},
    successmsg:successmsg,
-   handleFileChange(event) {
-     console.log("File input change");
-     const file = event.target.files[0];
-     console.log("Selected file:", file);
-     this.selectedFile = file;
-   },
+   handleFileChange(product ,event) {
+  console.log("File input change");
+  const file = event.target.files[0];
+  console.log("Selected file:", file);
+  // Stockez l'image sélectionnée dans selectedImages à l'index approprié
+  product.Image = file;
+
+},
    async fetchCategorie() {
   try {
-            const response = await axios.get('/type-produits', {
+            const response = await axios.get('/sous-produits', {
             headers: {
               Authorization: `Bearer ${this.loggedInUser.token}`, },
              
@@ -302,67 +387,114 @@ async fetchUnites() {
        label: sousprefecture.CodeDirection,
        value: sousprefecture.CodeDirection,
       
-     }));;; 
+     }));
        
        // Affecter les options à votre propriété sortedCountryOptions
      } catch (error) {
        console.error('Erreur lors de la récupération des options des prefecture :', error);
      }
    },
-   async SubmitPartenaire() {
-     this.v$.$touch();
-     console.log("bonjour");
 
-     if (this.v$.$errors.length == 0) {
-       console.log("bonjour");
-        this.loading = true;
-       const formData = new FormData();
-       formData.append("NomPartenaire", this.nom);
-       formData.append("Description", this.description);
-       formData.append("image", this.selectedFile);
-       formData.append("StatutPartenaire", 1);
-       formData.append("CodePartenaire", this.code);
-       formData.append("SiteWeb", this.url);
-       formData.append( "Directions[]",this.direction )
-        
-       console.log(formData);
-       console.log(
-         this.nom,this.direction,
-         this.description, 
-         this.selectedFile, this.code , this.url
-       );
+   async submitForm() {
+this.errors = [];
+this.products.forEach((product, index) => {
+const errors = {};
+if (!product.NomProduit) {
+  errors.NomProduit = 'Ce champ est obligatoire!';
+  }
+  if (!product.UniteProduit) {
+  errors.UniteProduit = 'Ce champ est obligatoire!';
+  }
+  if (!product.CategorieProduit) {
+  errors.CategorieProduit = 'Ce champ est obligatoire!';
+  }
+  if (!product.FormeProduit) {
+  errors.FormeProduit = 'Ce champ est obligatoire!';
+  }
+ 
+  
+this.errors[index] = errors;
+});
+// Vérifiez s'il y a des erreurs
+if (this.errors.some((errors) => errors.NomProduit || errors.UniteProduit || errors.CategorieProduit || errors.FormeProduit  )) {
+return; // Ne poursuivez pas la soumission si des erreurs sont présentes
+} else {
+  //                   formData.append('NomProduit', this.step2.NomProduit),
+  //                   formData.append('Description', this.step2.Description),
+  //                   formData.append('CategorieProduit', this.step2.CategorieProduit),
+  //                   formData.append('UniteProduit', this.step2.UniteProduit),
+  //                   formData.append('FormeProduit', this.step2.FormeProduit),
+  //                   formData.append('Image', this.step2.Image),
+  //                   formData.append('IsActive', this.step2.IsActive),
+  //                   formData.append('id', this.step2.ToId),
+       this.loading = true
+      console.log('this.products', this.products);
+      const productsData = [];
 
-       try {
-         const response = await axios.post("/nouveau-partenaire", formData, {
-           headers: {
-             "Content-Type": "multipart/form-data",
-             Authorization: `Bearer ${this.loggedInUser.token}`,
-           },
-         });
-         console.log("Réponse du téléversement :", response);
-         if (response.data.status === "success") {
-           this.loading = false
-           this.successmsg("Création d'un partenaire",'Votre partenaire a été crée avec succès !')
-           this.$router.push({ path: '/partenaires' })
-           
-         } 
-       } catch (error) {
-         console.error("Erreur lors du téléversement :", error);
-         
-         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-               await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-             this.$router.push("/");  //a revoir
-           }
-       else {
+// Parcourir chaque produit dans this.products
+    this.products.forEach(product => {
+  // Créer un nouvel objet FormData pour chaque produit
+  const formData = new FormData();
+
+  // Ajouter les données du produit à FormData
+  formData.append('NomProduit', product.NomProduit);
+  formData.append('Description', product.Description);
+  formData.append('CategorieProduit', product.CategorieProduit);
+  formData.append('UniteProduit', product.UniteProduit);
+  formData.append('FormeProduit', product.FormeProduit);
+  formData.append('Image', product.Image);
+  formData.append('IsActive', true); // Supposons que IsActive soit toujours true pour tous les produits
+
+  // Ajouter le FormData du produit à la liste des données de produits
+        productsData.push(formData);
+});
+
+// Créer un objet contenant la liste des données de produits
+       const dataToSend = { products: productsData };
+
+// Afficher les données à envoyer (facultatif)
+          // console.log('Data to send:', dataToSend);
+
+// Appeler votre fonction pour soumettre les données à votre API
+
+
+this.submitApi(dataToSend);
+  }     
+  },
+  async submitApi(produits){
+
+
+try {
+const response = await axios.post('/produits' , produits, {
+     headers: { Authorization: `Bearer ${this.loggedInUser.token}`,
+           'Content-Type': 'multipart/form-data'
+    }});
+  console.log('Réponse du téléversement :', response);
+  if (response.data.status === "success") { 
          this.loading = false
-     this.formatValidationErrors(error.response.data.errors);
-   }
-       }
-     } else {
-       console.log("cest pas bon ", this.v$.$errors);
-     }
-   },
+         this.successmsg("Création des  produits",'Vos  produits ont été crées avec succès !')
+        //  this.$router.push("/produits");
+       
 
+       } else {
+
+       }
+ } catch (error) {
+ console.log('response.login', error); 
+
+ this.loading = false
+ if (error.response.data.status === "error") {
+ return this.error = error.response.data.message
+
+ } else {
+   this.formatValidationErrors(error.response.data.errors);
+ }
+
+  } 
+
+
+},
+  
    async formatValidationErrors(errors) {
      const formattedErrors = {};
 
@@ -504,6 +636,18 @@ i{
 
    font-size: 18px;
 
+}
+.nombre{
+
+    color:#fff;
+    background-color:var(--color-primary);
+    border-radius:50%;
+    padding: 2px 10px;
+    font-size: 16px;
+    position: absolute;
+    top: 0px;
+    right: -61px;
+    z-index: 10; 
 }
    
 </style>

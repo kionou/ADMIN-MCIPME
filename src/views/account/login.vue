@@ -260,7 +260,7 @@ export default {
     password: {
       require,
       lgmin: lgmin(8),
-      lgmax: lgmax(20),
+      lgmax: lgmax(190),
     }
     },
     step2:{

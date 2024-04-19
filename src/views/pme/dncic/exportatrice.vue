@@ -35,8 +35,8 @@
         </p> -->
         <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
         <div class="texte">
+          <p class="texte-content" v-if="pme.pme">Code Pme: <span>{{ pme.pme.CodeMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Ville: <span>{{ pme.pme.Ville }}</span></p>
         <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
         <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
@@ -60,7 +60,7 @@
                             <template #button-content>
                               <i class="mdi mdi-dots-vertical"></i>
                             </template>
-                            <BDropdownItem  @click="OpenLogo(pme.CodeMpme)">Ajouter un logo</BDropdownItem>
+                            <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
                             <BDropdownItem href="#">Edit</BDropdownItem>
                             <BDropdownItem href="#">Rename</BDropdownItem>
                             <BDropdownDivider />
@@ -141,13 +141,8 @@
               </label>
               <input id="file" type="file" @change="loadFile" />
 
-              <img
-               
-                src="@/assets/img/flags.png"
-                id="output"
-                width="200"
-              />
-              <!-- <img v-else :src="userData.profile" id="output" width="200" /> -->
+              <img v-if="photo === null"  src="@/assets/img/flags.png" id="output" width="200" />
+                <img v-else :src="photo" id="output" width="200" />
             </div>
           </div>
           <!-- End Drop Zoon -->
@@ -198,6 +193,7 @@ data() {
    totalPageArray: [],
    regionOptions:[],
    UserOptionsPersonnels:'',
+   photo:'',
  }
 },
 computed:{
@@ -348,6 +344,7 @@ async fetchPmes() {
       
  },
  OpenLogo(id){
+  this.photo = photo
   this.AddLogo = true
   this.IdLogo = id
  },
@@ -373,8 +370,8 @@ async fetchPmes() {
 
       if (response.data.status === "success") {
         this.fetchPmes();
-        this.msgsuccess = AddLogo;
         this.loading = false;
+          this.AddLogo = false;
         this.successmsg('Logo ajouté', 'Logo ajouté avec success.')
       } else {
         console.log("errorrr", response.data);

@@ -140,7 +140,7 @@
                 </BCol>
                
               
-                 </BRow>
+              </BRow>
 
                  
                  <BRow class="mb-0">
@@ -295,7 +295,7 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+   
  },
 
  },
@@ -304,7 +304,7 @@ validations: {
   Nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+   
  },
  Description: {
    lgmin: lgmin(1),

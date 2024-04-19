@@ -5,7 +5,10 @@
    <BRow>
      <BCol lg="12">
        <BCard no-body>
-         <BCardBody class="border-bottom">           
+         <BCardBody class="border-bottom">
+           
+           
+             
      <div>
    
    <div class="account-pages ">
@@ -297,6 +300,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { number } from 'maz-ui'
 
 export default {
+    props:['id'],
    components: {
    Layout,
    PageHeader,
@@ -420,6 +424,7 @@ export default {
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
+        await this.UpdateZone(),
         await this.fetchRegionOptions(),
         await this.fetchPrefectureOptions(),
         await this.fetchSousPrefectureOptions(),
@@ -434,6 +439,38 @@ async mounted() {
      console.log("Selected file:", file);
      this.selectedFile = file;
    },
+   async UpdateZone() {
+          this.loading = true;
+          const response = await axios.get(`/zone-industrielles/${this.id}`,{
+           headers: {Authorization: `Bearer ${this.loggedInUser.token}`, },
+         });
+
+          try {
+            console.log("Réponse du téléversement :", response);
+         if (response.data.status === "success") {
+           this.loading = false
+            const partenaire = response.data
+            console.log('Informations de l\'utilisateur:', partenaire);
+
+            this.code = partenaire.CodePartenaire,
+            this.nom = partenaire.NomPartenaire,
+            this.description = partenaire.Description,
+            this.selectedFile = partenaire.image,
+            this.url = partenaire.SiteWeb,
+            this.ToId = partenaire.id,
+            this.StatutPartenaire = partenaire.StatutPartenaire,
+            this.direction = partenaire.Direction
+           
+         }  else {
+                  console.log('Utilisateur non trouvé avec l\'ID', this.id);
+              }
+              this.loading = false;
+          } catch (error) {
+              console.error('Erreur lors de la mise à jour du document:', error);
+             
+              this.loading = false;
+          }
+},
    async fetchRegionOptions() {
       // Renommez la méthode pour refléter qu'elle récupère les options de pays
       try {

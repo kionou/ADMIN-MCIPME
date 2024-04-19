@@ -29,17 +29,14 @@
        <div class="carde" >
       <div class="content-box">
           <span class="carde-title">{{ pme.NomMpme }}</span>
-          <!-- <p class="carde-content">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          </p> -->
-          <p class="texte-content carde-content">Date creation: <span>{{ pme.AnneeCreation }}</span></p>
+          <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
+            <p class="texte-content" v-if="pme">Code Pme : <span>{{ pme.CodeMpme }}</span></p>
           <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
-          <p class="texte-content">Ville: <span>{{ pme.Ville }}</span></p>
-          <p class="texte-content">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
-          <p class="texte-content">Taille: <span>{{ pme.SigleMpme }}</span></p>
-          <p class="texte-content">Email: <span>{{ pme.AdresseEmail }}</span></p>
-          <p class="texte-content">Contact: <span> {{ pme.NumeroWhatsApp }}</span></p>
+          <p class="texte-content">Secteur Activité : <span>{{ pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
+          <p class="texte-content">Email : <span>{{ pme.AdresseEmail }}</span></p>
+          <p class="texte-content">Contact : <span> {{ pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
@@ -60,7 +57,7 @@
                               <template #button-content>
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
-                              <BDropdownItem href="#">Open</BDropdownItem>
+                              <BDropdownItem  @click="OpenLogo(pme.CodeMpme ,pme.profile)">Ajouter un logo</BDropdownItem>
                               <BDropdownItem href="#">Edit</BDropdownItem>
                               <BDropdownItem href="#">Rename</BDropdownItem>
                               <BDropdownDivider />
@@ -72,8 +69,9 @@
           </div>
       </div>
       <div class="date-box">
-         <img src="@/assets/img/guinea.png" alt="">
-      </div>
+       <img v-if="pme.profile === null" src="@/assets/img/guinea.png" alt="">
+       <img v-else :src="pme.profile" alt="">
+    </div>
   </div>
 </div>
      </div>   
@@ -90,6 +88,72 @@
        </BCard>
      </BCol>
    </BRow>
+   <BModal v-model="AddLogo" hide-footer centered header-class="border-0" title-class="font-18" >
+     <div>
+   
+   <div class="account-pages " style="width:100%;">
+     <BContainer>
+       <BRow >
+         <BCol >
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+            border: 1px solid #c9d1d9 !important;">
+             <div class="bg-primary-subtle">
+               <BRow>
+                 <BCol cols="12 text-center">
+                   <div class="modalheader p-4">
+                     <h5 class="text-primary">Ajouter un logo</h5>
+                     
+                   </div>
+                 </BCol>
+                 
+               </BRow>
+             </div>
+             <BCardBody class="pt-0">
+               <div>
+                 <router-link to="#">
+                   <div class="avatar-md profile-user-wid ">
+                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                   <img src="@/assets/img/armoirie.png"  style="width: 75%; height: 75%; z-index: 33;"/>
+                 </span>
+               </div>
+                 </router-link>
+               </div>
+               <div class="p-2">
+                 <BForm class="form-horizontal">
+                  
+                  <div id="uploadArea" class="upload-area">
+            <!-- Header -->
+            {{ error }}
+            
+          
+
+            <!-- Drop Zoon -->
+            <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
+              <div class="profile-pic">
+                <label class="-label" for="file">
+                  <span class="glyphicon glyphicon-camera"></span>
+                  <span>Change Image</span>
+                </label>
+                <input id="file" type="file" @change="loadFile" />
+
+                <img v-if="photo === null"  src="@/assets/img/flags.png" id="output" width="200" />
+                <img v-else :src="photo" id="output" width="200" />
+              </div>
+            </div>
+            <!-- End Drop Zoon -->
+          </div>
+                  
+                 </BForm>
+               </div>
+             </BCardBody>
+           </BCard>
+           
+         </BCol>
+       </BRow>
+     </BContainer>
+   </div>
+ </div>
+   </BModal>
 
 
    
@@ -118,6 +182,9 @@ export default {
    return { 
       
     loading:true,
+    AddLogo:false,
+    IdLogo:'',
+    photo:'',
     pmeOptions:[],
     currentPage: 1,
      itemsPerPage: 8,
@@ -261,7 +328,58 @@ async  mounted() {
         );
             }
         
-   }
+   },
+   OpenLogo(id , photo){
+    this.photo = photo
+    this.AddLogo = true
+    this.IdLogo = id
+   },
+   async loadFile(event) {
+      this.loading = true;
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("code", this.IdLogo);
+      formData.append("profile", file);
+      formData.append( "Directions",this.direction )
+      console.log('logo', this.IdLogo , file)
+
+      try {
+        const response = await axios.post("/mcipme/changement-de-profile", formData, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("response", response);
+
+        if (response.data.status === "success") {
+          this.fetchPmes();
+          this.loading = false;
+          this.AddLogo = false;
+          this.successmsg('Logo ajouté', 'Logo ajouté avec success.')
+        } else {
+          console.log("errorrr", response.data);
+          this.error = "L'enregistrement a échoué !!!";
+        }
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (
+          (error && error.response.data === "Unauthorized") ||
+          error.response.data.status === "error"
+        ) {
+          console.log("aut", error.response.data.status === "error");
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+        }
+         else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
+      }
+    },
  },
 }
 </script>
@@ -380,6 +498,134 @@ margin-bottom: 10px !important;
  width: 100%;
  height: 100%;
 }
+
+.profile-pic {
+  color: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.profile-pic input {
+  display: none;
+}
+
+.profile-pic img {
+  position: absolute;
+  object-fit: cover;
+  width: 80%;
+  height: 100%;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+  z-index: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+}
+
+.profile-pic .-label {
+  cursor: pointer;
+  height: 165px;
+  width: 230px;
+}
+
+.profile-pic:hover .-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  color: #fafafa;
+  transition: background-color 0.2s ease-in-out;
+
+  margin-bottom: 0;
+}
+
+.profile-pic span {
+  display: inline-flex;
+  padding: 0.2em;
+  height: 2em;
+}
+
+/* Upload Area */
+.upload-area {
+  width: 100%;
+  /* max-width: 25rem; */
+  background-color: rgb(255, 255, 255);
+  /* border: 2px solid var(--color-secondary); */
+  border-radius: 24px;
+  /* padding: 2rem 1.875rem 5rem 1.875rem; */
+  /* margin: 0.625rem; */
+  text-align: center;
+}
+
+.upload-area--open {
+  /* Slid Down Animation */
+  animation: slidDown 500ms ease-in-out;
+}
+
+.upload-area__title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 0.3125rem;
+}
+
+.upload-area__paragraph {
+  font-size: 0.9375rem;
+  color: rgb(196, 195, 196);
+  margin-top: 0;
+}
+
+.upload-area__tooltip {
+  position: relative;
+  color: var(--color-secondary);
+  cursor: pointer;
+  transition: color 300ms ease-in-out;
+}
+
+.upload-area__tooltip:hover {
+  color: var(--clr-blue);
+}
+
+.upload-area__tooltip-data {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -125%);
+  min-width: max-content;
+  background-color: rgb(255, 255, 255);
+  color: rgb(63, 134, 255);
+  border: 1px solid var(--color-secondary);
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  opacity: 0;
+  visibility: hidden;
+  transition: none 300ms ease-in-out;
+  transition-property: opacity, visibility;
+}
+
+.upload-area__tooltip:hover .upload-area__tooltip-data {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Drop Zoon */
+.upload-area__drop-zoon {
+  position: relative;
+  height: 11.25rem;
+  /* 180px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px dashed var(--color-secondary);
+  border-radius: 15px;
+  /* margin-top: 2.1875rem; */
+  height:220px;
+  transition: border-color 300ms ease-in-out;
+}
+
 
    
 </style>

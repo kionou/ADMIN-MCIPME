@@ -43,12 +43,10 @@
              <BTbody>
                <BTr v-for="region in paginatedItems" :key="region.id">
                  <BTd>
-                  
-                   
                  </BTd>
                
                  <BTd>{{ region.NomCategorieProduit }}</BTd>
-                   <BTd >{{ region.CategorieProduitsId  }}</BTd>
+                   <BTd >{{ region.categorie.NomCategorieProduit  }}</BTd>
 
                  <BTd>
                    <ul class="list-unstyled hstack gap-1 mb-0">
@@ -85,7 +83,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -159,7 +157,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -289,7 +287,7 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
  categorie: {
    require,
@@ -302,7 +300,7 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
  categorie: {
    require,
@@ -343,7 +341,7 @@ methods: {
     try {
               const response = await axios.get('/sous-produits', {
               headers: { Authorization: `Bearer ${this.loggedInUser.token}`, },
-              params:{  with_products:true }
+              params:{  parent:true }
                
     
             });

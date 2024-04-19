@@ -74,8 +74,6 @@
        </BCard>
      </BCol>
    </BRow>
-
-
    <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
@@ -84,6 +82,81 @@
        <BRow >
          <BCol >
            <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+            border: 1px solid #c9d1d9 !important;">
+             <div class="bg-primary-subtle">
+               <BRow>
+                 <BCol cols="12 text-center">
+                   <div class="modalheader p-4">
+                     <h5 class="text-primary">Ajouter une Categorie</h5>
+                     
+                   </div>
+                 </BCol>
+                 
+               </BRow>
+             </div>
+             <BCardBody class="pt-0">
+               <div>
+                 <router-link to="#">
+                   <div class="avatar-md profile-user-wid ">
+                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+                 </span>
+               </div>
+                 </router-link>
+               </div>
+               <div class="p-2">
+                 <BForm class="form-horizontal">
+                   <!-- <BRow>
+                     <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">code</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
+
+                     </div>
+                  </BCol>
+                </BRow> -->
+                <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Nom Categorie</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+
+                   
+                   <BRow class="mb-0">
+                     <BCol cols="12" class="text-end">
+                       <div class="boutton">
+                       <button class="" @click="HamdleAddUser()">Valider</button>
+                      </div>
+                     </BCol>
+                   </BRow>
+                 </BForm>
+               </div>
+             </BCardBody>
+           </BCard>
+           
+         </BCol>
+       </BRow>
+     </BContainer>
+   </div>
+ </div>
+   </BModal>
+
+   <!-- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+     <div>
+   
+   <div class="account-pages " style="width:100%;">
+     <BContainer>
+       <BRow >
+         <BCol >
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -117,7 +190,7 @@
                      <div class="mb-3 position-relative w-100">
                        <label for="userpassword">Nom Categorie</label>
                      <MazInput v-model="categorie.NomCategorieProduit"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <!-- <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small>  -->
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                       <small v-if="errors[index] && errors[index].NomCategorieProduit">{{ errors[index].NomCategorieProduit }}</small>
                       <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
 
@@ -148,7 +221,7 @@
      </BContainer>
    </div>
  </div>
-   </BModal>
+   </BModal> -->
 
    <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
@@ -157,7 +230,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -286,7 +359,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
   
    },
@@ -295,7 +368,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
   
            
@@ -411,21 +484,26 @@ try {
 },
 
 
-   async HamdleAddUser(){
+async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()
     if (this.v$.$errors.length == 0 ) {
-          console.log(' this.fields', this.fields);
-        //  this.loading = true
-        //  let DataUser = {
-        //   NomCategorieProduit:this.step1.nom, 
-        //  }
-        //  console.log("eeeee",DataUser);
+       this.loading = true
+         let DataUser = {
+          NomCategorieProduit:this.step1.nom,
+          
+         }
+         console.log("eeeee",DataUser);
          try {
         
          const response = await axios.post('/type-produits' , DataUser, {
-             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
+             headers: {
+               Authorization: `Bearer ${this.loggedInUser.token}`,
+             },
+   
+   
+           });
          console.log('response.login', response.data); 
          if (response.data.status === "success") { 
            this.AddUser = false
@@ -436,6 +514,9 @@ try {
          } else {
 
          }
+
+
+
    } catch (error) {
    console.log('response.login', error); 
 

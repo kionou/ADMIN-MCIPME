@@ -216,12 +216,12 @@ export default {
      code: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    url: {
      require,

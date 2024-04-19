@@ -219,6 +219,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/zone/add.vue"),
     },
+    {
+      path: "/zone-industrielle/update/:id",
+      name: "update-zone-industrielle",
+      meta: { requiresAuth: true },
+      component: () => import("../views/zone/update.vue"),
+    },
 
     // To start zone indicateurs
 

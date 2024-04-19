@@ -135,18 +135,18 @@
         old_password: {
             require,
             lgmin: lgmin(8),
-            lgmax: lgmax(20),
+            lgmax: lgmax(100),
          
        },
        password: {
             require,
             lgmin: lgmin(8),
-            lgmax: lgmax(20),
+            lgmax: lgmax(100),
        },
        password_confirmation: {
             require,
             lgmin: lgmin(8),
-            lgmax: lgmax(20),
+            lgmax: lgmax(100),
        },
       
        }, 

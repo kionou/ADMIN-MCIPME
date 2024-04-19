@@ -47,7 +47,7 @@
                    <BTd> {{ region.Action }} </BTd>
                    <BTd>{{ region.Description }}</BTd>
                    <BTd>{{ region.user.Prenoms  }} {{ region.user.Nom  }}</BTd>
-                   <BTd>{{ region.created_at }}</BTd>
+                   <BTd>{{ formatCreatedAt(region.created_at) }}</BTd>
 
                   
                    <!-- <BTd>
@@ -92,6 +92,7 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
+import moment from 'moment';
 
 export default {
  components: {
@@ -109,7 +110,7 @@ data() {
    ToId:'',
    IndicateursOptions:[],
    currentPage: 1,
-   itemsPerPage: 8,
+   itemsPerPage: 10,
    totalPageArray: [],
     resultError: {},
    v$: useVuelidate(),
@@ -138,7 +139,7 @@ validations: {
  description: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+   
  },
  
 
@@ -151,7 +152,7 @@ validations: {
  description: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+   
  },
  
 
@@ -190,7 +191,7 @@ methods: {
   
           });
              console.log(response.data.data);
-              this.IndicateursOptions = response.data.data;
+              this.IndicateursOptions = response.data.data.data;
              this.loading = false;
           
           } catch (error) {
@@ -202,6 +203,9 @@ methods: {
           }
           }
   },
+  formatCreatedAt(createdAt) {
+    return moment(createdAt).format('DD/MM/YY HH:mm:ss');
+    },
  async HamdleAddUser(){
    this.error = '',
    this.resultError= '',

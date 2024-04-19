@@ -43,10 +43,10 @@
                  <h5 class="text-truncate pb-1">
                      <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                          <Blink href="#" @click="UpdateUser(zone.id)" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></Blink>
+                          <Blink href="#" @click="ViewDetail(zone.id)" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></Blink>
                         </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(zone.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <router-link :to="{ name: 'update-zone-industrielle', params: { id: zone.id }}" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
                          <Blink href="#" @click="confirmDelete(zone.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
@@ -373,7 +373,7 @@
     nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+     
     },
    
     },
@@ -385,7 +385,7 @@
     nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+     
     },
    
             
@@ -411,6 +411,7 @@
     console.log("uusers",this.loggedInUser);
    await this.fetchRegionOptions()
    await this.fetchZone()
+   await this.UpdateZone()
   },
   methods: {
     validatePasswordsMatch() {
@@ -642,7 +643,7 @@
         },
         
  
-        async UpdateUser(id) {
+        async ViewDetail(id) {
            this.AddUser = true;
            this.loading = true;
  
@@ -668,7 +669,77 @@
                this.loading = false;
            }
  },
+ async UpdateUser(id) {
+         this.UpdateUser1 = true;
+         this.loading = true;
+
+         try {
+             // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
+             const user = this.zoneOptions.find(user => user.id === id);
+
+             if (user) {
+                 // Utilisez les informations récupérées de l'objet user
+                 console.log('Informations de l\'utilisateur:', user);
+                      this.step2.nom = user.IntituleZone,
+                      this.step2.superficie = user.SuperficieTotal,
+                      this.ToId = user.id
+             } else {
+                 console.log('Utilisateur non trouvé avec l\'ID', id);
+             }
+             this.loading = false;
+         } catch (error) {
+             console.error('Erreur lors de la mise à jour du document:', error);
+            
+             this.loading = false;
+         }
+},
+
+   async  submitUpdate(){
+   
+     this.v$.step2.$touch();
+      console.log("bonjour");
+   
+      if (this.v$.$errors.length == 0) {
+        console.log("bonjour");
+         this.loading = true;
       
+               const dataCath = {
+   
+          
+            NomCategorieProduit:this.step2.nom,
+            CategorieProduitsId:null,
+             id:this.ToId
+             }
+     console.log('dataCath',dataCath);
+   
+        try {
+          const response = await axios.post(`type-produits/${this.ToId}/update`,dataCath, {
+            headers: {
+             
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+          console.log("Réponse du téléversement :", response);
+          if (response.data.status === "success") {
+            await this.fetchCategorieProduits()
+            this.UpdateUser1 = false
+           this.loading = false
+           this.successmsg("Modification de categorie produit",'Votre categorie produit a été modifiée avec succès !')
+            
+          } 
+        } catch (error) {
+          console.error("Erreur lors du téléversement :", error);
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+           await this.$store.dispatch('user/clearLoggedInUser');
+         this.$router.push("/");  //a revoir
+       }else{
+         this.formatValidationErrors(error.response.data.errors);
+       }
+        }
+      } else {
+        console.log("cest pas bon ", this.v$.$errors);
+      }
+     },
           updateCurrentPage(pageNumber) {
           this.currentPage = pageNumber;
           window.scrollTo({
