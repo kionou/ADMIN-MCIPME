@@ -6,7 +6,7 @@
          
             
    <!-- Welcome Text End  Login Form ========================= -->
-   <div class="col-md-8 d-flex align-items-center ">
+   <div class="col-md-8 d-flex align-items-center  cole">
     <div class="account-pages " style="width:100%;">
          <BContainer>
            <BRow >
@@ -636,5 +636,19 @@
    padding: 0.2em;
    
  }
+
+ @media (max-width: 768px) {
+  .container-general{
+    flex-direction: column;
+    align-items: center;
+  }
+
+.cole{
+
+  width:100%;
+}
+   
+   
+}
      
  </style>

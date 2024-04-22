@@ -56,16 +56,16 @@
                     
                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                       <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
-                            variant="white" dropright top>
-                            <template #button-content>
-                              <i class="mdi mdi-dots-vertical"></i>
-                            </template>
-                            <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
-                            <BDropdownItem href="#">Edit</BDropdownItem>
-                            <BDropdownItem href="#">Rename</BDropdownItem>
-                            <BDropdownDivider />
-                            <BDropdownItem href="#">Remove</BDropdownItem>
-                          </BDropdown>
+                              variant="white" dropright top>
+                              <template #button-content>
+                                <i class="mdi mdi-dots-vertical"></i>
+                              </template>
+                              <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
+                              <BDropdownItem @click="$router.push({ path: '/stock-pme/'+ pme.CodeMpme })" >Stock disponible</BDropdownItem>
+                              <BDropdownItem href="#">Rename</BDropdownItem>
+                              <BDropdownDivider />
+                              <BDropdownItem href="#">Remove</BDropdownItem>
+                            </BDropdown>
                      </li>
                    </ul>
                    

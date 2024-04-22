@@ -452,12 +452,20 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                  <MazSelect
+                  label="Sélectionner votre statut juridique"
+                    v-model="step2.autr_st_juriq"
+                    no-radius  color="info"
+                    :options="StatutJuridiqueOptions"
                     :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
                     @input="resultError['AutreStatutJuridique'] = false"
+                    search
                   />
-                  <!-- <input type="text" name="AutreStatutJuridique" id="AutreStatutJuridique" placeholder=""
-                                        v-model="step2.autr_st_juriq"> -->
+                  <!-- <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
+                    @input="resultError['AutreStatutJuridique'] = false"
+                  /> -->
+                
                 </div>
                 <small v-if="v$.step2.autr_st_juriq.$error">{{
                   v$.step2.autr_st_juriq.$errors[0].$message
@@ -2077,7 +2085,7 @@ export default {
 async mounted() {
 
    console.log("uusers",this.loggedInUser);
-   const localStorageUserData = localStorage.getItem('tempMpmeData') || null;
+   const localStorageUserData = localStorage.getItem('tempMpmeDataDNCIC') || null;
    if(localStorageUserData !== null){
     const userDataString = JSON.parse(localStorageUserData)
    this.userData = userDataString
@@ -2142,9 +2150,11 @@ async mounted() {
         PaysSiegeSocial: this.step2.PaysSiegeSocial,
         types:this.step2.types,
         NumeroRccm: this.step2.nbre_rccm,
-        FichierRccm: this.step2.FichierRccm,
-        NumeroNif: this.step2.nbre_nif,
-        FichierNif: this.step2.FichierNif,
+        // FichierRccm: this.step2.FichierRccm,
+         NumeroNif: this.step2.nbre_nif,
+        //  FichierNif: this.step2.FichierNif,
+        FichierRccm:null,
+        FichierNif:null,
         DateGenerationNif: this.step2.DateGenerationNif,
         NumeroTva: this.step2.NumeroTva,
 
@@ -2206,7 +2216,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2228,7 +2238,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2249,7 +2259,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2270,7 +2280,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2291,7 +2301,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2313,11 +2323,11 @@ async mounted() {
           this.loading = true
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
-              localStorage.removeItem('tempMpmeData')
+              localStorage.removeItem('tempMpmeDataDNCIC')
              setTimeout(()=>{
                 this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
               }, 5000);

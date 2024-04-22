@@ -107,14 +107,26 @@ let menuItems = [
       },
       {
         id: 50,
-        label: "menuitems.projects.list.demande",
+        label: "menuitems.projects.list.direction",
         link: "/directions",
         parentId: 37,
       },
       {
-        id: 51,
+        id: 56,
+        label: "menuitems.projects.list.demande",
+        link: "/demandes",
+        parentId: 37,
+      },
+      {
+        id: 52,
         label: "menuitems.projects.list.categorie",
         link: "/produits",
+        parentId: 37,
+      },
+      {
+        id: 57,
+        label: "menuitems.projects.list.graphe",
+        link: "/graphes",
         parentId: 37,
       },
       {
@@ -148,24 +160,30 @@ let menuItems = [
     label: "menuitems.tasks.text",
     icon: "bx-task",
     subItems: [
+      // {
+      //   id: 43,
+      //   label: "menuitems.tasks.list.tasklist",
+      //   link: "/demandes",
+      //   parentId: 42,
+      // },
       {
-        id: 43,
-        label: "menuitems.tasks.list.tasklist",
-        link: "/demandes",
+        id: 44,
+        label: "menuitems.tasks.list.kanban",
+        link: "/demandes-annoter",
         parentId: 42,
       },
-      // {
-      //   id: 44,
-      //   label: "menuitems.tasks.list.kanban",
-      //   link: "/tasks/kanban",
-      //   parentId: 42,
-      // },
-      // {
-      //   id: 45,
-      //   label: "menuitems.tasks.list.createtask",
-      //   link: "/tasks/create",
-      //   parentId: 42,
-      // },
+      {
+        id: 45,
+        label: "menuitems.tasks.list.createtask",
+        link: "/demandes-implantations",
+        parentId: 42,
+      },
+      {
+        id: 46,
+        label: "menuitems.tasks.list.marche",
+          link: "/demandes-produits",
+        parentId: 46
+     }
     ],
   },
   // {

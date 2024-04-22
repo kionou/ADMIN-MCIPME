@@ -5,7 +5,7 @@
       <BRow>
         <BCol class="d-flex justify-content-center">
           <BRow style="width:1110px">
-            <BCol md="4" v-for="stat of statData" :key="stat.icon">
+            <BCol md="3" v-for="stat of statData" :key="stat.icon">
               <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
             </BCol>
           </BRow>
@@ -187,7 +187,7 @@ async  mounted() {
   methods: {
   async fetchStatics() {
             try {
-              const response = await axios.get('/directions/statistics/dashboards', {
+              const response = await axios.get('/types-entreprises/statistic/par-types', {
               headers: {
                 Authorization: `Bearer ${this.loggedInUser.token}`,
                 
@@ -196,27 +196,23 @@ async  mounted() {
             });
                console.log(response.data.data);
                 this.DataOptions = response.data.data;
-               console.log(this.DataOptions[0].PmeCount);
-               this.statData = [
-               
-        {
-          icon: "bx bx-copy-alt",
-          title: "Total unités industrielles",
-           value: response.data.data[0].PmeCount || 0,
-        },
-        {
-          icon: "bx bx-archive-in",
-          title: " Total unités importatrices",
-          value:  response.data.data[0].DistributorsCount || 0,
-        },
-        {
-          icon: "bx bx-archive-in",
-          title: " Total unités distributrices",
-          value:  response.data.data[0].DistributorsCount || 0,
-        },
-        
-       
-      ],
+                this.statData = this.DataOptions.map((stat) => {
+                  const lowercaseTitle = stat.type_entreprise.IntituleType.toLowerCase(); // Mettre le titre en minuscules
+                  const capitalizedTitle = lowercaseTitle.charAt(0).toUpperCase() + lowercaseTitle.slice(1); // Mettre la première lettre en majuscule
+                  return {
+                      icon: "bx bx-copy-alt",
+                      title: capitalizedTitle,
+                      value: stat.nb || 0,
+                  };
+                });
+               console.log(this.statData);
+               this.statData.push(
+                  {
+                      icon: "bx bx-copy-alt",
+                      title: "Demandes en attente",
+                      value:  0,
+                  },
+    )
              
 
                this.loading = false;

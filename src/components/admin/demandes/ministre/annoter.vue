@@ -1,21 +1,18 @@
 <template >
-  <div>
-    <Loading v-if="loading" style="z-index: 99999;"></Loading>
- 
+  <Layout>
+   <Loading v-if="loading" style="z-index: 99999;"></Loading>
  <BRow>
    <BCol lg="12">
      <BCard no-body>
        <BCardBody class="border-bottom">
          <div class="d-flex align-items-center justify-content-between">
-           <BCardTitle class="mb-0 ">Liste des Formes de produits</BCardTitle>
-
-          
+           <BCardTitle class="mb-0 ">Liste des demandes en annoter</BCardTitle>
 
            <div class="flex-shrink-0 d-flex">
               <BCol xxl="4" lg="9" class=" me-3">
              <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
-             <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+             <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
              
            </div>
          </div>
@@ -34,31 +31,61 @@
            <BTableSimple class="align-middle table-nowrap table-hover">
              <BThead class="table-light" style="">
                <BTr>
-                 <BTh scope="col" ></BTh>
-                 <BTh scope="col">Nom</BTh>
-                 <BTh scope="col">Description</BTh>
-                 <BTh scope="col">Action</BTh>
+              
+                 <BTh scope="col">Code Demande</BTh>
+                 <BTh scope="col">Type Demande</BTh>
+                 <BTh scope="col">Nom Prenom</BTh>
+                 <BTh scope="col">Contact</BTh>
+                 <BTh scope="col">Produit </BTh>
+                 <BTh scope="col">Statut</BTh>
+                 <BTh scope="col">Fichiers</BTh>
                </BTr>
              </BThead>
              <BTbody>
                <BTr v-for="region in paginatedItems" :key="region.id">
-                 <BTd>
-                  
-                   
-                 </BTd>
-               
-                 <BTd>{{ region.Nom }}</BTd>
-                 <BTd>{{ region.Description }}</BTd>
+                 <BTd>DNCIC-001 </BTd>
+                 <BTd>Implantation</BTd>
+                 <BTd>Bouare Bouare</BTd>
+                 <BTd> <h5 class="font-size-14 text-truncate">
+                      <span class="text-dark">+224 60123456</span>
+                    </h5>
+                    <p class="mb-0">
+                      
+                      <span class="fw-medium">exemple@gmail.com</span>
+                    </p>
+                    </BTd>
+                 <BTd>Produit 1</BTd>
+                 
+                
                 
                  <BTd>
                    <ul class="list-unstyled hstack gap-1 mb-0">
                     
                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                       <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
+                       <Blink href="#"  class="btn btn-sm btn-soft-info"> En cours...</Blink>
                      </li>
-                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                       <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                   
+                    
+                   </ul>
+                 </BTd>
+                 <BTd>
+                   <ul class="list-unstyled hstack gap-1 mb-0">
+                    
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                      <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                            variant="white" dropright top>
+                            <template #button-content>
+                              <i class="mdi mdi-dots-vertical"></i>
+                            </template>
+                            <BDropdownItem  href="#"> <i class="mdi mdi-download-outline"></i> Rccm</BDropdownItem>
+                            <BDropdownItem href="#" > <i class="mdi mdi-download-outline"></i> Biometrique</BDropdownItem>
+                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Certificat</BDropdownItem>
+                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Carte Biometrique </BDropdownItem>
+                            <BDropdownDivider />
+                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Lettre</BDropdownItem>
+                          </BDropdown>
                      </li>
+                    
                     
                    </ul>
                  </BTd>
@@ -79,7 +106,7 @@
  </BRow>
 
 
- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+ <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
    <div>
  
  <div class="account-pages " style="width:100%;">
@@ -92,7 +119,7 @@
              <BRow>
                <BCol cols="12 text-center">
                  <div class="modalheader p-4">
-                   <h5 class="text-primary">Ajouter une forme de produit</h5>
+                   <h5 class="text-primary">Ajouter une Region</h5>
                    
                  </div>
                </BCol>
@@ -108,45 +135,38 @@
                </span>
              </div>
                </router-link>
-               <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
-                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
-                </li>
              </div>
              <div class="p-2">
                <BForm class="form-horizontal">
-              
-              <BRow v-for="(forme, index) in formes" :key="forme.id">
-                <BCol md="6" class="d-flex align-items-center">
-                   <div class="mb-3 position-relative w-100">
-                     <label for="userpassword">Nom Forme</label>
-                   <MazInput v-model="forme.Nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                    <small v-if="errors[index] && errors[index].Nom">{{ errors[index].Nom }}</small>
-                    <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
+                 <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Code Region</label>
+                   <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                    <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                    </div>
-                  
                 </BCol>
-                <BCol md="6" class="d-flex align-items-center">
-                   <div class="mb-3 position-relative w-100">
-                     <label for="userpassword">Description Forme</label>
-                   <MazInput v-model="forme.Description"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                    <small v-if="errors[index] && errors[index].Description">{{ errors[index].Description }}</small>
-                    <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
-
-                   </div>
-                   <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
-                       <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
-                     </li>
-                </BCol>
-               
-              
               </BRow>
+              <BRow>
+                <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Nom Region</label>
+                   <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                    <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
-                 
+                   </div>
+                </BCol>
+                 </BRow>
+                
+
+
                  <BRow class="mb-0">
                    <BCol cols="12" class="text-end">
                      <div class="boutton">
-                     <button class="" @click="submitForm()">Valider</button>
+                     <button class="" @click="HamdleAddUser()">Valider</button>
                     </div>
                    </BCol>
                  </BRow>
@@ -175,7 +195,7 @@
              <BRow>
                <BCol cols="12 text-center">
                  <div class="modalheader p-4">
-                   <h5 class="text-primary">Modifier une forme de produit </h5>
+                   <h5 class="text-primary">Modifier un utilisateur</h5>
                    
                  </div>
                </BCol>
@@ -194,30 +214,31 @@
              </div>
              <div class="p-2">
                <BForm class="form-horizontal">
-                  <BRow>
+                 <BRow>
                    <BCol md="12">
                    <div class="mb-3 position-relative">
-                     <label for="userpassword">Nom forme</label>
-                   <MazInput v-model="step2.Nom"  no-radius type="text" name="Nom"  color="info" placeholder="0001" />
-                    <small v-if="v$.step2.Nom.$error">{{v$.step2.Nom.$errors[0].$message}}</small> 
-                    <small v-if="resultError['Nom']"> {{ resultError["Nom"] }} </small>
+                     <label for="userpassword">Code Region</label>
+                   <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                    <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                    </div>
                 </BCol>
-              </BRow>
-              <BRow>
-                <BCol md="12">
-                   <div class="mb-3 position-relative">
-                     <label for="userpassword">Description</label>
-                   <MazInput v-model="step2.Description"  no-radius type="text" name="Description"   color="info" placeholder="exemple" />
-                    <small v-if="v$.step2.Description.$error">{{v$.step2.Description.$errors[0].$message}}</small> 
-                    <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
-                   </div>
-                </BCol>
+               
                  </BRow>
+                 <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Nom Region</label>
+                   <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                    <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                    <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
 
-                
+                   </div>
+                </BCol>
+                 <BRow>
+                  
+                 </BRow>
 
                  <BRow class="mb-0">
                    <BCol cols="12" class="text-end">
@@ -237,11 +258,9 @@
  </div>
 </div>
  </BModal>
-  </div>
-  
  
 
-
+</Layout>
 </template>
 <script>
 
@@ -257,7 +276,7 @@ import Swal from 'sweetalert2'
 
 export default {
  components: {
-
+ 
  Loading ,
  Pag,
  MazPhoneNumberInput,
@@ -268,47 +287,48 @@ data() {
    AddUser:false,
    UpdateUser1:false,
    ToId:'',
-   CategorieOptions:[],
+   regionOptions:[],
    currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
     resultError: {},
-    IsActive:'',
    v$: useVuelidate(),
-   formes: [{ Nom: ''  , Description:'', IsActive:true, }],
-   error: '',
-    errors:[],
-   step1:{ nom:'', },
+     error:'',
+   step1:{
+          code:'',
+          nom:'',
+
+        },
 
           step2:{
-         
-            Nom:'',
-            Description:'',
-         
+           code:'',
+          nom:'',
          
      },
  }
 },
 validations: {
  step1:{
+   code: {
+   require
    
+ },
  nom: {
    require,
    lgmin: lgmin(2),
-   
+
  },
 
  },
  step2:{
-   
-  Nom: {
-   require,
-   lgmin: lgmin(2),
+   code: {
+   require
    
  },
- Description: {
-   lgmin: lgmin(1),
-   
+ nom: {
+   require,
+   lgmin: lgmin(2),
+
  },
 
          
@@ -322,140 +342,74 @@ computed:{
    return this.$store.getters['auth/myAuthenticatedUser'];
  },
  totalPages() {
- return Math.ceil(this.CategorieOptions.length / this.itemsPerPage);
+ return Math.ceil(this.regionOptions.length / this.itemsPerPage);
  },
  paginatedItems() {
    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
    const endIndex = startIndex + this.itemsPerPage;
-   return this.CategorieOptions.slice(startIndex, endIndex);
+   return this.regionOptions.slice(startIndex, endIndex);
  },
 },
 async mounted() {
  console.log("uusers",this.loggedInUser);
- await this.fetchCategorieProduits()
-
-
+await this.fetchRegionOptions()
 },
 methods: {
-AddformData() {
-    this.formes.push({ Nom: ''  , Description:'', IsActive:true });
-  },
-
-  deleteRow(index) {
-    console.log(index);
-    if(index !== 0){
-      this.formes.splice(index, 1);
-    }
-      
-  },
+ validatePasswordsMatch() {
+  return this.step1.password === this.step1.confirm_password;
+ },
  successmsg:successmsg,
-
- async fetchCategorieProduits() {
-  try {
-            const response = await axios.get('/formes', {
-            headers: {
-              Authorization: `Bearer ${this.loggedInUser.token}`, },
-             
-  
-          });
-             console.log(response.data.data);
-             this.CategorieOptions = response.data.data;
-             this.loading = false;
-          
-          } catch (error) {
-            console.error('errorqqqqq',error);
-          
-            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-            this.$router.push("/");  //a revoir
-          }
-          }
-},
-async submitForm() {
-this.errors = [];
-this.formes.forEach((forme, index) => {
-const errors = {};
-if (!forme.Nom) {
-  errors.Nom = 'Ce champ est obligatoire!';
-  }
- 
-  
-this.errors[index] = errors;
-});
-// Vérifiez s'il y a des erreurs
-if (this.errors.some((errors) => errors.Nom )) {
-return; // Ne poursuivez pas la soumission si des erreurs sont présentes
-} else {
-       this.loading = true
-      console.log('bonjour', this.formes);
-      this.formes.forEach((forme, index) => {
-      console.log( 'this.idOffre',{ 'formes':forme.Nom } );
-      let data = {
-        formes: this.formes
-      }
-       this.submitApi(data)
-    });
-  }     
-  },
-  async submitApi(formes){
-
-
-try {
-const response = await axios.post('/formes' , formes, {
-           headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
-  console.log('Réponse du téléversement :', response);
-  if (response.data.status === "success") { 
-    await this.fetchCategorieProduits()
-         this.AddUser = false
-         this.loading = false
-         this.successmsg("Création des formes de produits",'Vos formes de produits ont été crées avec succès !')
+ async fetchRegionOptions() {
+    // Renommez la méthode pour refléter qu'elle récupère les options de pays
+    try {
+      await this.$store.dispatch("fetchRegionOptions");
+      const options = JSON.parse(
+        JSON.stringify(this.$store.getters["getRegionOptions2"])
        
-
-       } else {
-
-       }
- } catch (error) {
- console.log('response.login', error); 
-
- this.loading = false
- if (error.response.data.status === "error") {
- return this.error = error.response.data.message
-
- } else {
-   this.formatValidationErrors(error.response.data.errors);
- }
-
-  } 
-
-
-},
-
-
+      ); // Accéder aux options des pays via le getter
+      console.log(options);
+      this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
+      this.loading = false
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+    }
+  },
  async HamdleAddUser(){
    this.error = '',
    this.resultError= '',
   this.v$.step1.$touch()
   if (this.v$.$errors.length == 0 ) {
-        console.log(' this.fields', this.fields);
-      //  this.loading = true
-      //  let DataUser = {
-      //   NomCategorieProduit:this.step1.nom, 
-      //  }
-      //  console.log("eeeee",DataUser);
+     this.loading = true
+       let DataUser = {
+         CodeRegion:this.step1.code,
+         NomRegion:this.step1.nom,
+       }
+       console.log("eeeee",DataUser);
        try {
       
-       const response = await axios.post('/type-produits' , DataUser, {
-           headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
+       const response = await axios.post('/regions' , DataUser, {
+           headers: {
+             Authorization: `Bearer ${this.loggedInUser.token}`,
+           },
+ 
+ 
+         });
        console.log('response.login', response.data); 
        if (response.data.status === "success") { 
          this.AddUser = false
          this.loading = false
-         this.successmsg("Création de categorie produit",'Votre categorie produit a été crée avec succès !')
-        await this.fetchCategorieProduits()
+         this.successmsg("Création de region",'Votre region a été crée avec succès !')
+         await this.fetchRegionOptions()
 
        } else {
 
        }
+
+
+
  } catch (error) {
  console.log('response.login', error); 
 
@@ -495,7 +449,7 @@ const response = await axios.post('/formes' , formes, {
        
        try {
          // Faites une requête pour supprimer l'élément avec l'ID itemId
-         const response = await axios.delete(`/formes/${id}`, {
+         const response = await axios.delete(`/regions/${id}`, {
            headers: {
              Authorization: `Bearer ${this.loggedInUser.token}`,
              
@@ -506,9 +460,9 @@ const response = await axios.post('/formes' , formes, {
          });
          console.log('Réponse de suppression:', response);
          if (response.data.status === 'success') {
-         await this.fetchCategorieProduits()
            this.loading = false
-          this.successmsg('Supprimé!', 'Votre forme de produit  a été supprimée.')
+          this.successmsg('Supprimé!', 'Votre region a été supprimée.')
+          await this.fetchRegionOptions()
  
          } else {
            console.log('error', response.data)
@@ -516,10 +470,11 @@ const response = await axios.post('/formes' , formes, {
          }
        } catch (error) {
          console.error('Erreur lors de la suppression:', error);
+        
          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-         await this.$store.dispatch('user/clearLoggedInUser');
-       this.$router.push("/");  //a revoir
-     }
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
          
        }
  
@@ -530,15 +485,15 @@ const response = await axios.post('/formes' , formes, {
 
        try {
            // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-           const user = this.CategorieOptions.find(user => user.id === id);
+           const user = this.regionOptions.find(user => user.id === id);
 
            if (user) {
                // Utilisez les informations récupérées de l'objet user
                console.log('Informations de l\'utilisateur:', user);
-                    this.step2.Nom = user.Nom,
-                    this.step2.Description = user.Description,
-                    this.ToId = user.id,
-                    this.IsActive = user.IsActive
+
+          this.step2.code = user.CodeRegion,
+          this.step2.nom = user.NomRegion,
+          this.ToId = user.CodeRegion
            } else {
                console.log('Utilisateur non trouvé avec l\'ID', id);
            }
@@ -560,20 +515,15 @@ const response = await axios.post('/formes' , formes, {
        this.loading = true;
     
              const dataCath = {
-              formes:[
-                {
-                  Nom:this.step2.Nom,
-                   Description:this.step2.Description,
-                   IsActive:this.IsActive,
-                   id:this.ToId
-                }
-              ]
-              
+ 
+         CodeRegion:this.step2.code,
+         NomRegion:this.step2.nom,
+         Statut:1
            }
-          console.log('dataCath',dataCath);
+           console.log('dataCath',dataCath);
  
       try {
-        const response = await axios.post(`/formes/update`,dataCath, {
+        const response = await axios.put(`regions/${this.ToId}`,dataCath, {
           headers: {
            
             Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -581,18 +531,21 @@ const response = await axios.post('/formes' , formes, {
         });
         console.log("Réponse du téléversement :", response);
         if (response.data.status === "success") {
-          await this.fetchCategorieProduits()
+          await this.fetchRegionOptions()
           this.UpdateUser1 = false
          this.loading = false
-         this.successmsg("Modification !",'Votre forme de produit  a été modifiée avec succès !')
+         this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
+         
           
         } 
       } catch (error) {
         console.error("Erreur lors du téléversement :", error);
+       
         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-         await this.$store.dispatch('user/clearLoggedInUser');
-       this.$router.push("/");  //a revoir
-     }else{
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+     else{
        this.formatValidationErrors(error.response.data.errors);
      }
       }
@@ -611,7 +564,7 @@ const response = await axios.post('/formes' , formes, {
        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       
        const endIndex = startIndex + this.itemsPerPage;
-       return  this.CategorieOptions.slice(startIndex, endIndex);
+       return  this.regionOptions.slice(startIndex, endIndex);
      },
 
      async formatValidationErrors(errors) {
@@ -632,8 +585,6 @@ const response = await axios.post('/formes' , formes, {
    // Maintenant, this.resultError est un objet où les clés sont les noms des champs
    console.log("resultError", this.resultError);
  },
-
-
 },
 }
 </script>

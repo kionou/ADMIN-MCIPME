@@ -12,9 +12,19 @@ const router = createRouter({
       component: () => import("../views/account/login.vue"),
     },
     {
+      path: "/login",
+      name: "login-2",
+      component: () => import("../views/account/login2.vue"),
+    },
+    {
       path: "/reinitialiser",
       name: "reinitialiser",
       component: () => import("../views/account/recoverpw-sample.vue"),
+    },
+    {
+      path: "/reinitialiser2",
+      name: "reinitialiser2",
+      component: () => import("../views/account/recover.vue"),
     },
 
     // To finish account
@@ -235,6 +245,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/indicateurs/default.vue"),
     },
+    {
+      path: "/graphes",
+      name: "graphes",
+      meta: { requiresAuth: true },
+      component: () => import("../views/indicateurs/graphe.vue"),
+    },
 
     // To start produits
 
@@ -259,10 +275,40 @@ const router = createRouter({
       component: () => import("../views/demandes/type.vue"),
     },
     {
+      path: "/demandes-annoter",
+      name: "demandes-annoter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/ministre.vue"),
+    },
+    {
+      path: "/demandes-implantations",
+      name: "demandes-implantations",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/implantation.vue"),
+    },
+    {
+      path: "/demandes-produits",
+      name: "demandes-produits",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/marche.vue"),
+    },
+
+    // To start directions
+    {
       path: "/directions",
       name: "directions",
       meta: { requiresAuth: true },
       component: () => import("../views/directions/default.vue"),
+    },
+
+     // To start Stocks
+
+     {
+      path: "/stock-pme/:id",
+      name: "stock-pme",
+      meta: { requiresAuth: true },
+      props:true,
+      component: () => import("../views/stocks/stockbypme.vue"),
     },
   
   ],

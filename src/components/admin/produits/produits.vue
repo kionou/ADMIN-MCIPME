@@ -44,7 +44,7 @@
                   <BTr v-for="product in paginatedItems" :key="product.id" class="product">
                     <BTd>
                       <div v-if="product.ImageProduit === null">
-                      <img  src="@/assets/img/guinea.png" alt="product-img" title="product-img" class="avatar-sm"  @click="singleImage = true" />
+                      <img  src="@/assets/img/produits.jpg" alt="product-img" title="product-img" class="avatar-sm"  @click="singleImage = true" />
                      <vue-easy-lightbox :visible="singleImage" :imgs="imgs1" @hide="singleImage = false"></vue-easy-lightbox>
                       </div>
                       <div v-else >
@@ -253,6 +253,7 @@ data() {
        UnitesOptions:[],
        ImageBD:'',
        selectedFile:'',
+       selectedFile1:null,
     resultError: {},
     IsActive:'',
    v$: useVuelidate(),
@@ -522,7 +523,8 @@ async UpdateUser(id) {
     if (this.v$.$errors.length == 0) {
       console.log("bonjour");
        this.loading = true;
-       if(this.step2.Image === null){
+       console.log('this.selectedFile1',this.selectedFile1)
+       if(this.selectedFile1 === null){
       console.log("bonjour nulll");
       const dataCath = {
               products:[
@@ -541,6 +543,8 @@ async UpdateUser(id) {
               
            }
           console.log('dataCath',dataCath);
+        this.SubmitUpdateProduct(dataCath)  
+
        }else{
       console.log("bonjour ok");
 
@@ -553,7 +557,7 @@ async UpdateUser(id) {
                    CategorieProduit:this.step2.CategorieProduit,
                    UniteProduit:this.step2.UniteProduit,
                    FormeProduit:this.step2.FormeProduit,
-                   ImageProduit:  this.step2.Image,
+                   ImageProduit:  this.selectedFile,
                    IsActive:this.IsActive,
                    id:this.ToId
                 }
@@ -561,18 +565,25 @@ async UpdateUser(id) {
               
            }
           console.log('dataCath',dataCath);
+        this.SubmitUpdateProduct(dataCath)  
 
        }
-          
+      
  
-      try {
-        // const response = await axios.post(`/produits/update`,dataCath, {
-        //   headers: {
+    
+    } else {
+      console.log("cest pas bon ", this.v$.$errors);
+    }
+   },
+async   SubmitUpdateProduct(dataCath){
+    try {
+        const response = await axios.post(`/produits/update`,dataCath, {
+          headers: {
            
-        //     Authorization: `Bearer ${this.loggedInUser.token}`,
-        //     'Content-Type': 'multipart/form-data'
-        //   },
-        // });
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'multipart/form-data'
+          },
+        });
         console.log("Réponse du téléversement :", response);
         if (response.data.status === "success") {
           await this.fetchProduits()
@@ -590,16 +601,14 @@ async UpdateUser(id) {
        this.formatValidationErrors(error.response.data.errors);
      }
       }
-    } else {
-      console.log("cest pas bon ", this.v$.$errors);
-    }
    },
    handleFileChange(event) {
   console.log("File input change");
   const file = event.target.files[0];
   console.log("Selected file:", file);
   // Stockez l'image sélectionnée dans selectedImages à l'index approprié
-  submitFile(file)
+  this.selectedFile1 = file
+   this.submitFile(file)
 
 },
 async submitFile(file ){
@@ -616,7 +625,7 @@ const response = await axios.post('/produits/upload' , formData, {
   console.log('Réponse du téléversement :', response);
   if (response.data.status === "success") { 
         this.selectedFile = response.data.data.url
-        this.step2.Image =  this.selectedFile
+        
        
 
        } else {

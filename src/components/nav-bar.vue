@@ -161,12 +161,12 @@ export default {
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
           <BDropdownItem>
-            <router-link to="/profil" >
+            <a href="/profil"  style="width: 100%; display: block;">
               <span   class="text-body">
                 <i class="bx bx-user font-size-16 align-middle me-1"></i>
                 Profil
               </span>
-            </router-link>
+            </a>
           </BDropdownItem>
          
        

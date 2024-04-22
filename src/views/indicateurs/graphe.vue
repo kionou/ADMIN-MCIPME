@@ -1,14 +1,15 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Graphes Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des indicateurs</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des Graphes Indicateurs</BCardTitle>
 
+           
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -29,58 +30,36 @@
          
          
          <BCardBody v-else>
-            <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
-        
-       
-                
-        <div class="" style="width: 260px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="indicateur in paginatedItems" :key="indicateur.id">
-          <BCardBody>
-            <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 3rem; height: 3rem;  border-radius: 50%;">
-                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
-                </span>
-              </div>
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
-                  <BLink href="#" class="text-dark">{{ indicateur.Description }}</BLink>
-                </h5>
-                <p class="text-muted mb-4"></p>
-                <div class="avatar-group">
-                 
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </BCardBody>
-          <div class="px-4 py-3 border-top">
-            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
-              
-              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: {{ indicateur.CodeIndicateur }}
-              </li>
-              <ul class="list-unstyled hstack gap-1 mb-0">
+           <div class="table-responsive" >
+             <BTableSimple class="align-middle table-nowrap table-hover">
+               <BThead class="table-light" style="">
+                 <BTr>
+                   <BTh scope="col" ></BTh>
+                   <BTh scope="col">Code</BTh>
+                   <BTh scope="col">Graphe</BTh>
+                   <BTh scope="col">Action</BTh>
+                 </BTr>
+               </BThead>
+               <BTbody>
+                 <BTr v-for="region in paginatedItems" :key="region.id">
+                   <BTd> </BTd>
+                   <BTd> {{ region.CodeStatutJuridique }}</BTd>
+                   <BTd>{{ region.SigleStatutJuridique }}</BTd>
+                   <BTd>
+                     <ul class="list-unstyled hstack gap-1 mb-0">
                       
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                      </li>
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                      </li>
-                      
-                    </ul>
-
-            </ul>
-          </div>
-        </div>
-        
-       
-      
-        
-        
-            </div>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                       </li>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                         <Blink href="#" @click="confirmDelete(region.CodeStatutJuridique)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                       </li>
+                     </ul>
+                   </BTd>
+                 </BTr>
+               </BTbody>
+             </BTableSimple>
+           </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -94,20 +73,20 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
    <div class="account-pages " style="width:100%;">
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un indicateur</h5>
+                     <h5 class="text-primary">Ajouter un Graphe</h5>
                      
                    </div>
                  </BCol>
@@ -126,49 +105,42 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                  
-                   <BRow >
-                  <BCol md="6">
+                   <BRow>
+                     <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                       <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                       <label for="userpassword">Code </label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
+                      <small v-if="resultError['CodeStatutJuridique']"> {{ resultError["CodeStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
-                  <BCol md="6">
+                </BRow>
+                <BRow>
+                  <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom ou Description</label>
-                     <MazInput v-model="step1.description"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
-                     <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                       <label for="userpassword">Nom </label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomStatutJuridique']"> {{ resultError["NomStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
+
+                   <!-- <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Sigle </label>
+                     <MazInput v-model="step1.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.sigle.$error">{{v$.step1.sigle.$errors[0].$message}}</small> 
+                      <small v-if="resultError['SigleStatutJuridique']"> {{ resultError["SigleStatutJuridique"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow> -->
                   
-                
-                <BRow>
-                  <BCol md="">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword"> Est-ce qu'un graphe ?</label>
-                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
-                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
 
-                     </div>
-                  </BCol>
-                  <BCol md="6" v-if="step1.IsGraphical === true">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword"> Choisissez un graphe </label>
-                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
-                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
-
-                     </div>
-                  </BCol>
-                  </BRow>
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -196,13 +168,13 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un indicateur</h5>
+                     <h5 class="text-primary">Modifier un graphe</h5>
                      
                    </div>
                  </BCol>
@@ -221,40 +193,44 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                  
-                   <!-- <BRow>
+                   <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeStatutJuridique']"> {{ resultError["CodeStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
-                </BRow> -->
-                <BRow>
-                  <BCol md="12">
+
+                   </BRow>
+
+                  
+                   <BRow>
+                    <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom ou Description</label>
-                       <MazTextarea v-model="step2.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.description.$error">{{v$.step2.description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomStatutJuridique']"> {{ resultError["NomStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
+
+                   <!-- <BRow>
+                    <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Sigle</label>
+                     <MazInput v-model="step2.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.sigle.$error">{{v$.step2.sigle.$errors[0].$message}}</small> 
+                      <small v-if="resultError['SigleStatutJuridique']"> {{ resultError["SigleStatutJuridique"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow> -->
+
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -303,71 +279,59 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     IndicateursOptions:[],
+     StatutJuridiqueOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
-      UserOptionsPersonnels:"",
      v$: useVuelidate(),
+     UserOptionsPersonnels:"",
        error:'',
-       choix: [
-        { label: "Oui", value: true },
-        { label: "Non", value: false },
-      ],
      step1:{
-           
             code:'',
-            description:'',
-            IsGraphical:'',
-            TypeGraphicId:'',
+            nom:'',
+            sigle:'',
   
           },
 
             step2:{
-            
-            code:'',
-            description:'',
+             code:'',
+            nom:'',
+            sigle:'',
            
        },
    }
  },
  validations: {
    step1:{
-    code: {
+     code: {
      require
      
    },
-   description: {
+   nom: {
      require,
      lgmin: lgmin(2),
      
    },
-   IsGraphical: {
-     require,
-    
-     
-   },
-   TypeGraphicId: {
-     require,
-  
-     
-   },
-   
+   sigle:{
+    require
+   }
   
    },
    step2:{
-    code: {
+     code: {
      require
      
    },
-   description: {
+   nom: {
      require,
      lgmin: lgmin(2),
      
    },
    
-  
+   sigle:{
+    require
+   }
            
        },
      
@@ -379,46 +343,43 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    statistic() {
-      return `Total des Indicateurs  = ${this.UserOptionsPersonnels} .  `;
+      return `Total des Graphes = ${this.UserOptionsPersonnels} .  `;
     },
    totalPages() {
-   return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
+   return Math.ceil(this.StatutJuridiqueOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.IndicateursOptions.slice(startIndex, endIndex);
+     return this.StatutJuridiqueOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchIndicateursOptions()
+  await this.fetchStatutJuridiqueOptions()
  },
  methods: {
    
    successmsg:successmsg,
-   async fetchIndicateursOptions() {
-    try {
-              const response = await axios.get('/indicateurs', {
-              headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-                
-              },
-    
-            });
-               console.log(response.data.data);
-                this.IndicateursOptions = response.data.data;
-                this.UserOptionsPersonnels =  this.IndicateursOptions.length
-               this.loading = false;
-            
-            } catch (error) {
-              console.error('errorqqqqq',error);
-            
-              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-            }
+   async fetchStatutJuridiqueOptions() {
+      try {
+        await this.$store.dispatch("fetchStatutJuridiqueOptions"); // Action spécifique aux statuts juridiques
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getStatutJuridiqueOptions"])
+        );
+        console.log('Code de la préfecture :', options);
+
+        this.StatutJuridiqueOptions = options
+        console.log('Code de la préfecture :', this.StatutJuridiqueOptions );
+        this.UserOptionsPersonnels = this.StatutJuridiqueOptions.length
+        this.loading = false
+
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des statuts juridiques:",
+          error.message
+        );
+      }
     },
    async HamdleAddUser(){
      this.error = '',
@@ -427,14 +388,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-          CodeIndicateur:this.step1.code,
-          Description:this.step1.description,
-          Direction:this.loggedInUser.direction
+          CodeStatutJuridique:this.step1.code,
+           NomStatutJuridique:this.step1.nom,
+           SigleStatutJuridique:this.step1.sigle,
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/indicateurs' , DataUser, {
+         const response = await axios.post('/statut-juridiques' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -445,8 +406,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création d'indicateur",'Votre indicateur a été crée avec succès !')
-           await this.fetchIndicateursOptions()
+           this.successmsg("Création du statut juridique",'Votre statut juridique a été crée avec succès !')
+           await this.fetchStatutJuridiqueOptions()
 
          } else {
 
@@ -493,7 +454,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/indicateurs/${id}`, {
+           const response = await axios.delete(`/statut-juridiques/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -505,8 +466,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre indicateur a été supprimé.')
-            await this.fetchIndicateursOptions()
+            await this.fetchStatutJuridiqueOptions()
+            this.successmsg('Supprimé!', 'Votre statut juridique a été supprimée.')
    
            } else {
              console.log('error', response.data)
@@ -528,16 +489,18 @@ async mounted() {
          this.loading = true;
 
          try {
-             // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.IndicateursOptions.find(user => user.id === id);
+             // Recherchez l'objet correspondant dans le tableau StatutJuridiqueOptions en fonction de l'ID
+             const user = this.StatutJuridiqueOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeIndicateur,
-            this.step2.description = user.Description,
-            this.ToId = id
+             this.step2.code = user.CodeStatutJuridique,
+              this.step2.nom = user.NomStatutJuridique,
+            this.step2.sigle = user.SigleStatutJuridique,
+            this.ToId = user.CodeStatutJuridique
+
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -560,15 +523,15 @@ async mounted() {
       
                const dataCath = {
    
-                CodeIndicateur:this.step2.code,
-                Description:this.step2.description,
-                Direction:this.loggedInUser.direction,
-                id:this.ToId
+                CodeStatutJuridique:(this.step2.code).toString(),
+                NomStatutJuridique:this.step2.nom,
+                SigleStatutJuridique:this.step2.sigle,
+                StautStatutJuridique:1
              }
              console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.post(`indicateurs/${this.ToId}/update`,dataCath, {
+          const response = await axios.put(`statut-juridiques/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -576,16 +539,16 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchIndicateursOptions()
+            await this.fetchStatutJuridiqueOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification d'indicateur",'Votre indicateur a été modifiée avec succès !')
+           this.successmsg("Modification du statut juridique",'Votre statut juridique a été modifié avec succès !')
            
             
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
-         
+          
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
                 await this.$store.dispatch('auth/clearMyAuthenticatedUser');
               this.$router.push("/");  //a revoir
@@ -609,7 +572,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.IndicateursOptions.slice(startIndex, endIndex);
+         return  this.StatutJuridiqueOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -635,4 +598,4 @@ async mounted() {
 </script>
 <style lang="" scoped>
    
-</style>
+</style> 

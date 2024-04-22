@@ -241,6 +241,7 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
+import { fetchSousCategorieProduit } from '@/lib/testApi.js';
 
 export default {
  components: {
@@ -331,24 +332,23 @@ async mounted() {
  await this.fetchCategorieProduits()
  await this.fetchSousCategorieProduits()
 
+
 },
 methods: {
- validatePasswordsMatch() {
-  return this.step1.password === this.step1.confirm_password;
- },
+
  successmsg:successmsg,
  async fetchSousCategorieProduits() {
-    try {
-              const response = await axios.get('/sous-produits', {
-              headers: { Authorization: `Bearer ${this.loggedInUser.token}`, },
-              params:{  parent:true }
-               
+  try {
+      const response = await axios.get('/sous-produits', {
+              headers: { Authorization: `Bearer ${this.loggedInUser.token}`,},
+              params: {
+                with_products: true,
+                    parent: true
+        }
     
             });
-               console.log(response.data.data);
+               console.log(response.data);
                this.SousCategorieOptions = response.data.data;
-               
-        
                this.loading = false;
             
             } catch (error) {
@@ -360,6 +360,7 @@ methods: {
             }
             }
 },
+
  async fetchCategorieProduits() {
   try {
             const response = await axios.get('/type-produits', {

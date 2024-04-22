@@ -45,7 +45,7 @@
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                           <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
                        </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
@@ -62,14 +62,23 @@
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
                               <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
-                              <BDropdownItem href="#">Edit</BDropdownItem>
+                              <BDropdownItem @click="$router.push({ path: '/stock-pme/'+ pme.CodeMpme })" >Stock disponible</BDropdownItem>
                               <BDropdownItem href="#">Rename</BDropdownItem>
                               <BDropdownDivider />
                               <BDropdownItem href="#">Remove</BDropdownItem>
                             </BDropdown>
+                           
                        </li>
-                     </ul>
-                     
+            </ul>
+            <!-- <CDropdown>
+                          <CDropdownToggle color="primary">Button</CDropdownToggle>
+                          <CDropdownMenu>
+                            <CDropdownItem href="#">Action</CDropdownItem>
+                            <CDropdownItem href="#">Another action</CDropdownItem>
+                            <CDropdownItem href="#">Something else here</CDropdownItem>
+                          </CDropdownMenu>
+                        </CDropdown>
+                      -->
 
           </div>
             </div>
@@ -169,6 +178,9 @@ import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
+import { CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/vue';
+import '@coreui/coreui/dist/css/coreui.min.css'
+
 
 
 export default {
@@ -177,6 +189,10 @@ export default {
    PageHeader,
    Loading ,
    Pag,
+   CDropdown,
+   CDropdownToggle,
+   CDropdownMenu,
+   CDropdownItem
   
  },
  data() {

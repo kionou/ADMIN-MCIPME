@@ -452,10 +452,19 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                  <MazSelect
+                  label="Sélectionner votre statut juridique"
+                    v-model="step2.autr_st_juriq"
+                    no-radius  color="info"
+                    :options="StatutJuridiqueOptions"
                     :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
                     @input="resultError['AutreStatutJuridique'] = false"
+                    search
                   />
+                  <!-- <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
+                    @input="resultError['AutreStatutJuridique'] = false"
+                  /> -->
                  
                 </div>
                 <small v-if="v$.step2.autr_st_juriq.$error">{{
@@ -2189,9 +2198,11 @@ async mounted() {
         CodeZone:this.step2.CodeZone,
         SuperficieOccupee:this.step2.SuperficieOccupee,
         NumeroRccm: this.step2.nbre_rccm,
-        FichierRccm: this.step2.FichierRccm,
-        NumeroNif: this.step2.nbre_nif,
-        FichierNif: this.step2.FichierNif,
+        // FichierRccm: this.step2.FichierRccm,
+         NumeroNif: this.step2.nbre_nif,
+        //  FichierNif: this.step2.FichierNif,
+        FichierRccm:null,
+        FichierNif:null,
         DateGenerationNif: this.step2.DateGenerationNif,
         NumeroTva: this.step2.NumeroTva,
 
@@ -2361,8 +2372,8 @@ async mounted() {
           this.loading = true
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeDataUpdate', JSON.stringify(mpmeData));
-          localStorage.setItem('CodeIdentifiant', this.loggedInUser.id);
+          localStorage.setItem('tempMpmeDataUpdateDNI', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiantDNI', this.loggedInUser.id);
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
@@ -2402,8 +2413,8 @@ async mounted() {
         this.userData = response.data.data.detail;
         console.log("UserData:", response.data.data);
         console.log("UserData:", this.userData);
-        const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiant');
-        const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdate');
+        const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiantDNI');
+        const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdateDNI');
         console.log("UserData:", CodeIdentifiant);
         console.log("UserData:", localStorageUserData);
 
@@ -2854,8 +2865,8 @@ async mounted() {
       return localStorage.getItem(key) || null;
     },
    async getSuivant(mpmeData){
-         localStorage.setItem('tempMpmeDataUpdate', JSON.stringify(mpmeData));
-          localStorage.setItem('CodeIdentifiant', this.loggedInUser.id);
+         localStorage.setItem('tempMpmeDataUpdateDNI', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiantDNI', this.loggedInUser.id);
 
            const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);

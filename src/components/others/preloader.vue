@@ -86,6 +86,8 @@
     
     
     </div>
+
+	
 </template>
 
 <script>
@@ -97,7 +99,99 @@ export default {
              };
             },
 mounted() { 
-   
+	createMpmeFormData() {
+  // Création d'un nouvel objet FormData
+  const formData = new FormData();
+
+  // Ajout des champs et de leurs valeurs à formData
+  formData.append('Region', this.step1.region);
+  formData.append('Commune', this.step1.commune);
+  formData.append('Sousprefecture', this.step1.sous_prefecture);
+  formData.append('Ville', this.step1.ville);
+  formData.append('Localisation', this.step1.localisation);
+  formData.append('SigleMpme', this.step1.sigle_mpme);
+  formData.append('NomMpme', this.step1.nom);
+  formData.append('Quartier', this.step1.quartier);
+  formData.append('Rue', this.step1.rue);
+  formData.append('BoitePostale', this.step1.boite_postale);
+  formData.append('NumeroWhatsApp', this.step1.tel_what);
+  formData.append('NumeroTelephoneSecondaire', this.step1.tel_second);
+  formData.append('AdresseEmail', this.step1.email);
+  formData.append('SiteWeb', this.step1.url);
+
+  // step2
+
+  formData.append('AnneeCreation', this.step2.an_creation);
+  formData.append('AnneeEntreeActivite', this.step2.an_entre_acti);
+  formData.append('CodeStatutJuridique', this.step2.code_st_juriq);
+  formData.append('AutreStatutJuridique', this.step2.autr_st_juriq);
+  formData.append('PrincipalSecteurActivite', this.step2.prin_sect_acti);
+  formData.append( 'ListeSousSecteurActivite',JSON.parse( JSON.stringify(this.step2.selectedSousSecteurs)));
+  formData.append('AnneeProduction1', this.step2.an_prod_1);
+  formData.append('PaysSiegeSocial', this.step2.PaysSiegeSocial);
+  formData.append('types', this.step2.types);
+  formData.append('NumeroRccm', this.step2.nbre_rccm);
+  formData.append('FichierRccm', this.step2.FichierRccm);
+  formData.append('NumeroNif', this.step2.nbre_nif);
+  formData.append('FichierNif', this.step2.FichierNif);
+  formData.append('DateGenerationNif', this.step2.DateGenerationNif);
+  formData.append('NumeroTva', this.step2.NumeroTva);
+
+  // step3
+
+  formData.append('NbreEmployeGuinneF', this.step3.NbreEmployeGuinneF || 0);
+  formData.append('NbreEmployeGuinneH', this.step3.NbreEmployeGuinneH || 0);
+  formData.append('NbreEmploye', this.step3.NbreEmployeGuinne || 0);
+  formData.append('PersonnelPermanentFemme', this.step3.pers_per_femm || 0);
+  formData.append('PersonnelPermanentHomme', this.step3.pers_per_homm || 0);
+  formData.append('PersonnelTemporaireFemme', this.step3.pers_temp_femm || 0);
+  formData.append('PersonnelTemporaireHomme', this.step3.pers_temp_homm || 0);
+  formData.append('NbreActionnaireGuinneF', this.step3.NbreActionnaireGuinneF || 0);
+  formData.append('NbreActionnaireGuinneH', this.step3.NbreActionnaireGuinneH || 0);
+  formData.append('NbreActionnaire', this.step3.NbreActionnaireGuinne || 0);
+
+  // step4
+
+  formData.append('TitreDirigeant', this.step4.titreDirigeant);
+  formData.append('NomDirigeant', this.step4.nomDirigeant);
+  formData.append('PrenomDirigeant', this.step4.prenomDirigeant);
+  formData.append('SexeDirigeant', this.step4.sexeDirigeant);
+  formData.append('PaysDirigeant', this.step4.paysDirigeant);
+  formData.append('AnneeNaissanceDirigeant', parseInt(this.step4.anneeNaissanceDirigeant).toString());
+  formData.append('DirigeantProprietaire', this.step4.dirigeantProprietaire);
+  formData.append('TitreProprietaire', this.step4.titreProprietaire);
+  formData.append('NomProprietaire', this.step4.nomProprietaire);
+  formData.append('PrenomProprietaire', this.step4.prenomProprietaire);
+  formData.append('SexeProprietaire', this.step4.sexeProprietaire);
+  formData.append('PaysProprietaire', this.step4.paysProprietaire);
+  formData.append('AnneeNaissanceProprietaire', this.step4.anneeNaissanceProprietaire);
+
+// step5
+
+  formData.append('TitreRepondant', this.step5.titreRepondant);
+  formData.append('NomRepondant', this.step5.nomRepondant);
+  formData.append('FonctionRepondant', this.step5.fonctionRepondant);
+  formData.append('AdresseRepondant', this.step5.adresseRepondant);
+  formData.append('VilleRepondant', this.step5.villeRepondant);
+  formData.append('TelephoneWhatsAppRepondant', this.step5.telephoneWhatsAppRepondant);
+  formData.append('Contacter', this.step5.contacter);
+  formData.append('ExistanceActionnaire', this.step5.existanceActionnaire);
+  formData.append('ExistanceConseilAdministration', this.step5.existanceConseilAdministration);
+
+  // step6
+
+  formData.append('LienGoogleMapMpme', this.step6.lienGoogleMapMpme);
+  formData.append('LatitudeMpme', this.step6.latitudeMpme);
+  formData.append('LongitudeMpme', this.step6.longitudeMpme);
+  formData.append('AltitudeMpme', this.step6.altitudeMpme);
+  formData.append('PrecisionGPSMpme', this.step6.precisionGPSMpme);
+  formData.append('OrigineDonnees', this.step6.origineDonnees);
+
+  formData.append('Direction', this.loggedInUser.direction);
+
+  // Retourne l'objet FormData créé
+  return formData;
+},
 },
 methods: {},
 };

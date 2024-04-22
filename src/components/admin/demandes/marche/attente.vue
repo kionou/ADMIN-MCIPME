@@ -1,20 +1,18 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des indicateurs</BCardTitle>
-
+             <BCardTitle class="mb-0 ">Liste des demandes en attente</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+               <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
                
              </div>
            </div>
@@ -29,58 +27,72 @@
          
          
          <BCardBody v-else>
-            <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
-        
-       
+           <div class="table-responsive" >
+             <BTableSimple class="align-middle table-nowrap table-hover">
+               <BThead class="table-light" style="">
+                 <BTr>
                 
-        <div class="" style="width: 260px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="indicateur in paginatedItems" :key="indicateur.id">
-          <BCardBody>
-            <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 3rem; height: 3rem;  border-radius: 50%;">
-                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
-                </span>
-              </div>
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
-                  <BLink href="#" class="text-dark">{{ indicateur.Description }}</BLink>
-                </h5>
-                <p class="text-muted mb-4"></p>
-                <div class="avatar-group">
-                 
-                 
+                   <BTh scope="col">Code Demande</BTh>
+                   <BTh scope="col">Code Pme</BTh>
+                   <BTh scope="col">Nom Prenom</BTh>
+                   <BTh scope="col">Contact</BTh>
+                   <BTh scope="col">Produit </BTh>
+                   <BTh scope="col">Statut</BTh>
+                   <BTh scope="col">Fichiers</BTh>
+                 </BTr>
+               </BThead>
+               <BTbody>
+                 <BTr v-for="region in paginatedItems" :key="region.id">
+                   <BTd>DNCIC-001 </BTd>
+                   <BTd>MPME-12345-2024</BTd>
+                   <BTd>Bouare Bouare</BTd>
+                   <BTd> <h5 class="font-size-14 text-truncate">
+                        <span class="text-dark">+224 60123456</span>
+                      </h5>
+                      <p class="mb-0">
+                        
+                        <span class="fw-medium">exemple@gmail.com</span>
+                      </p>
+                      </BTd>
+                   <BTd>Produit 1</BTd>
+                   
                   
-                </div>
-              </div>
-            </div>
-          </BCardBody>
-          <div class="px-4 py-3 border-top">
-            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
-              
-              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: {{ indicateur.CodeIndicateur }}
-              </li>
-              <ul class="list-unstyled hstack gap-1 mb-0">
+                  
+                   <BTd>
+                     <ul class="list-unstyled hstack gap-1 mb-0">
                       
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                      </li>
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                      </li>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                         <Blink href="#"  class="btn btn-sm btn-soft-info"> Attente</Blink>
+                       </li>
+                     
                       
-                    </ul>
-
-            </ul>
-          </div>
-        </div>
-        
-       
-      
-        
-        
-            </div>
+                     </ul>
+                   </BTd>
+                   <BTd>
+                     <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                              variant="white" dropright top>
+                              <template #button-content>
+                                <i class="mdi mdi-dots-vertical"></i>
+                              </template>
+                              <BDropdownItem  href="#"> <i class="mdi mdi-download-outline"></i> Rccm</BDropdownItem>
+                              <BDropdownItem href="#" > <i class="mdi mdi-download-outline"></i> Biometrique</BDropdownItem>
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Certificat</BDropdownItem>
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Carte Biometrique </BDropdownItem>
+                              <BDropdownDivider />
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Lettre</BDropdownItem>
+                            </BDropdown>
+                       </li>
+                      
+                      
+                     </ul>
+                   </BTd>
+                 </BTr>
+               </BTbody>
+             </BTableSimple>
+           </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -94,20 +106,20 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
    <div class="account-pages " style="width:100%;">
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un indicateur</h5>
+                     <h5 class="text-primary">Ajouter une Region</h5>
                      
                    </div>
                  </BCol>
@@ -126,49 +138,30 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                  
-                   <BRow >
-                  <BCol md="6">
+                   <BRow>
+                     <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                       <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                       <label for="userpassword">Code Region</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
-                  <BCol md="6">
+                </BRow>
+                <BRow>
+                  <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom ou Description</label>
-                     <MazInput v-model="step1.description"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
-                     <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                       <label for="userpassword">Nom Region</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
                   
-                
-                <BRow>
-                  <BCol md="">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword"> Est-ce qu'un graphe ?</label>
-                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
-                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
 
-                     </div>
-                  </BCol>
-                  <BCol md="6" v-if="step1.IsGraphical === true">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword"> Choisissez un graphe </label>
-                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
-                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
-
-                     </div>
-                  </BCol>
-                  </BRow>
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -196,13 +189,13 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un indicateur</h5>
+                     <h5 class="text-primary">Modifier un utilisateur</h5>
                      
                    </div>
                  </BCol>
@@ -221,40 +214,32 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                  
-                   <!-- <BRow>
+                   <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                       <label for="userpassword">Code Region</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
-                </BRow> -->
-                <BRow>
-                  <BCol md="12">
+
+                 
+                   </BRow>
+                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom ou Description</label>
-                       <MazTextarea v-model="step2.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.description.$error">{{v$.step2.description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+                       <label for="userpassword">Nom Region</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
 
                      </div>
                   </BCol>
+                   <BRow>
+                    
                    </BRow>
+
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -278,9 +263,9 @@
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
-import PageHeader from "@/components/page-header.vue";
+
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
@@ -291,8 +276,7 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-   Layout,
-   PageHeader,
+   
    Loading ,
    Pag,
    MazPhoneNumberInput,
@@ -303,70 +287,49 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     IndicateursOptions:[],
+     regionOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
-      UserOptionsPersonnels:"",
      v$: useVuelidate(),
        error:'',
-       choix: [
-        { label: "Oui", value: true },
-        { label: "Non", value: false },
-      ],
      step1:{
-           
             code:'',
-            description:'',
-            IsGraphical:'',
-            TypeGraphicId:'',
+            nom:'',
   
           },
 
             step2:{
-            
-            code:'',
-            description:'',
+             code:'',
+            nom:'',
            
        },
    }
  },
  validations: {
    step1:{
-    code: {
+     code: {
      require
      
    },
-   description: {
+   nom: {
      require,
      lgmin: lgmin(2),
-     
+
    },
-   IsGraphical: {
-     require,
-    
-     
-   },
-   TypeGraphicId: {
-     require,
-  
-     
-   },
-   
   
    },
    step2:{
-    code: {
+     code: {
      require
      
    },
-   description: {
+   nom: {
      require,
      lgmin: lgmin(2),
-     
+
    },
-   
   
            
        },
@@ -378,47 +341,41 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
-   statistic() {
-      return `Total des Indicateurs  = ${this.UserOptionsPersonnels} .  `;
-    },
    totalPages() {
-   return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
+   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.IndicateursOptions.slice(startIndex, endIndex);
+     return this.regionOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchIndicateursOptions()
+  await this.fetchRegionOptions()
  },
  methods: {
-   
+   validatePasswordsMatch() {
+    return this.step1.password === this.step1.confirm_password;
+   },
    successmsg:successmsg,
-   async fetchIndicateursOptions() {
-    try {
-              const response = await axios.get('/indicateurs', {
-              headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-                
-              },
-    
-            });
-               console.log(response.data.data);
-                this.IndicateursOptions = response.data.data;
-                this.UserOptionsPersonnels =  this.IndicateursOptions.length
-               this.loading = false;
-            
-            } catch (error) {
-              console.error('errorqqqqq',error);
-            
-              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-            }
+   async fetchRegionOptions() {
+      // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch("fetchRegionOptions");
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getRegionOptions2"])
+         
+        ); // Accéder aux options des pays via le getter
+        console.log(options);
+        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
+        this.loading = false
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+      }
     },
    async HamdleAddUser(){
      this.error = '',
@@ -427,14 +384,13 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-          CodeIndicateur:this.step1.code,
-          Description:this.step1.description,
-          Direction:this.loggedInUser.direction
+           CodeRegion:this.step1.code,
+           NomRegion:this.step1.nom,
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/indicateurs' , DataUser, {
+         const response = await axios.post('/regions' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -445,8 +401,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création d'indicateur",'Votre indicateur a été crée avec succès !')
-           await this.fetchIndicateursOptions()
+           this.successmsg("Création de region",'Votre region a été crée avec succès !')
+           await this.fetchRegionOptions()
 
          } else {
 
@@ -493,7 +449,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/indicateurs/${id}`, {
+           const response = await axios.delete(`/regions/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -505,8 +461,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre indicateur a été supprimé.')
-            await this.fetchIndicateursOptions()
+            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
+            await this.fetchRegionOptions()
    
            } else {
              console.log('error', response.data)
@@ -529,15 +485,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.IndicateursOptions.find(user => user.id === id);
+             const user = this.regionOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeIndicateur,
-            this.step2.description = user.Description,
-            this.ToId = id
+            this.step2.code = user.CodeRegion,
+            this.step2.nom = user.NomRegion,
+            this.ToId = user.CodeRegion
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -560,15 +516,14 @@ async mounted() {
       
                const dataCath = {
    
-                CodeIndicateur:this.step2.code,
-                Description:this.step2.description,
-                Direction:this.loggedInUser.direction,
-                id:this.ToId
+           CodeRegion:this.step2.code,
+           NomRegion:this.step2.nom,
+           Statut:1
              }
              console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.post(`indicateurs/${this.ToId}/update`,dataCath, {
+          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -576,10 +531,10 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchIndicateursOptions()
+            await this.fetchRegionOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification d'indicateur",'Votre indicateur a été modifiée avec succès !')
+           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
            
             
           } 
@@ -609,7 +564,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.IndicateursOptions.slice(startIndex, endIndex);
+         return  this.regionOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {

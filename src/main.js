@@ -10,7 +10,14 @@ import VueApexCharts from "vue3-apexcharts";
 import vClickOutside from "click-outside-vue3";
 import { registerScrollSpy } from 'vue3-scroll-spy';
 import {createBootstrap} from 'bootstrap-vue-next'
+import { CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/vue';
+import '@coreui/coreui/dist/css/coreui.min.css'
 import 'maz-ui/styles'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import MazBtn from 'maz-ui/components/MazBtn'
 import MazInput from 'maz-ui/components/MazInput'
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
@@ -44,6 +51,18 @@ import 'bootstrap/dist/js/bootstrap.js';
 import pinia from '@/state/pinia'
 import 'sweetalert2/dist/sweetalert2.min.css';
 const app = createApp(App)
+const vuetify = createVuetify({
+   components,
+   directives,
+   icons: {
+     defaultSet: 'mdi',
+     aliases,
+     sets: {
+       mdi,
+     },
+   },
+ })
+
 
 app.component('MazBtn', MazBtn)
 app.component('MazInput', MazInput)
@@ -71,6 +90,7 @@ app.component('MazInputCode', MazInputCode)
   app.use(VueApexCharts)
   app.use(vClickOutside)
   app.use(i18n)
+  app.use(vuetify);
   app.use(registerScrollSpy)
   app.mount('#app')
     
