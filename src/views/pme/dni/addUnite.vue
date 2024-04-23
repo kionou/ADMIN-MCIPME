@@ -149,7 +149,7 @@
                   {{ resultError["Commune"] }}
                 </small>
               </div>
-            </div>
+                        </div>
                      </div>
                      <div class="content">
                         <p class="titre">INFORMATIONS SUR L'ENTREPRISE</p>
@@ -164,7 +164,7 @@
                                 type="text"
                                 name="SigleMpme"
                                 id="SigleMpme"
-                                placeholder="DNPMECL"
+                                placeholder="DNI"
                                 v-model="step1.sigle_mpme"
                                 :class="{ 'error-border': resultError['SigleMpme'] }"
                                 @input="resultError['SigleMpme'] = false"
@@ -186,7 +186,7 @@
                                 type="text"
                                 name="nom"
                                 id="nom"
-                                placeholder="DNPMECL"
+                                placeholder="DNI"
                                 v-model="step1.nom"
                                 :class="{ 'error-border': resultError['NomMpme'] }"
                                 @input="resultError['NomMpme'] = false"
@@ -321,7 +321,7 @@
                                 type="email"
                                 name="email"
                                 id="AdresseEmail"
-                                placeholder="dnpmecl@gmail.com"
+                                placeholder="dnipmecl@gmail.com"
                                 v-model="step1.email"
                                 :class="{ 'error-border': resultError['AdresseEmail'] }"
                                 @input="resultError['AdresseEmail'] = false"
@@ -450,9 +450,7 @@
             </div>
             <div class="row mb-3 mt-3 content-group">
               <div class="col">
-                <div class="input-groupe">
-                  <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <MazSelect
+                <MazSelect
                   label="Sélectionner votre statut juridique"
                     v-model="step2.autr_st_juriq"
                     no-radius  color="info"
@@ -461,9 +459,14 @@
                     @input="resultError['AutreStatutJuridique'] = false"
                     search
                   />
-                  <!-- <input type="text" name="AutreStatutJuridique" id="AutreStatutJuridique" placeholder=""
-                                        v-model="step2.autr_st_juriq"> -->
-                </div>
+                <!-- <div class="input-groupe">
+                  <label for="AutreStatutJuridique">Autre Statut Juridique</label>
+                  <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
+                    @input="resultError['AutreStatutJuridique'] = false"
+                  />
+                  
+                </div> -->
                 <small v-if="v$.step2.autr_st_juriq.$error">{{
                   v$.step2.autr_st_juriq.$errors[0].$message
                 }}</small>
@@ -563,7 +566,7 @@
                   {{ resultError["PaysSiegeSocial"] }}
                 </small>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <div class="input-groupe">
                   <label for="ListeSousSecteurActivite"
                     >Êtes-vous une unité distributrice ? <span class="text-danger">*</span></label
@@ -580,34 +583,76 @@
                   v$.step2.distributrice.$errors[0].$message
                 }}</small>
               </div>
-            </div>
-            <div class="col" v-if="step2.distributrice === 'Oui'">
+            </div> -->
+             <div class="col" >
                 <div class="input-groupe">
                   <label for="ListeSousSecteurActivite"
-                    >Choisissez vos unités importatrices  <span class="text-danger">*</span></label
+                    >Quel est le type de votre entreprise ?  <span class="text-danger">*</span></label
                   >
                   <MazSelect
-                  label="Sélectionner vos unités importatrices"
-                    v-model="step2.pmes"
+                  label="Sélectionner le type de votre entreprise"
+                    v-model="step2.types"
                     no-radius  color="info"
-                    :options="McipmeOptions"
+                    :options="EntrepriseOptions"
                     multiple
-                    :class="{ 'error-border': resultError['pmes'] }"
-                    @input="resultError['pmes'] = false"
+                    :class="{ 'error-border': resultError['types'] }"
+                    @input="resultError['types'] = false"
                    
                     search
                   />
                   
                    
                 
-                <small v-if="v$.step2.pmes.$error">{{
-                  v$.step2.pmes.$errors[0].$message
+                <small v-if="v$.step2.types.$error">{{
+                  v$.step2.types.$errors[0].$message
                 }}</small>
-                <small v-if="resultError['pmes']">
-                  {{ resultError["pmes"] }}
+                <small v-if="resultError['types']">
+                  {{ resultError["types"] }}
                 </small>
               </div>
+            </div> 
+
+
             </div>
+
+            <div class="row mb-3 mt-3 content-group">
+              
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PaysSiegeSocial" >Zone Industrielle <span class="text-danger">*</span></label  >
+                    <MazSelect label="Sélectionner la zone industrielle" v-model="step2.CodeZone"  no-radius  color="info"  :options="ZoneOptions"
+                    :class="{ 'error-border': resultError['CodeZone'] }"
+                    @input="resultError['CodeZone'] = false"
+                   
+                    search
+                  />
+                </div>
+                <small v-if="v$.step2.CodeZone.$error">{{
+                  v$.step2.CodeZone.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['CodeZone']">
+                  {{ resultError["CodeZone"] }}
+                </small>
+              </div>
+           
+             <div class="col" >
+                <div class="input-groupe">
+                  <label for="ListeSousSecteurActivite"
+                    >Superficie Occupée  <span class="text-danger">*</span></label
+                  >
+                  <MazInput v-model="step2.SuperficieOccupee"  no-radius type="number"  color="info" placeholder="440.5" />
+
+                  
+                   
+                
+                <small v-if="v$.step2.SuperficieOccupee.$error">{{
+                  v$.step2.SuperficieOccupee.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['SuperficieOccupee']">
+                  {{ resultError["SuperficieOccupee"] }}
+                </small>
+              </div>
+            </div> 
 
 
             </div>
@@ -762,7 +807,7 @@
                 </div>
                 <!-- Étape 3 -->
                 <div v-if="currentStep === 3">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1015,7 +1060,7 @@
                  </div>
             <!-- Étape 4 -->
             <div v-if="currentStep === 4">
-                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1393,7 +1438,7 @@
             </div>
             <!-- Étape 5 -->
             <div v-if="currentStep === 5">
-                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1636,7 +1681,7 @@
 
                 <!-- Étape 6 -->
                 <div v-if="currentStep === 6">
-                    <BCard no-body class="overflow-hidden" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -1804,7 +1849,7 @@
  </Layout>
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
 import Loading from '@/components/others/loading.vue';
 import axios from "@/lib/axiosConfig.js";
@@ -1856,7 +1901,9 @@ export default {
       sous_prefectureOptions: [],
       SecteurActiviteOptions: [],
       StatutJuridiqueOptions: [],
+      EntrepriseOptions:[],
       McipmeOptions:[],
+      ZoneOptions:[],
       QuartierOptions: [],
      
     //   ChiffreOptions: chiffre,
@@ -1914,7 +1961,9 @@ export default {
         an_prod_1: "", 
         PaysSiegeSocial: "Guinea",
         distributrice:"",
-        pmes:"",
+        types:"",
+        CodeZone:"",
+        SuperficieOccupee:"",
 
         nbre_rccm: "",
         FichierRccm:"",
@@ -2009,9 +2058,11 @@ export default {
       prin_sect_acti: { require },
       selectedSousSecteurs: { require },
       PaysSiegeSocial: { require },
-      distributrice: { require },
-      pmes: {},
+      distributrice: {  },
+      types: {require},
+      CodeZone:{require},
       nbre_rccm: {},
+      SuperficieOccupee:{require},
       FichierRccm:{},
       nbre_nif: {},
       FichierNif:{},
@@ -2081,7 +2132,7 @@ export default {
 async mounted() {
 
    console.log("uusers",this.loggedInUser);
-   const localStorageUserData = localStorage.getItem('tempMpmeData') || null;
+   const localStorageUserData = localStorage.getItem('tempMpmeDataDNI') || null;
    if(localStorageUserData !== null){
     const userDataString = JSON.parse(localStorageUserData)
    this.userData = userDataString
@@ -2106,6 +2157,8 @@ async mounted() {
         this.fetchSecteurActiviteOptions(),
         this.fetchSousSecteurActiviteOptions(),
         this.fetchStatutJuridiqueOptions(),
+        this.fetchEntrepriseOptions(),
+        this.fetchZoneOptions(),
         this.initializeYears(),
        
       ]);
@@ -2143,11 +2196,15 @@ async mounted() {
         ListeSousSecteurActivite: JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)),
         AnneeProduction1: this.step2.an_prod_1,
         PaysSiegeSocial: this.step2.PaysSiegeSocial,
-        pmes:this.step2.pmes,
+        types:this.step2.types,
+        CodeZone:this.step2.CodeZone,
+        SuperficieOccupee:this.step2.SuperficieOccupee,
         NumeroRccm: this.step2.nbre_rccm,
-        FichierRccm: this.step2.FichierRccm,
-        NumeroNif: this.step2.nbre_nif,
-        FichierNif: this.step2.FichierNif,
+        // FichierRccm: this.step2.FichierRccm,
+         NumeroNif: this.step2.nbre_nif,
+        //  FichierNif: this.step2.FichierNif,
+        FichierRccm:null,
+        FichierNif:null,
         DateGenerationNif: this.step2.DateGenerationNif,
         NumeroTva: this.step2.NumeroTva,
 
@@ -2209,7 +2266,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2231,7 +2288,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2252,7 +2309,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2273,7 +2330,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2294,7 +2351,7 @@ async mounted() {
         if (this.v$.$errors.length == 0) {
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           this.currentStep++;
           window.scrollTo({
               top: 0,
@@ -2316,15 +2373,13 @@ async mounted() {
           this.loading = true
           const mpmeData = this.createMpmeData();
           console.log("mpmeData1", mpmeData);
-          localStorage.setItem('tempMpmeData', JSON.stringify(mpmeData));
+          localStorage.setItem('tempMpmeDataDNI', JSON.stringify(mpmeData));
           const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
           if (success) {
-              localStorage.removeItem('tempMpmeData')
-             setTimeout(()=>{
-                this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-              }, 5000);
-              this.$router.push({ path: '/importatrices' })
+              localStorage.removeItem('tempMpmeDataDNI')
+              this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
+              this.$router.push({ path: '/industrielles' })
             this.loading = false;
           } else {
             console.error("Erreur lors de l'enregistrement des données pour le MPME");
@@ -2420,6 +2475,74 @@ async mounted() {
           "Erreur lors de la récupération des options des pays :",
           error.message
         );
+      }
+    },
+    async fetchEntrepriseOptions() {
+      try {
+       
+        const response = await axios.get('/types-entreprises', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`, },
+            params:{statut:true}
+        });
+
+        console.log("response", response);
+        if (response.data.status === 'success') {
+          console.log("Données MPME mises à jour avec succès !",response.data.data);
+         this.EntrepriseOptions = response.data.data.map((country) => ({
+        label:country. IntituleType,
+        value: country.id,
+      }));
+         
+        } 
+      } catch (error) {
+        console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (  error.response.data.status === "error" ) {
+          console.log("aut", error.response.data.status === "error");
+          
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
+      }
+    },
+    async fetchZoneOptions() {
+      try {
+       
+        const response = await axios.get('/zone-industrielles', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`, },
+            params:{statut:true}
+        });
+
+        console.log("response", response);
+        if (response.data.status === 'success') {
+          console.log("Données MPME mises à jour avec succès !",response.data.data);
+         this.ZoneOptions = response.data.data.map((country) => ({
+        label:country. IntituleZone,
+        value: country.CodeZone,
+      }));
+         
+        } 
+      } catch (error) {
+        console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (  error.response.data.status === "error" ) {
+          console.log("aut", error.response.data.status === "error");
+          
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
       }
     },
     async fetchCountryOptions() {
@@ -2731,7 +2854,9 @@ async mounted() {
       this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step2.pmes = userData.pmes;
+      this.step2.types = userData.types;
+      this.step2.CodeZone = userData.CodeZone;
+      this.step2.SuperficieOccupee = userData.SuperficieOccupee;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm
       this.step2.nbre_nif = userData.NumeroNif;

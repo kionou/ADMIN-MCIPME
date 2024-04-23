@@ -106,7 +106,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -157,8 +157,8 @@
                      <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Adresse Email</label>
-                     <MazInput v-model="step1.email"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
-                      <small v-if="v$.step1.email.$error">{{v$.step1.email.$errors[0].$message}}</small> 
+                     <MazInput v-model="step1.email1"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
+                      <small v-if="v$.step1.email1.$error">{{v$.step1.email1.$errors[0].$message}}</small> 
                       <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
 
                      </div>
@@ -180,8 +180,8 @@
                      <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Mot de passe </label>
-                     <MazInput v-model="step1.password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.password.$error">{{v$.step1.password.$errors[0].$message}}</small> 
+                     <MazInput v-model="step1.password1"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                      <small v-if="v$.step1.password1.$error">{{v$.step1.password1.$errors[0].$message}}</small> 
                       <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
                      </div>
                   </BCol>
@@ -189,8 +189,8 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Confirmer le mot de passe </label>
-                     <MazInput v-model="step1.confirm_password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.confirm_password.$error">{{v$.step1.confirm_password.$errors[0].$message}}</small>
+                     <MazInput v-model="step1.confirm_password1"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                      <small v-if="v$.step1.confirm_password1.$error">{{v$.step1.confirm_password1.$errors[0].$message}}</small>
                       <small v-if="!validatePasswordsMatch()" >Les mots de passe ne correspondent pas.</small>
                       <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"] }} </small>
                      </div>
@@ -222,7 +222,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -372,10 +372,10 @@ export default {
       step1:{
              nom:'',
              prenom:'',
-             email: '',
+             email1: '',
              phoneNumber:'',
-             password: '',
-             confirm_password:''
+             password1: '',
+             confirm_password1:''
              
            },
 
@@ -393,14 +393,14 @@ export default {
       nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+    
     },
     prenom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+     
     },
-    email: {
+    email1: {
       require,
       ValidEmail
     },
@@ -408,28 +408,28 @@ export default {
       require,
       
     },
-    password: {
+    password1: {
       require,
       lgmin: lgmin(8),
-      lgmax: lgmax(20),
+      lgmax: lgmax(100),
       
     },
-    confirm_password: {
+    confirm_password1: {
       require,
       lgmin: lgmin(8),
-      lgmax: lgmax(20),
+      lgmax: lgmax(190),
     },
     },
     step2:{
       nom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     prenom: {
       require,
       lgmin: lgmin(2),
-      lgmax: lgmax(20),
+      
     },
     email: {
       require,
@@ -442,9 +442,6 @@ export default {
    
             
         },
-      
-
-    
   },
   computed:{
     loggedInUser() {
@@ -465,7 +462,7 @@ export default {
   },
   methods: {
     validatePasswordsMatch() {
-     return this.step1.password === this.step1.confirm_password;
+     return this.step1.password1 === this.step1.confirm_password1;
     },
     successmsg:successmsg,
     async fetchUsers() {

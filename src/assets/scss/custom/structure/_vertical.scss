@@ -119,7 +119,7 @@
                     a {
                         padding: .4rem 1.5rem .4rem 3.5rem;
                         font-size: 13px;
-                        color: #ffffffcf !important;
+                        color: #ffffffcf;
                         &:hover {
                             color: #fff !important;
                         }
@@ -392,7 +392,7 @@ body[data-sidebar="dark"] {
                     li {
 
                         a {
-                            color: $sidebar-dark-menu-sub-item-color;
+                            color: #ffffffcf;
 
                             &:hover {
                                 color: $sidebar-dark-menu-item-hover-color;
@@ -445,9 +445,9 @@ body[data-sidebar="dark"] {
                     
                     li{
                         &.mm-active .active{
-                            color: $sidebar-dark-menu-item-active-color !important;
+                            color: #F9D310 !important;
                             i{
-                                color: $sidebar-dark-menu-item-active-color !important;
+                                color: #F9D310 !important;
                             }
                         }
                     }
@@ -470,10 +470,10 @@ body[data-sidebar="dark"] {
             color: $sidebar-dark-menu-item-active-color !important;
         }
         .active {
-            color: $sidebar-dark-menu-item-active-color !important;
+            color: #F9D310 !important;
 
             i {
-                color: $sidebar-dark-menu-item-active-color !important;
+                color: #F9D310 !important;
             }
         }
     }

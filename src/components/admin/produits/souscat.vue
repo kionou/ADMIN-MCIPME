@@ -43,12 +43,10 @@
              <BTbody>
                <BTr v-for="region in paginatedItems" :key="region.id">
                  <BTd>
-                  
-                   
                  </BTd>
                
                  <BTd>{{ region.NomCategorieProduit }}</BTd>
-                   <BTd>{{ region.categorie.NomCategorieProduit }}</BTd>
+                   <BTd >{{ region.categorie.NomCategorieProduit  }}</BTd>
 
                  <BTd>
                    <ul class="list-unstyled hstack gap-1 mb-0">
@@ -85,7 +83,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -159,7 +157,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -243,6 +241,7 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
+import { fetchSousCategorieProduit } from '@/lib/testApi.js';
 
 export default {
  components: {
@@ -289,7 +288,7 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
  categorie: {
    require,
@@ -302,7 +301,7 @@ validations: {
  nom: {
    require,
    lgmin: lgmin(2),
-   lgmax: lgmax(20),
+  
  },
  categorie: {
    require,
@@ -333,24 +332,23 @@ async mounted() {
  await this.fetchCategorieProduits()
  await this.fetchSousCategorieProduits()
 
+
 },
 methods: {
- validatePasswordsMatch() {
-  return this.step1.password === this.step1.confirm_password;
- },
+
  successmsg:successmsg,
  async fetchSousCategorieProduits() {
-    try {
-              const response = await axios.get('/sous-produits', {
-              headers: { Authorization: `Bearer ${this.loggedInUser.token}`, },
-              params:{  parent:true }
-               
+  try {
+      const response = await axios.get('/sous-produits', {
+              headers: { Authorization: `Bearer ${this.loggedInUser.token}`,},
+              params: {
+                with_products: true,
+                    parent: true
+        }
     
             });
-               console.log(response.data.data);
+               console.log(response.data);
                this.SousCategorieOptions = response.data.data;
-               
-        
                this.loading = false;
             
             } catch (error) {
@@ -362,6 +360,7 @@ methods: {
             }
             }
 },
+
  async fetchCategorieProduits() {
   try {
             const response = await axios.get('/type-produits', {
@@ -388,7 +387,28 @@ methods: {
           }
           }
 },
- 
+async fetchCategorieDetail(code) {
+  try {
+            const response = await axios.get(`/type-produits/${code}`, {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`, },
+             
+  
+          });
+             console.log(response.data);
+              return response.data.data.NomCategorieProduit;
+            
+             this.loading = false;
+          
+          } catch (error) {
+            console.error('errorqqqqq',error);
+          
+            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          }
+},
  async HamdleAddUser(){
    this.error = '',
    this.resultError= '',

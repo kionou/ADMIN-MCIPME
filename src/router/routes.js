@@ -67,7 +67,7 @@ export default [
     path: "/industrie",
     name: "industrie",
     meta: { requiresAuth: true },
-    component: () => import("../views/pme/default.vue"),
+    component: () => import("../views/pme/dni/default.vue"),
   },
   // {
   //   path: "/pme/ajouter",
@@ -147,6 +147,12 @@ export default [
     name: "indicateurs",
     meta: { requiresAuth: true },
     component: () => import("../views/indicateurs/default.vue"),
+  },
+  {
+    path: "/directions",
+    name: "directions",
+    meta: { requiresAuth: true },
+    component: () => import("../views/directions/default.vue"),
   },
 
   {

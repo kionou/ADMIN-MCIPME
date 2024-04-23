@@ -93,7 +93,11 @@
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
+
         "reademail": "Rôles et permissions",
+
+        "historique": "Historiques",
+
         "droit": "Droit",
         "menu": "Menu"
       }
@@ -108,8 +112,9 @@
     "dncic": {
       "text": "Entreprises",
       "list": {
-        "importatrice": "Importatrices",
-        "distributrice": "Distributrices"
+        "distributrice": "Distributrices",
+        "exportatrice": "Exportatrices",
+        "importatrice": "Importatrices"
       }
     },
     "projects": {
@@ -119,8 +124,10 @@
         "projectlist": "Localités",
         "overview": "Partenaires",
         "create": "Secteurs & Sous-secteurs",
-        "demande": "Types de demandes",
-        "categorie": "types Produits",
+        "direction": "Directions",
+        "demande": "Demandes",
+        "categorie": "types de Produits",
+        "graphe": "types de Graphes",
         "zone": " Zones Industrielles",
         "indicateur": "Indicateurs",
         "juridique": "Statuts Juridiques"
@@ -129,17 +136,9 @@
     "tasks": {
       "text": "Gestion des demandes",
       "list": {
-        "tasklist": "Types de demandes",
-        "kanban": "Tableau Kanban",
-        "createtask": "Créer une tâche"
-      }
-    },
-    "contacts": {
-      "text": "Gestion Direction",
-      "list": {
-        "usergrid": "Liste des Directions",
-        "userlist": "Créer une nouvelle",
-        "profile": "Profil"
+        "kanban": "Annoter",
+        "createtask": "Implantations",
+        "marche": "Mise sur le marché"
       }
     }
   }

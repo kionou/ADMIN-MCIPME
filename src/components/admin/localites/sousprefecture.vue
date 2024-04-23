@@ -36,7 +36,7 @@
                   <BTr>
                     <BTh scope="col" ></BTh>
                     <BTh scope="col">Code</BTh>
-                    <BTh scope="col">Nom</BTh>
+                    <BTh scope="col">Sous prefecture</BTh>
                     <BTh scope="col">Prefecture</BTh>
                     <BTh scope="col">Region</BTh>
                     <BTh scope="col">Action</BTh>
@@ -91,7 +91,7 @@
       <BContainer>
         <BRow >
           <BCol >
-            <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+            <BCard no-body class="" style=" box-shadow:none !important;
              border: 1px solid #c9d1d9 !important;">
               <div class="bg-primary-subtle">
                 <BRow>
@@ -119,7 +119,7 @@
                     <BRow>
                       <BCol md="12">
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">code</label>
+                        <label for="userpassword">Code Sous Prefecture</label>
                       <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
                        <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
                        <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
@@ -130,7 +130,7 @@
                  <BRow>
                    <BCol md="12">
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">Nom</label>
+                        <label for="userpassword">Nom Sous Prefecture</label>
                       <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                        <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                        <small v-if="resultError['NoSousPrefecture']"> {{ resultError["NomSousPrefecture"] }} </small>
@@ -143,7 +143,7 @@
                    <BCol md="12">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Prefecture</label>
-                       <MazSelect label="Sélectionner la prefecture" v-model="step1.prefecture" color="info" :options="SelectPrefecture" search />
+                       <MazSelect label="Sélectionner la prefecture" v-model="step1.prefecture" no-radius color="info" :options="SelectPrefecture" search />
                        <small v-if="v$.step1.prefecture.$error">{{v$.step1.prefecture.$errors[0].$message}}</small> 
                        <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
  
@@ -176,7 +176,7 @@
       <BContainer>
         <BRow >
           <BCol >
-            <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+            <BCard no-body class="" style=" box-shadow:none !important;
              border: 1px solid #c9d1d9 !important;">
               <div class="bg-primary-subtle">
                 <BRow>
@@ -204,7 +204,7 @@
                      <BRow>
                       <BCol md="12">
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">code</label>
+                        <label for="userpassword">Code Sous Prefecture</label>
                       <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
                        <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
                        <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
@@ -215,7 +215,7 @@
                  <BRow>
                    <BCol md="12">
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">Nom</label>
+                        <label for="userpassword">Nom Sous Prefecture</label>
                       <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                        <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
                        <small v-if="resultError['NomSousPrefecture']"> {{ resultError["NomSousPrefecture"] }} </small>
@@ -228,7 +228,7 @@
                    <BCol md="12">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Prefecture</label>
-                       <MazSelect label="Sélectionner la préfecture" v-model="step2.prefecture" color="info" :options="SelectPrefecture" search />
+                       <MazSelect label="Sélectionner la préfecture" v-model="step2.prefecture" no-radius color="info" :options="SelectPrefecture" search />
                        <small v-if="v$.step2.prefecture.$error">{{v$.step2.prefecture.$errors[0].$message}}</small> 
                        <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
  
@@ -319,7 +319,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
    prefecture: {
      require
@@ -335,7 +335,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
    prefecture: {
      require

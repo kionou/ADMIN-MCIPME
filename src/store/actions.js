@@ -108,9 +108,9 @@ async fetchDataFromAPI({ commit }) {
   },
   async fetchQuartierOptions({ commit }) {
     try {
-      const response = await axios.get('/quartiers');
-      console.log('response.sousprefecture', response.data.data.data); // Remplacez l'URL par l'URL de votre API
-      const quartierFromAPI = response.data.data.data;
+      const response = await axios.get('/quartiers-sans-pagination');
+      console.log('response.sousprefecture', response.data.data); // Remplacez l'URL par l'URL de votre API
+      const quartierFromAPI = response.data.data;
 
       // Formater les données de l'API en options pour MazSelect
       const options = quartierFromAPI.map(quartier => ({

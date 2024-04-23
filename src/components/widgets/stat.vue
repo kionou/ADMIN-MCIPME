@@ -29,9 +29,9 @@ export default {
           <h4 class="mb-0 mt-3">{{value}}</h4>
         </div>
 
-        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary" style="width:2.5rem !important; height:2.5rem !important">
           <span class="avatar-title" style="background-color: var(--color-primary);">
-            <i :class="`${icon} font-size-24`"></i>
+            <i :class="`${icon} font-size-20`"></i>
           </span>
         </div>
       </div>

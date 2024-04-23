@@ -55,7 +55,7 @@
                       ><button
                         @click="
                           permission = true;
-                          id_test = region.id;
+                          fetchPermissions(region.id);
                         "
                         style="
                           color: #fff;
@@ -98,6 +98,20 @@
                             <i class="mdi mdi-plus"></i>
                           </Blink>
                         </li>
+                        <li
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          aria-label="account"
+                        >
+                          <button
+                            @click="confirmDelete(region.id)"
+                            data-bs-toggle="modal"
+                            class="btn btn-sm btn-soft-primary"
+                          >
+                            <i class="mdi mdi-account"></i>
+                          </button>
+                        </li>
+
                         <li
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
@@ -234,6 +248,7 @@
       centered
       header-class="border-0"
       title-class="font-18"
+      @hide="permissionByRole = ''"
     >
       <div>
         <div class="account-pages" style="width: 100%">
@@ -258,29 +273,29 @@
                     </BRow>
                   </div> -->
 
-                  <BCardBody class="pt-0">
-                    <div class="p-2">
-                      <BForm class="form-horizontal">
-                        <BRow> </BRow>
-                        <div
-                          v-for="permission in permissionByRole"
-                          :key="permission.id"
+                  <BCardBody>
+                    <div>
+                      <div
+                        v-for="permission in permissionByRole"
+                        :key="permission.id"
+                      >
+                        <p
+                          style="
+                            background-color: #014343;
+
+                            padding-right: 15px;
+                            font-size: 16px;
+                            padding-top: 15px;
+                            padding-bottom: 15px;
+                            padding-left: 15px;
+                            margin-top: 8px;
+                            color: white;
+                            border-radius: 5px;
+                          "
                         >
-                          <p>{{ permission.name }}</p>
-                        </div>
-
-                        <BRow> </BRow>
-
-                        <BRow class="mb-0">
-                          <BCol cols="12" class="text-end">
-                            <div class="boutton">
-                              <button class="" @click="submitUpdate()">
-                                Modifier
-                              </button>
-                            </div>
-                          </BCol>
-                        </BRow>
-                      </BForm>
+                          {{ permission.name }}
+                        </p>
+                      </div>
                     </div>
                   </BCardBody>
                 </BCard>
@@ -473,7 +488,6 @@ export default {
     console.log("uusers", this.loggedInUser);
     await this.fetchRole();
     this.fetchPermission();
-    this.fetchPermissions(this.id_test);
   },
   methods: {
     validatePasswordsMatch() {
@@ -511,10 +525,10 @@ export default {
           params: { Direction: this.loggedInUser.direction },
         });
         console.log(response);
-        this.permissionByRole = response.data.data;
+        this.permissionByRole = response.data.data.permissions;
         this.loading = false;
       } catch (error) {
-        console.error("errorqqqqq", error);
+        console.error("nouvelle erreur", error);
 
         if (
           error.response.data.message === "Vous n'êtes pas autorisé." ||

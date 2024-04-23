@@ -124,7 +124,7 @@
                <BCol md="12">
                   <div class="mb-3 position-relative">
                     <label for="userpassword">Document</label>
-                   <MazSelect label="Sélectionner le document" v-model="step1.categorie" color="info" :options="SelectPrefecture" search />
+                   <MazSelect label="Sélectionner le document" v-model="step1.categorie" no-radius color="info" :options="SelectPrefecture" search />
                    <small v-if="v$.step1.categorie.$error">{{v$.step1.categorie.$errors[0].$message}}</small> 
                    <small v-if="resultError['CodeCategorie']"> {{ resultError["CodeCategorie"] }} </small>
 
@@ -210,7 +210,7 @@
                <BCol md="12">
                   <div class="mb-3 position-relative">
                     <label for="userpassword">Document</label>
-                   <MazSelect label="Sélectionner le document" v-model="step2.categorie" color="info" :options="SelectPrefecture" search />
+                   <MazSelect label="Sélectionner le document" v-model="step2.categorie" no-radius color="info" :options="SelectPrefecture" search />
                    <small v-if="v$.step2.categorie.$error">{{v$.step2.categorie.$errors[0].$message}}</small> 
                    <small v-if="resultError['CodeCategorie']"> {{ resultError["CodeCategorie"] }} </small>
 
@@ -322,7 +322,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    categorie: {
      require
@@ -338,7 +338,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    categorie: {
      require

@@ -7,6 +7,7 @@ import qs from "qs";
 // https://bd-mcipme.org/bd-services/public
 const axiosInstance = axios.create({
   baseURL: "https://bd-mcipme.org/bd-services/public/api",
+
   headers: {
     // 'Content-Type': 'application/json',
     // 'Content-Type': 'multipart/form-data',

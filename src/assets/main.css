@@ -132,7 +132,7 @@ margin-top: 10px;
 }
 
 .carde .texte-content {
-color: #f0f0f0 !important;
+/* color: #f0f0f0 !important; */
 font-weight: bold;
 font-size: 13px;
 margin-bottom: 10px !important;
@@ -223,4 +223,27 @@ margin-bottom: 10px !important;
   color:#fff !important;
   background-color:#F9D310 !important ;
   border-color: var(--bs-nav-tabs-link-active-border-color);
+}
+
+.m-select .m-select-list-item {
+  
+  /* padding-left: .75rem;
+  padding-right: .75rem; */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+ 
+}
+
+
+.input-groupe input,
+.form-select {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  outline: 0;
+  padding: 14px;
+  color: rgb(3, 3, 5);
+}
+
+.input-groupe input:focus {
+  border-color: var(--color-primary);
 }

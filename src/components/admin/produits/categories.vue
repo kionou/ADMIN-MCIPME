@@ -74,8 +74,6 @@
        </BCard>
      </BCol>
    </BRow>
-
-
    <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
@@ -151,6 +149,80 @@
  </div>
    </BModal>
 
+   <!-- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+     <div>
+   
+   <div class="account-pages " style="width:100%;">
+     <BContainer>
+       <BRow >
+         <BCol >
+           <BCard no-body class="" style=" box-shadow:none !important;
+            border: 1px solid #c9d1d9 !important;">
+             <div class="bg-primary-subtle">
+               <BRow>
+                 <BCol cols="12 text-center">
+                   <div class="modalheader p-4">
+                     <h5 class="text-primary">Ajouter une Categorie</h5>
+                     
+                   </div>
+                 </BCol>
+                 
+               </BRow>
+             </div>
+             <BCardBody class="pt-0">
+               <div>
+                 <router-link to="#">
+                   <div class="avatar-md profile-user-wid ">
+                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+                 </span>
+               </div>
+                 </router-link>
+                 <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
+                    <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                  </li>
+               </div>
+               <div class="p-2">
+                 <BForm class="form-horizontal">
+                
+                <BRow v-for="(categorie, index) in categories" :key="categorie.id">
+                  <BCol md="12" class="d-flex align-items-center">
+                     <div class="mb-3 position-relative w-100">
+                       <label for="userpassword">Nom Categorie</label>
+                     <MazInput v-model="categorie.NomCategorieProduit"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="errors[index] && errors[index].NomCategorieProduit">{{ errors[index].NomCategorieProduit }}</small>
+                      <small v-if="resultError['NomCategorieProduit']"> {{ resultError["NomCategorieProduit"] }} </small>
+
+                     </div>
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
+                         <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                       </li>
+                  </BCol>
+                 
+                
+                   </BRow>
+
+                   
+                   <BRow class="mb-0">
+                     <BCol cols="12" class="text-end">
+                       <div class="boutton">
+                       <button class="" @click="submitForm()">Valider</button>
+                      </div>
+                     </BCol>
+                   </BRow>
+                 </BForm>
+               </div>
+             </BCardBody>
+           </BCard>
+           
+         </BCol>
+       </BRow>
+     </BContainer>
+   </div>
+ </div>
+   </BModal> -->
+
    <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
@@ -158,7 +230,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -263,7 +335,9 @@ export default {
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
-       error:'',
+     categories: [{ NomCategorieProduit: '' }],
+     error: '',
+      errors:[],
      step1:{
           
             nom:'',
@@ -285,7 +359,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
   
    },
@@ -294,7 +368,7 @@ export default {
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
   
            
@@ -322,9 +396,17 @@ async mounted() {
   
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+  AddformData() {
+      this.categories.push({ NomCategorieProduit: "", });
+    },
+  
+    deleteRow(index) {
+      console.log(index);
+      if(index !== 0){
+        this.categories.splice(index, 1);
+      }
+        
+    },
    successmsg:successmsg,
    async fetchCategorieProduits() {
     try {
@@ -347,8 +429,62 @@ async mounted() {
             }
             }
 },
-   
-   async HamdleAddUser(){
+async submitForm() {
+  this.errors = [];
+  this.categories.forEach((categorie, index) => {
+  const errors = {};
+  if (!categorie.NomCategorieProduit) {
+    errors.NomCategorieProduit = 'Ce champ est obligatoire!';
+    }
+  this.errors[index] = errors;
+});
+// Vérifiez s'il y a des erreurs
+if (this.errors.some((errors) => errors.NomCategorieProduit)) {
+  return; // Ne poursuivez pas la soumission si des erreurs sont présentes
+} else {
+         this.loading = true
+        console.log('bonjour', this.categories);
+        this.categories.forEach((categorie, index) => {
+        console.log( 'this.idOffre',{ 'NomCategorieProduit':categorie.NomCategorieProduit } );
+         this.submitApi(this.categories)
+      });
+    }     
+    },
+    async submitApi(categories){
+
+
+try {
+  const response = await axios.post('/type-produits' , categories, {
+             headers: { Authorization: `Bearer ${this.loggedInUser.token}`}});
+    console.log('Réponse du téléversement :', response);
+    if (response.data.status === "success") { 
+      await this.fetchCategorieProduits()
+           this.AddUser = false
+           this.loading = false
+           this.successmsg("Création des categories produits",'Vos categories produits ont été crées avec succès !')
+         
+
+         } else {
+
+         }
+   } catch (error) {
+   console.log('response.login', error); 
+
+   this.loading = false
+   if (error.response.data.status === "error") {
+   return this.error = error.response.data.message
+
+   } else {
+     this.formatValidationErrors(error.response.data.errors);
+   }
+
+    } 
+  
+
+},
+
+
+async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()

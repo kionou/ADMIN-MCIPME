@@ -98,6 +98,11 @@ async  mounted() {
           title: "Contribution PIB",
           value:  response.data.data[0].Pib || 0,
         },
+        {
+          icon: "bx bx-copy-alt",
+          title: "Demandes en attente",
+          value:  0,
+        },
        
       ],
              
@@ -124,7 +129,7 @@ async  mounted() {
     <BRow>
       <BCol xl="12">
         <BRow>
-          <BCol md="3" v-for="stat of statData" :key="stat.icon">
+          <BCol  v-for="stat of statData" :key="stat.icon">
             <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
           </BCol>
         </BRow>

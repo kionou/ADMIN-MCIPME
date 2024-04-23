@@ -12,9 +12,19 @@ const router = createRouter({
       component: () => import("../views/account/login.vue"),
     },
     {
+      path: "/login",
+      name: "login-2",
+      component: () => import("../views/account/login2.vue"),
+    },
+    {
       path: "/reinitialiser",
       name: "reinitialiser",
       component: () => import("../views/account/recoverpw-sample.vue"),
+    },
+    {
+      path: "/reinitialiser2",
+      name: "reinitialiser2",
+      component: () => import("../views/account/recover.vue"),
     },
 
     // To finish account
@@ -43,6 +53,18 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/users/index.vue"),
     },
+    {
+      path: "/historiques",
+      name: "historiques",
+      meta: { requiresAuth: true },
+      component: () => import("../views/users/historique.vue"),
+    },
+    {
+      path: "/profil",
+      name: "profil",
+      meta: { requiresAuth: true },
+      component: () => import("../views/profil/default.vue"),
+    },
 
     {
       path: "/partenaires",
@@ -68,49 +90,73 @@ const router = createRouter({
     // To start pme
 
     {
-      path: "/industrie",
-      name: "industrie",
+      path: "/industrielles",
+      name: "industrielles",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/default.vue"),
+      component: () => import("../views/pme/dni/default.vue"),
     },
+
+    {
+      path: "/industrielle/ajouter",
+      name: "industrielle-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/pme/dni/addUnite.vue"),
+    },
+    {
+      path: "/industrielle/update/:id",
+      name: "industrielle-update",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/pme/dni/updateUnite.vue"),
+    },
+    {
+      path: "/detail-industrielle/:id",
+      name: "detail-industrielle",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/pme/dni/detail.vue"),
+    },
+
+    // dncic
     {
       path: "/importatrices",
       name: "importatrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/importatrice.vue"),
+      component: () => import("../views/pme/dncic/importatrice.vue"),
     },
     {
       path: "/distributrices",
       name: "distributrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/distributrice.vue"),
+      component: () => import("../views/pme/dncic/distributrice.vue"),
     },
     {
-      path: "/add-unite",
-      name: "add-unite",
+      path: "/exportatrices",
+      name: "exportatrices",
       meta: { requiresAuth: true },
-      component: () => import("../views/pme/addUnite.vue"),
+      component: () => import("../views/pme/dncic/exportatrice.vue"),
     },
     {
-      path: "/detail-importatrice/:id",
-      name: "detail-importatrice",
+      path: "/entreprises/ajouter",
+      name: "entreprises-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/pme/dncic/addpme.vue"),
+    },
+    {
+      path: "/entreprises/update/:id",
+      name: "entreprises-update",
       meta: { requiresAuth: true },
       props: true,
-      component: () => import("../views/pme/detailUnite.vue"),
+      component: () => import("../views/pme/dncic/updatepme.vue"),
     },
     {
-      path: "/detail-distributrice/:id",
-      name: "detail-distributrice",
+      path: "/detail-entreprises/:id",
+      name: "detail-entreprises",
       meta: { requiresAuth: true },
       props: true,
-      component: () => import("../views/pme/detailDistri.vue"),
+      component: () => import("../views/pme/dncic/detail.vue"),
     },
-    // {
-    //   path: "/pme/ajouter",
-    //   name: "partenaire-add",
-    //   meta: { requiresAuth: true },
-    //   component: () => import("../views/pme/ajouter.vue")
-    // },
+
     // To finish pme
 
     // To start localites
@@ -176,6 +222,20 @@ const router = createRouter({
       component: () => import("../views/zone/default.vue"),
     },
 
+    {
+      path: "/zone-industrielle/ajouter",
+      name: "ajouter-zone-industrielle",
+      meta: { requiresAuth: true },
+      component: () => import("../views/zone/add.vue"),
+    },
+    {
+      path: "/zone-industrielle/update/:id",
+      name: "update-zone-industrielle",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/zone/update.vue"),
+    },
+
     // To start zone indicateurs
 
     {
@@ -183,6 +243,12 @@ const router = createRouter({
       name: "indicateurs",
       meta: { requiresAuth: true },
       component: () => import("../views/indicateurs/default.vue"),
+    },
+    {
+      path: "/graphes",
+      name: "graphes",
+      meta: { requiresAuth: true },
+      component: () => import("../views/indicateurs/graphe.vue"),
     },
 
     // To start produits
@@ -194,8 +260,16 @@ const router = createRouter({
       component: () => import("../views/produit/default.vue"),
     },
     {
-      path: "/type",
-      name: "type",
+      path: "/produits/ajouter",
+      name: "produits-ajouter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/produit/add.vue"),
+    },
+
+    // To start demandes
+    {
+      path: "/demandes",
+      name: "demandes",
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/type.vue"),
     },
@@ -210,6 +284,42 @@ const router = createRouter({
       name: "roles",
       meta: { requiresAuth: true },
       component: () => import("../views/permissions/default.vue"),
+    },
+    {
+      path: "/demandes-annoter",
+      name: "demandes-annoter",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/ministre.vue"),
+    },
+    {
+      path: "/demandes-implantations",
+      name: "demandes-implantations",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/implantation.vue"),
+    },
+    {
+      path: "/demandes-produits",
+      name: "demandes-produits",
+      meta: { requiresAuth: true },
+      component: () => import("../views/demandes/marche.vue"),
+    },
+
+    // To start directions
+    {
+      path: "/directions",
+      name: "directions",
+      meta: { requiresAuth: true },
+      component: () => import("../views/directions/default.vue"),
+    },
+
+    // To start Stocks
+
+    {
+      path: "/stock-pme/:id",
+      name: "stock-pme",
+      meta: { requiresAuth: true },
+      props: true,
+      component: () => import("../views/stocks/stockbypme.vue"),
     },
   ],
   // mode: "history",

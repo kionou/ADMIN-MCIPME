@@ -2,7 +2,7 @@
   
      <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Partenaires" pageTitle="Tableau de bord" />
+    <PageHeader title="Partenaires" pageTitle="Tableau de bord" :statistic="statistic" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
@@ -28,17 +28,24 @@
           <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
             <div class="carde" v-for="partenaire in paginatedItems" :key="partenaire.id">
           <div class="carde-img">
+            <div v-if="partenaire.logo === null">
+            <img  src="@/assets/img/ninba1.png" alt="">
+
+            </div>
+            <a  :href="partenaire.SiteWeb" v-else>
+
+              <img  :src="partenaire.logo" alt="">
+            </a>
       
-            <img v-if="partenaire.logo === null" src="@/assets/img/ninba1.png" alt="">
           
-          <img v-else :src="partenaire.logo" alt="">
+             
      
     </div>
     <div class="carde-title">{{ partenaire.NomPartenaire }}</div>
-    <div class="carde-subtitle">
+    <!-- <div class="carde-subtitle">
       <p class="texte-content">Url: <span>{{ partenaire.SiteWeb }}</span></p>
       <p class="texte-content">Direction: <span>{{ partenaire.Direction }}</span></p>
-    </div>
+    </div> -->
     <hr class="carde-divider">
     <div class="carde-footer">
       <ul class="list-unstyled hstack gap-1 mb-0">
@@ -100,6 +107,9 @@ export default {
 totalPages() {
 return Math.ceil(this.partenairesOptions.length / this.itemsPerPage);
 },
+statistic() {
+      return `Total des Partenaires = ${this.UserOptionsPersonnels} .  `;
+    },
 paginatedItems() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
@@ -121,6 +131,7 @@ data() {
          data:'',
          currentPage: 1,
          itemsPerPage: 12,
+         UserOptionsPersonnels:"",
     };
 },
 
@@ -155,6 +166,7 @@ methods: {
             });
                console.log(response.data.data);
                this.partenairesOptions = response.data.data.data;
+               this.UserOptionsPersonnels = this.partenairesOptions.length
                this.loading = false;
             
             } catch (error) {
@@ -244,8 +256,8 @@ this.partenairesOptions = [...this.$store.getters['getPartenaires']];
 
 .carde {
   
-  width: 280px;
-  height: 370px;
+  width: 250px;
+  height: 290px;
   background: var(--bg-color);
   border: 2px solid var(--color-primary);
   box-shadow: 4px 4px var(--color-primary);

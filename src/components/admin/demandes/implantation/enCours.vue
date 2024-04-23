@@ -6,13 +6,13 @@
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des unités de mesure</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des demandes en Cours</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+               <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
                
              </div>
            </div>
@@ -31,23 +31,30 @@
              <BTableSimple class="align-middle table-nowrap table-hover">
                <BThead class="table-light" style="">
                  <BTr>
-                   <BTh scope="col" style="width: 70px;" ></BTh>
-                   <BTh scope="col">Symbole</BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Action</BTh>
+                
+                   <BTh scope="col">Code Demande</BTh>
+                   <BTh scope="col">Code Pme</BTh>
+                   <BTh scope="col">Nom Prenom</BTh>
+                   <BTh scope="col">Contact</BTh>
+                   <BTh scope="col">Produit </BTh>
+                   <BTh scope="col">Statut</BTh>
+                   <BTh scope="col">Fichiers</BTh>
                  </BTr>
                </BThead>
                <BTbody>
                  <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                     
-                     
-                   </BTd>
-                   <BTd>
-                    
-                    {{ region.CodeRegion }}
-                   </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
+                   <BTd>DNCIC-001 </BTd>
+                   <BTd>MPME-12345-2024</BTd>
+                   <BTd>Bouare Bouare</BTd>
+                   <BTd> <h5 class="font-size-14 text-truncate">
+                        <span class="text-dark">+224 60123456</span>
+                      </h5>
+                      <p class="mb-0">
+                        
+                        <span class="fw-medium">exemple@gmail.com</span>
+                      </p>
+                      </BTd>
+                   <BTd>Produit 1</BTd>
                    
                   
                   
@@ -55,11 +62,30 @@
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <Blink href="#"  class="btn btn-sm btn-soft-info"> En cours...</Blink>
                        </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                     
+                      
+                     </ul>
+                   </BTd>
+                   <BTd>
+                     <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                              variant="white" dropright top>
+                              <template #button-content>
+                                <i class="mdi mdi-dots-vertical"></i>
+                              </template>
+                              <BDropdownItem  href="#"> <i class="mdi mdi-download-outline"></i> Rccm</BDropdownItem>
+                              <BDropdownItem href="#" > <i class="mdi mdi-download-outline"></i> Biometrique</BDropdownItem>
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Certificat</BDropdownItem>
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Carte Biometrique </BDropdownItem>
+                              <BDropdownDivider />
+                              <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Lettre</BDropdownItem>
+                            </BDropdown>
                        </li>
+                      
                       
                      </ul>
                    </BTd>
@@ -93,7 +119,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une unité de mesure</h5>
+                     <h5 class="text-primary">Ajouter une Region</h5>
                      
                    </div>
                  </BCol>
@@ -115,9 +141,9 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">symbole</label>
-                     <MazInput v-model="step1.symbole"  no-radius type="text" name="symbole"  color="info" placeholder="001" />
-                      <small v-if="v$.step1.symbole.$error">{{v$.step1.symbole.$errors[0].$message}}</small> 
+                       <label for="userpassword">Code Region</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -126,7 +152,7 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
+                       <label for="userpassword">Nom Region</label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
@@ -169,7 +195,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une unité de mesure</h5>
+                     <h5 class="text-primary">Modifier un utilisateur</h5>
                      
                    </div>
                  </BCol>
@@ -191,9 +217,9 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">symbole</label>
-                     <MazInput v-model="step2.symbole"  no-radius type="text" name="symbole"  color="info" placeholder="001" />
-                      <small v-if="v$.step2.symbole.$error">{{v$.step2.symbole.$errors[0].$message}}</small> 
+                       <label for="userpassword">Code Region</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -203,7 +229,7 @@
                    </BRow>
                    <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
+                       <label for="userpassword">Nom Region</label>
                      <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
@@ -269,13 +295,13 @@ export default {
      v$: useVuelidate(),
        error:'',
      step1:{
-            symbole:'',
+            code:'',
             nom:'',
   
           },
 
             step2:{
-             symbole:'',
+             code:'',
             nom:'',
            
        },
@@ -283,26 +309,26 @@ export default {
  },
  validations: {
    step1:{
-     symbole: {
+     code: {
      require
      
    },
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+
    },
   
    },
    step2:{
-     symbole: {
+     code: {
      require
      
    },
    nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+
    },
   
            
@@ -444,10 +470,11 @@ async mounted() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -513,10 +540,12 @@ async mounted() {
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+         
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }

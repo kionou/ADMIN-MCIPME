@@ -10,16 +10,12 @@
              <BCardTitle class="mb-0 ">Liste des Utilisateurs(Entreprises)</BCardTitle>
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
-               
-               
-               <div  @click="$router.push({ path: '/personnels' })"  class="btn btn-primary">Personnels</div>
-            
-               
+               <div  @click="$router.push({ path: '/personnels' })"  class="btn btn-primary">Personnels</div>   
              </div>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput v-model="searchQuery" no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -45,7 +41,7 @@
                    <BTh scope="col">Numéro</BTh>
                    <BTh scope="col">Direction</BTh>
                    <BTh scope="col">Fonction</BTh>
-                   <BTh scope="col">Action</BTh>
+                   <BTh scope="col">Actions</BTh>
                  </BTr>
                </BThead>
                <BTbody>
@@ -400,12 +396,12 @@ export default {
      nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    prenom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    email: {
      require,
@@ -418,25 +414,25 @@ export default {
    password: {
      require,
      lgmin: lgmin(8),
-     lgmax: lgmax(20),
+     lgmax: lgmax(100),
      
    },
    confirm_password: {
      require,
      lgmin: lgmin(8),
-     lgmax: lgmax(20),
+     lgmax: lgmax(190),
    },
    },
    step2:{
      nom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
    prenom: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+    
    },
    email: {
      require,
@@ -670,9 +666,10 @@ async mounted() {
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }

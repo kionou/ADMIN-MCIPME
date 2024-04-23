@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" />
+   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -44,7 +44,7 @@
 
               <div class="flex-grow-1 overflow-hidden">
                 <h5 class="text-truncate font-size-15">
-                  <BLink href="javascript: void(0);" class="text-dark">{{ indicateur.Description }}</BLink>
+                  <BLink href="#" class="text-dark">{{ indicateur.Description }}</BLink>
                 </h5>
                 <p class="text-muted mb-4"></p>
                 <div class="avatar-group">
@@ -94,14 +94,14 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
      <div>
    
    <div class="account-pages " style="width:100%;">
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -127,40 +127,48 @@
                <div class="p-2">
                  <BForm class="form-horizontal">
                   
-                <BRow>
-                  <BCol md="12">
+                   <BRow >
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                       <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
 
                      </div>
                   </BCol>
-                   </BRow>
-                  
-                   <!-- <BRow>
-                     <BCol md="12">
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
-
-                     </div>
-                  </BCol>
-                </BRow> -->
-                <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword"> Nom ou Description</label>
-                       <MazTextarea v-model="step1.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
+                       <label for="userpassword">Nom ou Description</label>
+                     <MazInput v-model="step1.description"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                     <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
                       <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
+                  
+                
+                <BRow>
+                  <BCol md="">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword"> Est-ce qu'un graphe ?</label>
+                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
+                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
+                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
+
+                     </div>
+                  </BCol>
+                  <BCol md="6" v-if="step1.IsGraphical === true">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword"> Choisissez un graphe </label>
+                       <MazSelect label="Sélectionner" v-model="step1.IsGraphical" no-radius  color="info" :options="choix" search />
+                      <small v-if="v$.step1.IsGraphical.$error">{{v$.step1.IsGraphical.$errors[0].$message}}</small> 
+                      <small v-if="resultError['IsGraphical']"> {{ resultError["IsGraphical"] }} </small>
+
+                     </div>
+                  </BCol>
+                  </BRow>
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -188,7 +196,7 @@
      <BContainer>
        <BRow >
          <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+           <BCard no-body class="" style=" box-shadow:none !important;
             border: 1px solid #c9d1d9 !important;">
              <div class="bg-primary-subtle">
                <BRow>
@@ -300,12 +308,19 @@ export default {
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
+      UserOptionsPersonnels:"",
      v$: useVuelidate(),
        error:'',
+       choix: [
+        { label: "Oui", value: true },
+        { label: "Non", value: false },
+      ],
      step1:{
            
             code:'',
             description:'',
+            IsGraphical:'',
+            TypeGraphicId:'',
   
           },
 
@@ -326,7 +341,17 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
+   },
+   IsGraphical: {
+     require,
+    
+     
+   },
+   TypeGraphicId: {
+     require,
+  
+     
    },
    
   
@@ -339,7 +364,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   
@@ -353,6 +378,9 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Indicateurs  = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
@@ -380,6 +408,7 @@ async mounted() {
             });
                console.log(response.data.data);
                 this.IndicateursOptions = response.data.data;
+                this.UserOptionsPersonnels =  this.IndicateursOptions.length
                this.loading = false;
             
             } catch (error) {

@@ -18,12 +18,21 @@ let menuItems = [
         link: "/utilisateurs",
         parentId: 29,
       },
+
       {
         id: 31,
         label: "menuitems.email.list.reademail",
         link: "/roles",
         parentId: 29,
       },
+
+      // {
+      //     id: 31,
+      //     label: "menuitems.email.list.reademail",
+      //     link: "/historiques",
+      //     parentId: 29
+      // },
+
       // {
       //     id: 32,
       //     label: "menuitems.email.list.droit",
@@ -46,7 +55,7 @@ let menuItems = [
       {
         id: 35,
         label: "menuitems.invoices.list.invoicelist",
-        link: "/industrie",
+        link: "/industrielles",
         parentId: 34,
       },
     ],
@@ -58,14 +67,20 @@ let menuItems = [
     subItems: [
       {
         id: 57,
-        label: "menuitems.dncic.list.importatrice",
-        link: "/importatrices",
+        label: "menuitems.dncic.list.distributrice",
+        link: "/distributrices",
         parentId: 56,
       },
       {
-        id: 57,
-        label: "menuitems.dncic.list.distributrice",
-        link: "/distributrices",
+        id: 58,
+        label: "menuitems.dncic.list.exportatrice",
+        link: "/exportatrices",
+        parentId: 56,
+      },
+      {
+        id: 59,
+        label: "menuitems.dncic.list.importatrice",
+        link: "/importatrices",
         parentId: 56,
       },
     ],
@@ -101,14 +116,26 @@ let menuItems = [
       },
       {
         id: 50,
-        label: "menuitems.projects.list.demande",
+        label: "menuitems.projects.list.direction",
         link: "/directions",
         parentId: 37,
       },
       {
-        id: 51,
+        id: 56,
+        label: "menuitems.projects.list.demande",
+        link: "/demandes",
+        parentId: 37,
+      },
+      {
+        id: 52,
         label: "menuitems.projects.list.categorie",
         link: "/produits",
+        parentId: 37,
+      },
+      {
+        id: 57,
+        label: "menuitems.projects.list.graphe",
+        link: "/graphes",
         parentId: 37,
       },
       {
@@ -148,23 +175,29 @@ let menuItems = [
     label: "menuitems.tasks.text",
     icon: "bx-task",
     subItems: [
-      {
-        id: 43,
-        label: "menuitems.tasks.list.tasklist",
-        link: "type",
-        parentId: 42,
-      },
+      // {
+      //   id: 43,
+      //   label: "menuitems.tasks.list.tasklist",
+      //   link: "/demandes",
+      //   parentId: 42,
+      // },
       {
         id: 44,
         label: "menuitems.tasks.list.kanban",
-        link: "/tasks/kanban",
+        link: "/demandes-annoter",
         parentId: 42,
       },
       {
         id: 45,
         label: "menuitems.tasks.list.createtask",
-        link: "/tasks/create",
+        link: "/demandes-implantations",
         parentId: 42,
+      },
+      {
+        id: 46,
+        label: "menuitems.tasks.list.marche",
+        link: "/demandes-produits",
+        parentId: 46,
       },
     ],
   },

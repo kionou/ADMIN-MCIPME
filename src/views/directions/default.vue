@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Directions" pageTitle="Tableau de bord" />
+   <PageHeader title="Directions" pageTitle="Tableau de bord" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -107,7 +107,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un indicateur</h5>
+                     <h5 class="text-primary">Ajouter une direction</h5>
                      
                    </div>
                  </BCol>
@@ -194,7 +194,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un indicateur</h5>
+                     <h5 class="text-primary">Modifier une direction</h5>
                      
                    </div>
                  </BCol>
@@ -301,6 +301,7 @@ export default {
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
+     UserOptionsPersonnels:"",
        error:'',
      step1:{
            
@@ -326,7 +327,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   
@@ -339,7 +340,7 @@ export default {
    description: {
      require,
      lgmin: lgmin(2),
-     lgmax: lgmax(20),
+     
    },
    
   
@@ -353,6 +354,9 @@ export default {
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
+   statistic() {
+      return `Total des Directions = ${this.UserOptionsPersonnels} .  `;
+    },
    totalPages() {
    return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
@@ -380,6 +384,7 @@ async mounted() {
             });
                console.log(response.data.data);
                 this.IndicateursOptions = response.data.data;
+                this.UserOptionsPersonnels =  this.IndicateursOptions.length
                this.loading = false;
             
             } catch (error) {

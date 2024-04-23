@@ -38,7 +38,7 @@
 
           <BCardBody v-else>
             <div
-              class="py-2 d-flex justify-content-center align-items-center flex-wrap"
+              class="py-2 d-flex  align-items-center flex-wrap"
             >
               <div v-for="(value, key) in filteredList" :key="key">
                 <div
@@ -289,7 +289,6 @@ export default {
       nom: {
         require,
         lgmin: lgmin(2),
-        lgmax: lgmax(20),
       },
     },
   },
