@@ -85,16 +85,20 @@
     "archive": {
       "text": "Archives"
     },
+    "departement": {
+      "text": "Departement"
+    },
 
     "email": {
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
-        "reademail": "Profil",
+        "reademail": "Rôles et permissions",
         "droit": "Droit",
         "menu": "Menu"
       }
     },
+
     "invoices": {
       "text": "Unites Industrielles",
       "list": {

@@ -199,6 +199,18 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/type.vue"),
     },
+    {
+      path: "/departement",
+      name: "departement",
+      meta: { requiresAuth: true },
+      component: () => import("../views/departement/default.vue"),
+    },
+    {
+      path: "/roles",
+      name: "roles",
+      meta: { requiresAuth: true },
+      component: () => import("../views/permissions/default.vue"),
+    },
   ],
   // mode: "history",
 

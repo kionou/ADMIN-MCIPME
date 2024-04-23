@@ -18,12 +18,12 @@ let menuItems = [
         link: "/utilisateurs",
         parentId: 29,
       },
-      // {
-      //     id: 31,
-      //     label: "menuitems.email.list.reademail",
-      //     link: "/email/reademail/1",
-      //     parentId: 29
-      // },
+      {
+        id: 31,
+        label: "menuitems.email.list.reademail",
+        link: "/roles",
+        parentId: 29,
+      },
       // {
       //     id: 32,
       //     label: "menuitems.email.list.droit",
@@ -130,6 +130,12 @@ let menuItems = [
         parentId: 37,
       },
     ],
+  },
+  {
+    id: 10,
+    label: "menuitems.departement.text",
+    icon: "bx-buildings",
+    link: "/departement",
   },
   {
     id: 9,

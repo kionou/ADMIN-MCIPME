@@ -1,6 +1,5 @@
-
 // store/modules/auth.js
-import { isTokenExpired } from '@/functions/util.js';
+import { isTokenExpired } from "@/functions/util.js";
 
 const state = {
   // Modifier le nom de l'utilisateur authentifié si nécessaire
@@ -35,31 +34,36 @@ const actions = {
       prenom: user.user.Prenoms,
       email: user.user.email,
       whatsapp: user.user.Whatsapp,
-      direction:user.user.Direction,
-      profile:user.user.profile,
-      id_doc:user.user.id,
+      direction: user.user.Direction,
+      profile: user.user.profile,
+      id_doc: user.user.id,
       token: user.access_token,
       tokenExpiration: tokenExpiration,
     };
 
-    commit('SET_MY_AUTHENTICATED_USER', userSessionData);
-    localStorage.setItem('myAuthenticatedUserData', JSON.stringify(userSessionData));
+    commit("SET_MY_AUTHENTICATED_USER", userSessionData);
+    localStorage.setItem(
+      "myAuthenticatedUserData",
+      JSON.stringify(userSessionData)
+    );
   },
   clearMyAuthenticatedUser({ commit }) {
-    commit('CLEAR_MY_AUTHENTICATED_USER');
-    localStorage.removeItem('myAuthenticatedUserData');
+    commit("CLEAR_MY_AUTHENTICATED_USER");
+    localStorage.removeItem("myAuthenticatedUserData");
   },
   loadMyAuthenticatedUser({ commit }) {
-    const storedUserData = localStorage.getItem('myAuthenticatedUserData');
-    if (storedUserData) {
-      const data = JSON.parse(storedUserData);
-      if (!isTokenExpired(data.tokenExpiration)) {
-        commit('SET_MY_AUTHENTICATED_USER', JSON.parse(storedUserData));
-      } else {
-        commit('CLEAR_MY_AUTHENTICATED_USER');
-        localStorage.removeItem('myAuthenticatedUserData');
-      }
-    }
+    const storedUserData = localStorage.getItem("myAuthenticatedUserData");
+    commit("SET_MY_AUTHENTICATED_USER", JSON.parse(storedUserData));
+
+    // if (storedUserData) {
+    //   const data = JSON.parse(storedUserData);
+    //   if (!isTokenExpired(data.tokenExpiration)) {
+    //     commit('SET_MY_AUTHENTICATED_USER', JSON.parse(storedUserData));
+    //   } else {
+    //     commit('CLEAR_MY_AUTHENTICATED_USER');
+    //     localStorage.removeItem('myAuthenticatedUserData');
+    //   }
+    // }
   },
 };
 

@@ -1,13 +1,13 @@
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999"></Loading>
-    <PageHeader title="Demandes" pageTitle="Tableau de bord" />
+    <PageHeader title="Departement" pageTitle="Tableau de bord" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
           <BCardBody class="border-bottom">
             <div class="d-flex align-items-center justify-content-between">
-              <BCardTitle class="mb-0">Liste des types de demandes</BCardTitle>
+              <BCardTitle class="mb-0">Liste des departements</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class="me-3">
@@ -37,78 +37,32 @@
           </BCardBody>
 
           <BCardBody v-else>
-            <div
-              class="py-2 d-flex justify-content-center align-items-center flex-wrap"
-            >
-              <div v-for="(value, key) in filteredList" :key="key">
-                <div
-                  class=""
-                  style="
-                    width: 400px;
-                    border: 1px solid #dedfe1;
-                    margin: 0 10px 10px 0;
-                    padding: 8px;
-                  "
-                  v-if="oneDirection === value.Direction"
+            <div>
+              <div class="row">
+                <BCol
+                  xl="6"
+                  sm="7"
+                  v-for="(card, index) in filteredList"
+                  :key="index"
                 >
-                  <BRow class="align-items-center">
-                    <BCol xl="9">
-                      <div class="text-center p-2 border-end">
-                        <div class="p-2 text-center text-xl-start">
-                          <BRow>
-                            <BCol cols="12">
-                              <div>
-                                <p class="text-muted mb-2 text-truncate">
-                                  Libellé :
-                                </p>
-                                <h5>
-                                  {{ value.LibelleTypeDemandes }}
-                                </h5>
-                              </div>
-                            </BCol>
-                          </BRow>
+                  <BCard no-body v-if="oneDirection === card.Direction">
+                    <BCardBody>
+                      <BRow>
+                        <div class="carde" style="width: 420px">
+                          <div class="content-box" style="height: 150px">
+                            <span class="carde-title">{{ card.Name }}</span>
+                            <div class="texte">
+                              <p class="texte-content">
+                                Description:
+                                <span>{{ card.Description }}</span>
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </BCol>
-
-                    <BCol xl="3">
-                      <h5 class="text-truncate pb-1">
-                        <ul
-                          class="list-unstyled hstack gap-1 mb-0 justify-content-center"
-                        >
-                          <li
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            aria-label="Edit"
-                          >
-                            <Blink
-                              href="#"
-                              @click="
-                                dataUpdate();
-                                recup(value.id);
-                              "
-                              class="btn btn-sm btn-soft-info"
-                              ><i class="mdi mdi-pencil-outline"></i
-                            ></Blink>
-                          </li>
-                          <li
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            aria-label="Delete"
-                          >
-                            <Blink
-                              href="#"
-                              @click="confirmDelete(value.id)"
-                              data-bs-toggle="modal"
-                              class="btn btn-sm btn-soft-danger"
-                              ><i class="mdi mdi-delete-outline"></i
-                            ></Blink>
-                          </li>
-                        </ul>
-                      </h5>
-                    </BCol>
-                  </BRow>
-                </div>
+                      </BRow>
+                    </BCardBody>
+                  </BCard>
+                </BCol>
               </div>
             </div>
             <BRow>
@@ -152,13 +106,7 @@
                     <BRow>
                       <BCol cols="12 text-center">
                         <div class="modalheader p-4">
-                          <h5 class="text-primary">
-                            {{
-                              dataEdit
-                                ? "Modifier un type de demande"
-                                : "Ajouter un type de demande"
-                            }}
-                          </h5>
+                          <h5 class="text-primary">Ajouter un departement</h5>
                         </div>
                       </BCol>
                     </BRow>
@@ -185,21 +133,36 @@
                         <BRow>
                           <BCol md="12">
                             <div class="mb-3 position-relative">
-                              <label for="userpassword">Libellé</label>
+                              <label for="userpassword"
+                                >Nom du departement</label
+                              >
                               <MazInput
-                                v-model="step1.libelle"
+                                v-model="step1.nom"
                                 no-radius
                                 type="text"
                                 name="nom"
                                 color="info"
                                 placeholder="exemple"
                               />
-                              <small v-if="v$.step1.libelle.$error">{{
-                                v$.step1.libelle.$errors[0].$message
+                              <small v-if="v$.step1.nom.$error">{{
+                                v$.step1.nom.$errors[0].$message
                               }}</small>
-                              <small v-if="resultError['CodeRegion']">
-                                {{ resultError["CodeRegion"] }}
-                              </small>
+                            </div>
+                          </BCol>
+                          <BCol md="12">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Description</label>
+                              <MazInput
+                                v-model="step1.description"
+                                no-radius
+                                type="text"
+                                name="description"
+                                color="info"
+                                placeholder="exemple"
+                              />
+                              <small v-if="v$.step1.description.$error">{{
+                                v$.step1.description.$errors[0].$message
+                              }}</small>
                             </div>
                           </BCol>
                         </BRow>
@@ -207,7 +170,7 @@
                         <BRow class="mb-0">
                           <BCol cols="12" class="text-end">
                             <div class="boutton">
-                              <button class="" @click="actions()">
+                              <button class="" @click="HamdleAddUser()">
                                 Valider
                               </button>
                             </div>
@@ -250,7 +213,6 @@ export default {
       loading: true,
       AddUser: false,
       searchQuery: "",
-      UpdateUser1: false,
       ToId: "",
       regionOptions: [],
       currentPage: 1,
@@ -265,7 +227,8 @@ export default {
       v$: useVuelidate(),
       error: "",
       step1: {
-        libelle: "",
+        nom: "",
+        description: "",
       },
 
       step2: {
@@ -276,10 +239,15 @@ export default {
   },
   validations: {
     step1: {
-      libelle: {
+      nom: {
         require,
         lgmin: lgmin(2),
         lgmax: lgmax(50),
+      },
+      description: {
+        require,
+        lgmin: lgmin(2),
+        lgmax: lgmax(200),
       },
     },
     step2: {
@@ -322,9 +290,9 @@ export default {
     await this.fetchRegionOptions();
   },
   methods: {
-    async fetchTypeDemandes() {
+    async fetchDepartement() {
       try {
-        const response = await axios.get("/type-demandes", {
+        const response = await axios.get("/departments", {
           headers: {
             Authorization: `Bearer ${this.loggedInUser.token}`,
           },
@@ -344,6 +312,10 @@ export default {
           this.$router.push("/"); //a revoir
         }
       }
+    },
+    clean() {
+      this.step1.nom = "";
+      this.step1.description = "";
     },
     validatePasswordsMatch() {
       return this.step1.password === this.step1.confirm_password;
@@ -370,17 +342,15 @@ export default {
       (this.error = ""), (this.resultError = ""), this.v$.step1.$touch();
       if (this.v$.$errors.length == 0) {
         this.loading = true;
-        const myObjectString = localStorage.getItem("myAuthenticatedUserData");
-        const myObject = JSON.parse(myObjectString);
-        const specificElement = myObject.direction;
 
         let DataUser = {
-          LibelleTypeDemandes: this.step1.libelle,
-          Direction: specificElement,
+          Name: this.step1.nom,
+          description: this.step1.description,
+          Direction: this.loggedInUser.direction,
         };
 
         try {
-          const response = await axios.post("/type-demandes", DataUser, {
+          const response = await axios.post("/departments", DataUser, {
             headers: {
               Authorization: `Bearer ${this.loggedInUser.token}`,
             },
@@ -390,10 +360,10 @@ export default {
             this.AddUser = false;
             this.loading = false;
             this.successmsg(
-              "Création de type de demande",
-              "Votre type de demande a été créee avec succès !"
+              "Création de departement",
+              "Votre departement a été créee avec succès !"
             );
-            await this.fetchTypeDemandes();
+            await this.fetchDepartement();
             this.clean();
           } else {
           }
@@ -410,10 +380,6 @@ export default {
       } else {
         console.log("pas bon", this.v$.$errors);
       }
-    },
-    clean() {
-      this.step1.libelle = "";
-      this.dataEdit = false;
     },
     async UpdateAddUser() {
       (this.error = ""), (this.resultError = ""), this.v$.step1.$touch();
@@ -449,7 +415,6 @@ export default {
               "Votre type de demande a été modifié avec succès !"
             );
             await this.fetchTypeDemandes();
-            this.clean();
           } else {
           }
         } catch (error) {
@@ -513,86 +478,7 @@ export default {
         }
       }
     },
-    async UpdateUser(id) {
-      this.UpdateUser1 = true;
-      this.loading = true;
 
-      try {
-        // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-        const user = this.regionOptions.find((user) => user.id === id);
-
-        if (user) {
-          // Utilisez les informations récupérées de l'objet user
-          console.log("Informations de l'utilisateur:", user);
-
-          (this.step2.code = user.CodeRegion),
-            (this.step2.nom = user.NomRegion),
-            (this.ToId = user.CodeRegion);
-        } else {
-          console.log("Utilisateur non trouvé avec l'ID", id);
-        }
-        this.loading = false;
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour du document:", error);
-
-        this.loading = false;
-      }
-    },
-
-    async submitUpdate() {
-      this.v$.step2.$touch();
-      console.log("bonjour");
-
-      if (this.v$.$errors.length == 0) {
-        console.log("bonjour");
-        this.loading = true;
-
-        const dataCath = {
-          CodeRegion: this.step2.code,
-          NomRegion: this.step2.nom,
-          Statut: 1,
-        };
-        console.log("dataCath", dataCath);
-
-        try {
-          const response = await axios.put(`regions/${this.ToId}`, dataCath, {
-            headers: {
-              Authorization: `Bearer ${this.loggedInUser.token}`,
-            },
-          });
-          console.log("Réponse du téléversement :", response);
-          if (response.data.status === "success") {
-            await this.fetchRegionOptions();
-            this.UpdateUser1 = false;
-            this.loading = false;
-            this.successmsg(
-              "Modification de",
-              "Votre region a été modifiée avec succès !"
-            );
-          }
-        } catch (error) {
-          console.error("Erreur lors du téléversement :", error);
-          if (
-            error.response.data.message === "Vous n'êtes pas autorisé." ||
-            error.response.status === 401
-          ) {
-            await this.$store.dispatch("user/clearLoggedInUser");
-            this.$router.push("/"); //a revoir
-          } else {
-            this.formatValidationErrors(error.response.data.errors);
-          }
-        }
-      } else {
-        console.log("cest pas bon ", this.v$.$errors);
-      }
-    },
-    actions() {
-      if (this.dataEdit) {
-        this.UpdateAddUser();
-      } else {
-        this.HamdleAddUser();
-      }
-    },
     dataUpdate() {
       this.dataEdit = true;
       this.AddUser = true;
@@ -643,8 +529,12 @@ export default {
     },
   },
   mounted() {
-    this.fetchTypeDemandes();
+    this.fetchDepartement();
   },
 };
 </script>
-<style lang="" scoped></style>
+<style>
+.yes {
+  text-align: center;
+}
+</style>

@@ -300,7 +300,8 @@ this.error = '',
     
 let DataUser = {
 email:this.step1.email,
-password:this.step1.password
+password:this.step1.password,
+remember: true,
 }
 console.log("eeeee",DataUser);
 try {
