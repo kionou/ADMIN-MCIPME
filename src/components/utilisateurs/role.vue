@@ -104,7 +104,10 @@
                           aria-label="account"
                         >
                           <button
-                            @click="confirmDelete(region.id)"
+                            @click="
+                              utilisateur = true;
+                              id_test = region.id;
+                            "
                             data-bs-toggle="modal"
                             class="btn btn-sm btn-soft-primary"
                           >
@@ -392,6 +395,97 @@
         </div>
       </div>
     </BModal>
+
+    <BModal
+      v-model="utilisateur"
+      hide-footer
+      centered
+      header-class="border-0"
+      title-class="font-18"
+      @hide="
+        oneUser = '';
+        id_test = '';
+      "
+    >
+      <div>
+        <div class="account-pages" style="width: 100%">
+          <BContainer>
+            <BRow>
+              <BCol>
+                <BCard
+                  no-body
+                  class="overflow-hidden"
+                  style="
+                    box-shadow: none !important;
+                    border: 1px solid #c9d1d9 !important;
+                  "
+                >
+                  <div class="bg-primary-subtle">
+                    <BRow>
+                      <BCol cols="12 text-center">
+                        <div class="modalheader p-4">
+                          <h5 class="text-primary">Assigner le rôle</h5>
+                        </div>
+                      </BCol>
+                    </BRow>
+                  </div>
+
+                  <BCardBody class="pt-0">
+                    <div class="p-8">
+                      <BForm class="form-horizontal">
+                        <BRow> </BRow>
+
+                        <BCol md="12">
+                          <div class="mb-3 position-relative">
+                            <MazSelect
+                              label="Sélectionner l'utilisateur"
+                              v-model="oneUser"
+                              no-radius
+                              color="info"
+                              :options="
+                                allUsers.map((user) => ({
+                                  value: user.id,
+                                  label: `${user.Prenoms} ${user.Nom}`,
+                                }))
+                              "
+                              v-slot="{ option }"
+                              search
+                            >
+                              <div
+                                class="flex items-center"
+                                style="
+                                  padding-top: 0.5rem;
+                                  padding-bottom: 0.5rem;
+                                  width: 100%;
+                                  gap: 1rem;
+                                "
+                              >
+                                {{ option.label }}
+                              </div>
+                            </MazSelect>
+                          </div>
+                        </BCol>
+                        <BRow> </BRow>
+
+                        <BRow class="mb-0">
+                          <BCol cols="12" class="text-end">
+                            <div class="boutton">
+                              <button class="" @click="HamdleAddRoleAssign()">
+                                Ajouter
+                              </button>
+                            </div>
+                          </BCol>
+                        </BRow>
+                      </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+              </BCol>
+            </BRow>
+          </BContainer>
+        </div>
+      </div>
+    </BModal>
   </Layout>
 </template>
 <script>
@@ -400,6 +494,7 @@ import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
 import Pag from "@/components/others/pagination.vue";
 import axios from "@/lib/axiosConfig.js";
 import Loading from "@/components/others/loading.vue";
+import PageHeader from "@/components/page-header.vue";
 import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidEmail } from "@/functions/rules";
 import { successmsg } from "@/lib/modal.js";
@@ -409,20 +504,27 @@ export default {
   components: {
     Loading,
     Pag,
+    PageHeader,
     MazPhoneNumberInput,
   },
   data() {
     return {
       loading: true,
       AddUser: false,
+      utilisateur: false,
       addPermission: false,
       dataEdit: false,
+      oneUser: "",
+      allUsers: [],
       searchQuery: "",
+      oneUserId: "",
       permission: false,
       permissionByRole: "",
       ToId: "",
       roleOptions: [],
       checkedPermissions: [],
+      selectedItemName: null,
+      selectedItemId: null,
       permissionOption: [],
       id: "",
       id_test: "",
@@ -488,6 +590,7 @@ export default {
     console.log("uusers", this.loggedInUser);
     await this.fetchRole();
     this.fetchPermission();
+    this.fetchUsers();
   },
   methods: {
     validatePasswordsMatch() {
@@ -526,6 +629,30 @@ export default {
         });
         console.log(response);
         this.permissionByRole = response.data.data.permissions;
+        this.loading = false;
+      } catch (error) {
+        console.error("nouvelle erreur", error);
+
+        if (
+          error.response.data.message === "Vous n'êtes pas autorisé." ||
+          error.response.status === 401
+        ) {
+          await this.$store.dispatch("auth/clearMyAuthenticatedUser");
+          this.$router.push("/"); //a revoir
+        }
+      }
+    },
+
+    async fetchUsers() {
+      try {
+        const response = await axios.get("/users", {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+          },
+          params: { Direction: this.loggedInUser.direction },
+        });
+        console.log(response);
+        this.allUsers = response.data.data;
         this.loading = false;
       } catch (error) {
         console.error("nouvelle erreur", error);
@@ -584,6 +711,46 @@ export default {
         }
       } else {
         console.log("pas bon", this.v$.$errors);
+      }
+    },
+    async HamdleAddRoleAssign() {
+      this.loading = true;
+      let DataUser = {
+        code: this.id_test,
+        user: this.oneUser,
+      };
+
+      try {
+        const response = await axios.post("/user/assign-role", DataUser, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+          },
+        });
+
+        if (response.data.status === "success") {
+          this.AddUser = false;
+          this.loading = false;
+          this.successmsg(
+            "Ajout de rôle",
+            "Votre rôle a été assigné avec succès !"
+          );
+          this.clean2();
+          this.addPermission = false;
+          this.oneUser = "";
+          this.utilisateur = false;
+          this.id_test = "";
+          console.log(response);
+        } else {
+        }
+      } catch (error) {
+        console.log("response.login", error);
+
+        this.loading = false;
+        if (error.response.data.status === "error") {
+          return (this.error = error.response.data.message);
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+        }
       }
     },
     async HamdleAddPermission() {
