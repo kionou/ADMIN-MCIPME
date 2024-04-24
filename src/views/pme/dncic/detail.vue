@@ -2,15 +2,15 @@
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
    <PageHeader title="Detail Entreprise " pageTitle="Tableau de bord" />
-   <div class="container-xxl flex-grow-1 container-p-y">
+   <div class="container-xxl flex-grow-1 ">
             <!-- Header -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card mb-4">
+                    <div class="card ">
                         <div class="user-profile-header-banner">
                             <img src="@/assets/img/guinee.jpg" alt="Banner image" class="rounded-top" />
                         </div>
-                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                                 <img v-if="data.profile === null" src="@/assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                                 <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
@@ -30,7 +30,7 @@
                                        
                                     </div>
                                 </div>
-                                <hr>
+                                <!-- <hr> -->
                             </div>
                             <!-- <div class="flex-grow-1 mt-3 mt-sm-5">
                                 <div
@@ -81,6 +81,13 @@
                                 Entreprises rattachées
                             </button>
                         </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                data-bs-target="#navs-pills-top-profile12" aria-controls="navs-pills-top-profile12"
+                                aria-selected="false">
+                                Skockages disponibles
+                            </button>
+                        </li>
 
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
@@ -104,7 +111,7 @@
                                                 <div class="border-t border-gray-200">
                                                     <dl>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Sigle Pme</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Sigle DNCIC</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SigleMpme }} </dd>
                                                         </div>
                                                         <div
@@ -549,7 +556,7 @@
 
 
                         </div>
-                        <div class="tab-pane fade" id="navs-pills-top-profile1" role="tabpanel">
+                    <div class="tab-pane fade" id="navs-pills-top-profile1" role="tabpanel">
                             <BCardBody v-if="paginatedItems.length === 0" class="noresul">
             <div >
           <span> Vous n'êtes relié à aucune entreprise distributrice </span>
@@ -619,6 +626,61 @@
               </BCol>
             </BRow>
                     </div>
+                    <div class="tab-pane fade" id="navs-pills-top-profile12" role="tabpanel">
+                            <BCardBody v-if="StocksOptions.length === 0" class="noresul">
+            <div >
+          <span> L'entreprise n'a pas encore de skockage disponible </span>
+           </div>
+          </BCardBody>
+          <BCardBody v-else>
+             <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+ 
+         <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="stock in StocksOptions" :key="stock.id">
+           <BRow class="align-items-center">
+             <BCol xl="5">
+               <div class="text-center p-2 border-end">
+                 <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                   <span class="avatar-title rounded-circle   font-size-16">
+                    
+                     <img  v-if="stock.produit === null" src="@/assets/img/produits.jpg" alt="" class="w-100 h-100 rounded-circle">
+                     <img v-else :src="stock.produit.ImageProduit" alt="" class="w-100 h-100 rounded-circle">
+                   </span>
+                 </div>
+                 <h5 class="text-truncate pb-1">
+                     {{formatCreatedAt(stock.DateDeMiseAJourStock)  }}
+                 </h5>
+               </div>
+             </BCol>
+ 
+             <BCol xl="7">
+               <div class="p-2 text-center text-xl-start">
+                 <BRow>
+                   <BCol cols="12">
+                     <div>
+                       <p class="text-muted mb-2 text-truncate">Nom du produit </p>
+                       <h5 v-if="stock.produit">{{stock.produit.NomProduit}}</h5>
+                     </div>
+                   </BCol>
+                   
+                 </BRow>
+                 <BRow>
+                     <BCol cols="12">
+                     <div>
+                       <p class="text-muted mb-2 text-truncate">Quantite Réel</p>
+                       <h5>{{stock.QuantiteReel}} </h5>
+                     </div>
+                   </BCol>
+                 </BRow>
+               </div>
+             </BCol>
+           </BRow>
+         </div>    
+             </div>
+           
+          </BCardBody>
+        
+         
+                    </div>
 
                     <div class="tab-pane fade" id="navs-pills-top-messages11" role="tabpanel">
                         <Position :data="data"  :key="childKey"/>
@@ -642,6 +704,7 @@ import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
 import Position from '@/components/admin/pme/position.vue'
 import Pag from '@/components/others/pagination.vue'
+import moment from 'moment';
 
 
 export default {
@@ -673,7 +736,7 @@ export default {
   },
  data() {
    return { 
-    loading:true,
+          loading:true,
          data: '',
          isFullScreen: false,
          childKey: 0,
@@ -682,6 +745,7 @@ export default {
          dataImport:[],
          dataimage:[],
          sous:[],
+         StocksOptions:[],
          currentPage: 1,
          itemsPerPage: 10,
     
@@ -702,8 +766,8 @@ export default {
  },
 async  mounted() {
     await  this.fetchData()
+    await this.fetchStock()
      await   this.fetchDataImport()
-//    await this.fetchDataImage()
  },
  methods: {
     updateCurrentPage(pageNumber) {
@@ -714,11 +778,11 @@ async  mounted() {
     });
   },
  
-  updatePaginatedItems() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.dataImport.slice(startIndex, endIndex);
-  },
+//   updatePaginatedItems() {
+//     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+//     const endIndex = startIndex + this.itemsPerPage;
+//     return this.dataImport.slice(startIndex, endIndex);
+//   },
     async  reloadChild() {
       this.childKey += 1; // Changez la clé pour recharger le composant enfant
     },
@@ -748,15 +812,31 @@ async  mounted() {
             this.dataImport = data
         },
 
-        async fetchDataImage() {
-            const response = await axios.get('/mpme/photos/publication-de-photo-mpme')
-            const data = response.data.data.data
-            this.dataimage = data
-            console.log('image', data);
-            this.dataimage = this.dataimage.filter((img) => {
-            return img.CodeMpme === this.id; // Remplacez "userId" par la propriété qui contient l'ID de l'utilisateur dans vos données de documents.
-            });
-            console.log('this.dataimage',this.dataimage);
+        formatCreatedAt(createdAt) {
+    return moment(createdAt).format('DD/MM/YY ');
+    },
+        async fetchStock() {
+            console.log(this.id)
+      try {
+         const response = await axios.get('/stocks', {
+           headers: { Authorization: `Bearer ${this.loggedInUser.token}`},
+           params:{ code:this.id}
+         });
+         console.log("Réponse du téléversement :", response);
+         if (response.data.status === "success") {
+          
+            this.StocksOptions = response.data.data
+         console.log("Réponse du téléversement :",  this.StocksOptions);
+
+           this.loading =false
+         } 
+       } catch (error) {
+         console.error("Erreur lors du téléversement :", error);
+         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                 await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+               this.$router.push("/");  //a revoir
+             }
+       }
         },
         
  },

@@ -114,7 +114,7 @@ let menuItems = [
       {
         id: 56,
         label: "menuitems.projects.list.demande",
-        link: "/demandes",
+        link: "/types-demandes",
         parentId: 37,
       },
       {
@@ -159,32 +159,14 @@ let menuItems = [
     id: 42,
     label: "menuitems.tasks.text",
     icon: "bx-task",
-    subItems: [
-      // {
-      //   id: 43,
-      //   label: "menuitems.tasks.list.tasklist",
-      //   link: "/demandes",
-      //   parentId: 42,
-      // },
-      {
-        id: 44,
-        label: "menuitems.tasks.list.kanban",
-        link: "/demandes-annoter",
-        parentId: 42,
-      },
-      {
-        id: 45,
-        label: "menuitems.tasks.list.createtask",
-        link: "/demandes-implantations",
-        parentId: 42,
-      },
-      {
-        id: 46,
-        label: "menuitems.tasks.list.marche",
-          link: "/demandes-produits",
-        parentId: 46
-     }
-    ],
+    link: "/demandes",
+    
+  },
+  {
+    id: 60,
+    label: "menuitems.cartographie.text",
+    icon: "bx-map",
+    link: "/cartographie",
   },
   // {
   //     id: 46,

@@ -6,11 +6,11 @@
             <!-- Header -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card mb-4">
+                    <div class="card ">
                         <div class="user-profile-header-banner">
                             <img src="@/assets/img/guinee.jpg" alt="Banner image" class="rounded-top" />
                         </div>
-                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                                 <img v-if="data.profile === null" src="@/assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                                 <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
@@ -30,7 +30,7 @@
                                        
                                     </div>
                                 </div>
-                                <hr>
+                                <!-- <hr> -->
                             </div>
                             <!-- <div class="flex-grow-1 mt-3 mt-sm-5">
                                 <div
@@ -104,7 +104,7 @@
                                                 <div class="border-t border-gray-200">
                                                     <dl>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Sigle Pme</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Sigle DNI</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SigleMpme }} </dd>
                                                         </div>
                                                         <div

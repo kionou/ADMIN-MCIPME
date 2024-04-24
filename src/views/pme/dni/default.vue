@@ -31,7 +31,7 @@
           <span class="carde-title">{{ pme.NomMpme }}</span>
           <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
-            <p class="texte-content" v-if="pme">Code Pme : <span>{{ pme.CodeMpme }}</span></p>
+            <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>
           <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
           <p class="texte-content">Secteur Activité : <span>{{ pme.PrincipalSecteurActivite }}</span></p>
           <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
@@ -216,6 +216,19 @@ async  mounted() {
  },
  methods: {
   successmsg:successmsg,
+  updateCurrentPage(pageNumber) {
+         this.currentPage = pageNumber;
+         window.scrollTo({
+           top: 0,
+           behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+         });
+       },
+       updatePaginatedItems() {
+         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        
+         const endIndex = startIndex + this.itemsPerPage;
+         return  this.pmeOptions.slice(startIndex, endIndex);
+       },
   async fetchPmes() {
             try {
               const response = await axios.get('/mcipme', {
@@ -265,8 +278,8 @@ async  mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -438,7 +451,7 @@ margin-bottom: 10px !important;
     font-weight: 900;
     transition: all 0.5s ease-in-out;
     position: absolute;
-    top: -33px;
+    top: -41px;
     right: 24px;
 }
 
@@ -486,8 +499,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

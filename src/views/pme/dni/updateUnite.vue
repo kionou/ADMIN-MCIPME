@@ -1541,7 +1541,7 @@
               <div class="col">
                 <div class="input-groupe">
                   <label for="VilleRepondant"
-                    >Ville du Repondant <span class="text-danger">*</span></label
+                    >Ville du Repondant <span class="text-danger"></span></label
                   >
                   <input
                     v-model="step5.villeRepondant"
@@ -1573,6 +1573,7 @@
                      no-radius  color="info"
                     :ignored-countries="['AC']"
                     @update="results = $event"
+                    defaultCountryCode="GN"
                     :success="results?.isValid"
                     :class="{ 'error-border': resultError['TelephoneWhatsAppRepondant'] }"
                     @input="resultError['TelephoneWhatsAppRepondant'] = false"
@@ -1982,15 +1983,15 @@ export default {
         NbreEmployeGuinneH:'',
         NbreEmploye:'',
 
-        pers_per_femm: 0,
-        pers_per_homm: 0,
-        pers_temp_femm: 0,
-        pers_temp_homm: 0,
+        pers_per_femm:'',
+        pers_per_homm: '',
+        pers_temp_femm:'' ,
+        pers_temp_homm:'',
        
 
-        NbreActionnaireGuinneF: 0,
-        NbreActionnaireGuinneH: 0,
-        NbreActionnaireGuinne: 0,
+        NbreActionnaireGuinneF:'' ,
+        NbreActionnaireGuinneH:'' ,
+        NbreActionnaireGuinne:'' ,
         },
         // etapes 4
         step4:{
@@ -2111,7 +2112,7 @@ export default {
       nomRepondant: { require },
       fonctionRepondant: { require },
       adresseRepondant: { require },
-      villeRepondant: { require },
+      villeRepondant: {  },
       telephoneWhatsAppRepondant: { require },
       contacter: { require },
       existanceActionnaire: { require },
@@ -2210,13 +2211,13 @@ async mounted() {
         NbreEmployeGuinneF: parseInt(this.step3.NbreEmployeGuinneF) ,
         NbreEmployeGuinneH: parseInt(this.step3.NbreEmployeGuinneH) ,
         NbreEmploye:  parseInt(this.step3.NbreEmploye) ,
-        PersonnelPermanentFemme: this.step3.pers_per_femm || 0,
-        PersonnelPermanentHomme: this.step3.pers_per_homm || 0,
-        PersonnelTemporaireFemme: this.step3.pers_temp_femm || 0,
-        PersonnelTemporaireHomme: this.step3.pers_temp_homm || 0,
-        NbreActionnaireGuinneF: this.step3.NbreActionnaireGuinneF || 0,
-        NbreActionnaireGuinneH: this.step3.NbreActionnaireGuinneH || 0,
-        NbreActionnaire: this.step3.NbreActionnaireGuinne || 0,
+        PersonnelPermanentFemme: this.step3.pers_per_femm ,
+        PersonnelPermanentHomme: this.step3.pers_per_homm ,
+        PersonnelTemporaireFemme: this.step3.pers_temp_femm ,
+        PersonnelTemporaireHomme: this.step3.pers_temp_homm ,
+        NbreActionnaireGuinneF: this.step3.NbreActionnaireGuinneF ,
+        NbreActionnaireGuinneH: this.step3.NbreActionnaireGuinneH ,
+        NbreActionnaire: this.step3.NbreActionnaireGuinne ,
        
             // step4
     
@@ -2994,7 +2995,7 @@ async mounted() {
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
       this.step2.types = userData.types;
-      this.step2.CodeZone = userData.CodeZone;
+      this.step2.CodeZone = ["02"];
       this.step2.SuperficieOccupee = userData.SuperficieOccupee;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm

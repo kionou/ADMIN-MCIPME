@@ -118,6 +118,7 @@ export default {
     
       map.value.addControl(new NavigationControl(), 'top-right');
       console.log('rrrss', myPropValue.value.LatitudeMpme);
+      console.log('rrrss', myPropValue.value.LongitudeMpme);
 
       const newMarker = new Marker({ color: '#FF0000' })
         .setLngLat([myPropValue.value.LongitudeMpme, myPropValue.value.LatitudeMpme])

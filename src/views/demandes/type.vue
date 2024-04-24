@@ -387,7 +387,7 @@ export default {
       libelle: {
         require,
         lgmin: lgmin(2),
-        lgmax: lgmax(50),
+
       },
     },
     step2: {
@@ -483,7 +483,7 @@ export default {
 
         let DataUser = {
           LibelleTypeDemandes: this.step1.libelle,
-          Direction: specificElement,
+          Direction: this.loggedInUser.direction,
         };
 
         try {

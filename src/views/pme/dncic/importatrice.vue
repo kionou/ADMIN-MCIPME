@@ -29,14 +29,14 @@
       <div class="parent" v-for="pme in paginatedItems" :key="pme.id">
        <div class="carde" >
       <div class="content-box">
-        <div class="date-box">
+        <div class="date-box" v-if="pme.pme">
          <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
          <img v-else :src="pme.pme.profile" alt="">
       </div>
         <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
           <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content" v-if="pme.pme">Code Pme: <span>{{ pme.pme.CodeMpme }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
           <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
           <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
           <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
@@ -293,8 +293,8 @@ async  mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -466,7 +466,7 @@ margin-bottom: 10px !important;
     font-weight: 900;
     transition: all 0.5s ease-in-out;
     position: absolute;
-    top: -33px;
+    top: -41px;
     right: 24px;
 }
 
@@ -514,8 +514,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

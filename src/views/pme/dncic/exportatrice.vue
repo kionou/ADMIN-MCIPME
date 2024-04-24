@@ -35,7 +35,7 @@
         </p> -->
         <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
         <div class="texte">
-          <p class="texte-content" v-if="pme.pme">Code Pme: <span>{{ pme.pme.CodeMpme }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
         <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
         <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
@@ -72,7 +72,7 @@
 
         </div>
     </div>
-    <div class="date-box">
+    <div class="date-box" v-if="pme.pme">
        <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
        <img v-else :src="pme.pme.profile" alt="">
     </div>
@@ -279,8 +279,8 @@ async fetchPmes() {
      text: 'Vous ne pourrez pas revenir en arrière!',
      icon: 'warning',
      showCancelButton: true,
-     confirmButtonText: 'Oui, supprimez-le!',
-     cancelButtonText: 'Non, annulez!',
+     confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
      reverseButtons: true
    });
 
@@ -452,7 +452,7 @@ display: inline-block;
   font-weight: 900;
   transition: all 0.5s ease-in-out;
   position: absolute;
-  top: -33px;
+  top: -41px;
   right: 24px;
 }
 
@@ -500,8 +500,8 @@ transform: translate3d(0px, 0px, 60px);
 
 .date-box {
 position: absolute;
-top: -24px;
-left: 13px;
+top: -16px;
+  left: 5px;
 height: 60px;
 width: 60px;
 border: 1px solid #fff;

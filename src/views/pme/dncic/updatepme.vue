@@ -1501,7 +1501,7 @@
             <div class="col">
               <div class="input-groupe">
                 <label for="VilleRepondant"
-                  >Ville du Repondant <span class="text-danger">*</span></label
+                  >Ville du Repondant <span class="text-danger"></span></label
                 >
                 <input
                   v-model="step5.villeRepondant"
@@ -1532,6 +1532,7 @@
                   show-code-on-list
                    no-radius  color="info"
                   :ignored-countries="['AC']"
+                  defaultCountryCode="GN"
                   @update="results = $event"
                   :success="results?.isValid"
                   :class="{ 'error-border': resultError['TelephoneWhatsAppRepondant'] }"
@@ -1922,7 +1923,7 @@ data() {
       prin_sect_acti: "",
       selectedSousSecteurs: [],
       an_prod_1: "", 
-      PaysSiegeSocial: "Guinea",
+      PaysSiegeSocial: "Guinée",
       distributrice:"",
       types:"",
       
@@ -1957,7 +1958,7 @@ data() {
       nomDirigeant: "",
       prenomDirigeant: "",
       sexeDirigeant: "",
-      paysDirigeant: "Guinea",
+      paysDirigeant: "Guinée",
       anneeNaissanceDirigeant: "",
       dirigeantProprietaire: "",
 
@@ -1965,7 +1966,7 @@ data() {
       nomProprietaire: "",
       prenomProprietaire: "",
       sexeProprietaire: "",
-      paysProprietaire: "Guinea",
+      paysProprietaire: "Guinée",
       anneeNaissanceProprietaire: "",
       },
       // step5
@@ -2068,7 +2069,7 @@ validations: {
     nomRepondant: { require },
     fonctionRepondant: { require },
     adresseRepondant: { require },
-    villeRepondant: { require },
+    villeRepondant: {  },
     telephoneWhatsAppRepondant: { require },
     contacter: { require },
     existanceActionnaire: { require },

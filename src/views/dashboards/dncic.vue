@@ -194,18 +194,28 @@ async  mounted() {
               },
     
             });
-               console.log(response.data.data);
-                this.DataOptions = response.data.data;
-                this.statData = this.DataOptions.map((stat) => {
-                  const lowercaseTitle = stat.type_entreprise.IntituleType.toLowerCase(); // Mettre le titre en minuscules
-                  const capitalizedTitle = lowercaseTitle.charAt(0).toUpperCase() + lowercaseTitle.slice(1); // Mettre la première lettre en majuscule
-                  return {
-                      icon: "bx bx-copy-alt",
-                      title: capitalizedTitle,
-                      value: stat.nb || 0,
-                  };
-                });
-               console.log(this.statData);
+            console.log(response.data.data); // Assurez-vous que vos données sont correctement récupérées
+
+// Filtrer les types d'entreprises en excluant les "unités industrielles"
+const filteredData = response.data.data.filter(stat => {
+  return stat.type_entreprise.IntituleType.toLowerCase() !== 'unite industrielle';
+});
+
+// Traiter les données filtrées
+this.statData = filteredData.map(stat => {
+  // Convertir le titre en minuscules
+  const lowercaseTitle = stat.type_entreprise.IntituleType.toLowerCase();
+  // Mettre la première lettre en majuscule
+  const capitalizedTitle = lowercaseTitle.charAt(0).toUpperCase() + lowercaseTitle.slice(1);
+  // Retourner un objet avec les informations nécessaires
+  return {
+    icon: "bx bx-copy-alt",
+    title: capitalizedTitle,
+    value: stat.nb || 0,
+  };
+});
+
+console.log(this.statData);
                this.statData.push(
                   {
                       icon: "bx bx-copy-alt",

@@ -83,11 +83,11 @@ async  mounted() {
           title: "Total unités industrielles",
            value: response.data.data[0].PmeCount || 0,
         },
-        {
-          icon: "bx bx-archive-in",
-          title: " Total production ",
-          value:  response.data.data[0].TotalProduction|| 0,
-        },
+        // {
+        //   icon: "bx bx-archive-in",
+        //   title: " Total production ",
+        //   value:  response.data.data[0].TotalProduction|| 0,
+        // },
         {
           icon: "bx bx-purchase-tag-alt",
           title: "Total emploi crée",
@@ -237,8 +237,7 @@ async  mounted() {
     
       
     </BRow>
-
-
+ 
  
   </Layout>
 </template>

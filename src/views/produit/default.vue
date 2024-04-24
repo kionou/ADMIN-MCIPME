@@ -47,7 +47,7 @@
                 <span class="d-inline-block d-sm-none">
                   <i class="far fa-user"></i>
                 </span>
-                <span class="d-none d-sm-inline-block"> Unites</span>
+                <span class="d-none d-sm-inline-block"> Unités</span>
               </template>
               <!-- vrai -->
               <Unites></Unites>
