@@ -266,15 +266,17 @@
                     border: 1px solid #c9d1d9 !important;
                   "
                 >
-                  <!-- <div class="bg-primary-subtle">
+                  <div class="bg-primary-subtle">
                     <BRow>
                       <BCol cols="12 text-center">
                         <div class="modalheader p-4">
-                          <h5 class="text-primary">Modifier un utilisateur</h5>
+                          <h5 class="text-primary">
+                            Liste des permissions du rôle
+                          </h5>
                         </div>
                       </BCol>
                     </BRow>
-                  </div> -->
+                  </div>
 
                   <BCardBody>
                     <div>
@@ -296,7 +298,7 @@
                             border-radius: 5px;
                           "
                         >
-                          {{ permission.name }}
+                          {{ traduirePermission(permission.name) }}
                         </p>
                       </div>
                     </div>
@@ -368,7 +370,7 @@
                                   for="permissionCheckbox{{ permission.id }}"
                                   style="font-size: 20px"
                                 >
-                                  {{ permission.name }}
+                                  {{ traduirePermission(permission.name) }}
                                 </label>
                               </div>
                             </div>
@@ -956,6 +958,20 @@ export default {
         }
       } else {
         console.log("cest pas bon ", this.v$.$errors);
+      }
+    },
+    traduirePermission(permission) {
+      switch (permission) {
+        case "read":
+          return "Lire les informations";
+        case "create":
+          return "Ajouter des informations";
+        case "update":
+          return "Modifier des informations";
+        case "delete":
+          return "Supprimer des informations";
+        default:
+          return permission;
       }
     },
     updateCurrentPage(pageNumber) {
