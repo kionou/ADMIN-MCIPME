@@ -62,10 +62,23 @@
                  <BTd>
                    <ul class="list-unstyled hstack gap-1 mb-0">
                     
-                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                       <Blink href="#" v-if="region.Annote === 0" @click="confirmDelete(region.id)"  class="btn btn-sm btn-soft-info"> Annote</Blink>
-                       <Blink href="#" v-else @click="UpdateUser(region.id)"  class="btn btn-sm btn-soft-info"> En Cours...</Blink>
+                     <li data-bs-toggle="tooltip" v-if="region.traitements.length === 0  " data-bs-placement="top" aria-label="Edit">
+                       <Blink href="#"  @click="confirmDelete(region.id)"  class="btn btn-sm btn-soft-info"> Annote</Blink>
                      </li>
+
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'EN COURS'" data-bs-placement="top" aria-label="Edit">
+                      <Blink href="#" @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info">EN COURS..</Blink>
+
+                     </li>
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'ACCEPTER'" data-bs-placement="top" aria-label="View">
+                       <Blink href="#"    class="btn btn-sm btn-soft-primary"> ACCEPTER</Blink>
+                     </li>
+
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'REJETER'" data-bs-placement="top" aria-label="Delete">
+                       <Blink href="#"    class="btn btn-sm btn-soft-danger"> REJETER</Blink>
+                     </li>
+                      
+                     
                    
                     
                    </ul>

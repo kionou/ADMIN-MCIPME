@@ -33,7 +33,7 @@
           <div class="texte">
             <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>
           <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
-          <p class="texte-content">Secteur Activité : <span>{{ pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content">Secteur Activité : <span>{{ NameActivite(pme.PrincipalSecteurActivite) }}</span></p>
           <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
           <p class="texte-content">Email : <span>{{ pme.AdresseEmail }}</span></p>
           <p class="texte-content">Contact : <span> {{ pme.NumeroWhatsApp }}</span></p>
@@ -191,6 +191,7 @@ export default {
      totalPageArray: [],
      regionOptions:[],
      UserOptionsPersonnels:'',
+     SecteurActiviteOptions: [],
    }
  },
  computed:{
@@ -213,6 +214,7 @@ async  mounted() {
   console.log("uusers",this.loggedInUser);
    await this.fetchPmes()
    await this.fetchRegionOptions()
+   await this.fetchSecteurActiviteOptions()
  },
  methods: {
   successmsg:successmsg,
@@ -267,6 +269,21 @@ async  mounted() {
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+      }
+    },
+    async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
           error.message
         );
       }
@@ -342,6 +359,25 @@ async  mounted() {
             }
         
    },
+   NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
    OpenLogo(id , photo){
     this.photo = photo
     this.AddLogo = true

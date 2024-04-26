@@ -37,7 +37,7 @@
         <div class="texte">
           <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
+        <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
         <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
         <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
@@ -192,6 +192,7 @@ data() {
    itemsPerPage: 8,
    totalPageArray: [],
    regionOptions:[],
+   SecteurActiviteOptions: [],
    UserOptionsPersonnels:'',
    photo:'',
  }
@@ -216,6 +217,7 @@ async  mounted() {
 console.log("uusers",this.loggedInUser);
  await this.fetchPmes()
  await this.fetchRegionOptions()
+ await this.fetchSecteurActiviteOptions()
 },
 methods: {
 successmsg:successmsg,
@@ -238,7 +240,7 @@ async fetchPmes() {
             const response = await axios.get(`/types-entreprises/${2}`, {
             headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
              console.log(response.data.data);
-             const filteredUsers = response.data.data.pmes;
+             const filteredUsers = response.data.data.pmes.filter(item => item.pme !== null);
                console.log(filteredUsers); 
               this.pmeOptions = filteredUsers;
               this.UserOptionsPersonnels = filteredUsers.length
@@ -272,6 +274,21 @@ async fetchPmes() {
       );
     }
   },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
     async confirmDelete(id) {
    // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
    const result = await Swal.fire({
@@ -332,6 +349,25 @@ async fetchPmes() {
           console.log('selectedRegion',selectedRegion);
           if (selectedRegion) {
           return  selectedRegion.NomRegion;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
           } else {
               console.error('Région non trouvée dans les options.');
           }

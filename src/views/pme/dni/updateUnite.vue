@@ -158,7 +158,7 @@
                         <div class="col">
                             <div class="input-groupe">
                             <label for="SigleMpme"
-                                >Sigle Mpme </label
+                                >Sigle entreprise </label
                             >
                             <input
                                 type="text"
@@ -594,15 +594,12 @@
                     v-model="step2.types"
                     no-radius  color="info"
                     :options="EntrepriseOptions"
-                    multiple
+                  
                     :class="{ 'error-border': resultError['types'] }"
                     @input="resultError['types'] = false"
-                   
+                   multiple
                     search
                   />
-                  
-                   
-                
                 <small v-if="v$.step2.types.$error">{{
                   v$.step2.types.$errors[0].$message
                 }}</small>
@@ -2306,6 +2303,7 @@ async mounted() {
 
           const mpmeData = this.createMpmeData();
           this.getSuivant(mpmeData)
+          console.log("mpmeData1", mpmeData);
         } else {
           console.log("errroor1", this.v$.$errors);
           window.scrollTo({
@@ -2322,6 +2320,7 @@ async mounted() {
       this.loading = true;
 
           const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
           this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
@@ -2339,6 +2338,7 @@ async mounted() {
       this.loading = true;
 
           const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
           this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
@@ -2356,6 +2356,7 @@ async mounted() {
       this.loading = true;
 
           const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
           this.getSuivant(mpmeData)
         } else {
           console.log("errroor1", this.v$.$errors);
@@ -2521,10 +2522,11 @@ async mounted() {
         console.log("response", response);
         if (response.data.status === 'success') {
           console.log("Données MPME mises à jour avec succès !",response.data.data);
-         this.EntrepriseOptions = response.data.data.map((country) => ({
-        label:country. IntituleType,
-        value: country.id,
+         this.EntrepriseOptions = response.data.data.map((type) => ({
+        label:type.IntituleType,
+        value: type.id,
       }));
+      console.log('eeee', this.EntrepriseOptions);
          
         } 
       } catch (error) {
@@ -2867,7 +2869,7 @@ async mounted() {
     },
    async getSuivant(mpmeData){
          localStorage.setItem('tempMpmeDataUpdateDNI', JSON.stringify(mpmeData));
-          localStorage.setItem('CodeIdentifiantDNI', this.loggedInUser.id);
+          localStorage.setItem('CodeIdentifiantDNI', this.id);
 
            const success = await this.enregistrerMpmeDonnees(mpmeData);
           console.log("success", success);
@@ -2889,6 +2891,8 @@ async mounted() {
         
     },
     storeUserDataLocal(userData) {
+      console.log('okkk storeUserDataLocal',userData.types)
+
 
       this.step1.region = userData.Region;
       this.step1.commune = userData.Commune;
@@ -2971,6 +2975,16 @@ async mounted() {
     },
 
     storeUserData(userData) {
+     
+      let types = []
+      if(userData.type_entreprises.length > 0){
+        userData.type_entreprises.map((el)=>{
+          types.push( parseInt(el.TypeEnterpriseId) )
+        })
+      }
+     
+
+
       this.step1.region = userData.Region;
       this.step1.commune = userData.Commune;
       this.step1.ville = userData.Ville;
@@ -2988,14 +3002,17 @@ async mounted() {
 
       this.step2.an_creation = userData.AnneeCreation;
       this.step2.an_entre_acti = userData.AnneeEntreeActivite;
-      this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-      this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+      this.step2.code_st_juriq = userData.CodeStatutJuridique;
+      this.step2.autr_st_juriq = userData.AutreStatutJuridique;
+      
       this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
       // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
       this.step2.an_prod_1 = userData.AnneeProduction1;
       this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step2.types = userData.types;
-      this.step2.CodeZone = ["02"];
+      //  this.step2.types = types.length === 0 ?userData.types:"1|2".split("|") ;
+       this.step2.types = types ;
+    
+      this.step2.CodeZone = userData.CodeZone;
       this.step2.SuperficieOccupee = userData.SuperficieOccupee;
       this.step2.nbre_rccm = userData.NumeroRccm;
       this.step2.FichierRccm=userData.FichierRccm

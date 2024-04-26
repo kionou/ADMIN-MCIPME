@@ -158,7 +158,7 @@
                       <div class="col">
                           <div class="input-groupe">
                           <label for="SigleMpme"
-                              >Sigle Mpme </label
+                              >Sigle entreprise </label
                           >
                           <input
                               type="text"
@@ -785,7 +785,7 @@
                   placeholder="21"
                   v-model="step3.pers_per_femm"
                   :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
-                  @input="resultError['PersonnelPermanentFemme'] = false"
+                  @input="calculateTotalEmployees"
                   option-value-key="value" option-label-key="label" option-input-value-key="value"
                 />
               </div>
@@ -806,7 +806,7 @@
                   placeholder="11"
                   v-model="step3.pers_per_homm"
                   :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
-                  @input="resultError['PersonnelPermanentHomme'] = false"
+                  @input="calculateTotalEmployees"
                 />
               </div>
               <small v-if="v$.step3.pers_per_homm.$error">{{
@@ -952,7 +952,7 @@
                   placeholder="11"
                   v-model="step3.NbreActionnaireGuinneF"
                   :class="{ 'error-border': resultError['NbreActionnaireGuinneF'] }"
-                  @input="resultError['NbreActionnaireGuinneF'] = false"
+                  @input="updateTotalNumberOfShareholders"
                 />
               </div>
               <small v-if="v$.step3.NbreActionnaireGuinneF.$error">{{
@@ -974,7 +974,7 @@
                   placeholder="55"
                   v-model="step3.NbreActionnaireGuinneH"
                   :class="{ 'error-border': resultError['NbreActionnaireGuinneH'] }"
-                  @input="resultError['NbreActionnaireGuinneH'] = false"
+                  @input="updateTotalNumberOfShareholders"
                 />
               </div>
               <small v-if="v$.step3.NbreActionnaireGuinneH.$error">{{
@@ -1833,6 +1833,14 @@ computed:{
  loggedInUser() {
    return this.$store.getters['auth/myAuthenticatedUser'];
  },
+ calculateTotalEmployees() {
+      // Calculate the total number of Guinean employees
+      return this.step3.NbreEmploye = parseInt(this.step3.pers_per_femm || 0) + parseInt(this.step3.pers_per_homm || 0);
+    },
+    updateTotalNumberOfShareholders() {
+      // Mettre à jour le total en additionnant les valeurs des deux champs
+      return  this.step3.NbreActionnaireGuinne = parseInt(this.step3.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
+    },
  stepperProgress() {
     return (100 / 5) * (this.currentStep - 1) + "%";
   },
@@ -2172,13 +2180,13 @@ methods: {
       NbreEmployeGuinneF: parseInt(this.step3.NbreEmployeGuinneF) ,
       NbreEmployeGuinneH: parseInt(this.step3.NbreEmployeGuinneH) ,
       NbreEmploye:  parseInt(this.step3.NbreEmploye) ,
-      PersonnelPermanentFemme: this.step3.pers_per_femm || 0,
-      PersonnelPermanentHomme: this.step3.pers_per_homm || 0,
-      PersonnelTemporaireFemme: this.step3.pers_temp_femm || 0,
-      PersonnelTemporaireHomme: this.step3.pers_temp_homm || 0,
-      NbreActionnaireGuinneF: this.step3.NbreActionnaireGuinneF || 0,
-      NbreActionnaireGuinneH: this.step3.NbreActionnaireGuinneH || 0,
-      NbreActionnaire: this.step3.NbreActionnaireGuinne || 0,
+      PersonnelPermanentFemme:parseInt(this.step3.pers_per_femm )  ,
+      PersonnelPermanentHomme: parseInt(this.step3.pers_per_homm )   ,
+      PersonnelTemporaireFemme:parseInt(this.step3.pers_temp_femm )  ,
+      PersonnelTemporaireHomme:parseInt(this.step3.pers_temp_homm )  ,
+      NbreActionnaireGuinneF: parseInt(this.step3.NbreActionnaireGuinneF)   ,
+      NbreActionnaireGuinneH: parseInt(this.step3.NbreActionnaireGuinneH)   ,
+      NbreActionnaire: parseInt(this.step3.NbreActionnaireGuinne ),
      
           // step4
   
@@ -2217,6 +2225,9 @@ methods: {
 
       Direction:this.loggedInUser.direction
     };
+  },
+  updateTotalNumberOfShareholders(){
+    return  this.step4.NbreActionnaireGuinne = parseInt(this.step4.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
   },
   createMpmeFormData() {
     console.log('rrr',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)))
@@ -2324,7 +2335,7 @@ methods: {
       cancelButtonTextColor: '#FF0000',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.$router.push({ path: `/detail-entreprise/${this.id}` })
+        this.$router.push({ path: `/detail-entreprises/${this.id}` })
       } else {
         this.$router.push({ path: `/importatrices`})
 
@@ -2576,10 +2587,15 @@ methods: {
       console.log("response", response);
       if (response.data.status === 'success') {
         console.log("Données MPME mises à jour avec succès !",response.data.data);
-       this.EntrepriseOptions = response.data.data.map((country) => ({
+       const filteredData = response.data.data.filter(stat => {
+          return   stat.IntituleType !== 'UNITE INDUSTRIELLE';
+        });
+        this.EntrepriseOptions = filteredData.map((country) => ({
       label:country. IntituleType,
       value: country.id,
     }));
+    console.log("response",this.EntrepriseOptions);
+
        
       } 
     } catch (error) {
@@ -2962,8 +2978,8 @@ try {
 
     this.step2.an_creation = userData.AnneeCreation;
     this.step2.an_entre_acti = userData.AnneeEntreeActivite;
-    this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-    this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+    this.step2.code_st_juriq = userData.CodeStatutJuridique;
+    this.step2.autr_st_juriq = userData.AutreStatutJuridique;
     this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
     this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
     this.step2.an_prod_1 = userData.AnneeProduction1;
@@ -3024,6 +3040,12 @@ try {
   },
 
   storeUserData(userData) {
+    let types = []
+      if(userData.type_entreprises.length > 0){
+        userData.type_entreprises.map((el)=>{
+          types.push( parseInt(el.TypeEnterpriseId) )
+        })
+      }
     this.step1.region = userData.Region;
     this.step1.commune = userData.Commune;
     this.step1.ville = userData.Ville;
@@ -3041,13 +3063,13 @@ try {
 
     this.step2.an_creation = userData.AnneeCreation;
     this.step2.an_entre_acti = userData.AnneeEntreeActivite;
-    this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-    this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+    this.step2.code_st_juriq = userData.CodeStatutJuridique;
+    this.step2.autr_st_juriq = userData.AutreStatutJuridique;
     this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
     // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
     this.step2.an_prod_1 = userData.AnneeProduction1;
     this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-    this.step2.types = userData.types;
+    this.step2.types = types;
     this.step2.nbre_rccm = userData.NumeroRccm;
     this.step2.FichierRccm=userData.FichierRccm
     this.step2.nbre_nif = userData.NumeroNif;

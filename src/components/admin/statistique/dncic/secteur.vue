@@ -56,14 +56,14 @@
     methods: {
       async fetchStatistics() {
         try {
-          const response = await axios.get(`/indicateurs/statistics/${4}`, {
+          const response = await axios.get(`/indicateurs/statistics/${5}`, {
             headers: {
               Authorization: `Bearer ${this.loggedInUser.token}`,
             },
           });
   
           const dataFromAPI = response.data.data;
-          console.log('dniiiii',dataFromAPI);
+          console.log('dataFromAPI',dataFromAPI);
 
             if(this.chartOptions.xaxis.categories){
                 this.chartOptions.xaxis.categories = dataFromAPI.map(item => item.NomSecteurActivite); // Noms des secteurs d'activité

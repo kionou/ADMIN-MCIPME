@@ -42,10 +42,10 @@
      
     </div>
     <div class="carde-title">{{ partenaire.NomPartenaire }}</div>
-    <!-- <div class="carde-subtitle">
+    <div class="carde-subtitle">
       <p class="texte-content">Url: <span>{{ partenaire.SiteWeb }}</span></p>
       <p class="texte-content">Direction: <span>{{ partenaire.Direction }}</span></p>
-    </div> -->
+    </div>
     <hr class="carde-divider">
     <div class="carde-footer">
       <ul class="list-unstyled hstack gap-1 mb-0">
@@ -257,7 +257,7 @@ this.partenairesOptions = [...this.$store.getters['getPartenaires']];
 .carde {
   
   width: 250px;
-  height: 290px;
+  height: 320px;
   background: var(--bg-color);
   border: 2px solid var(--color-primary);
   box-shadow: 4px 4px var(--color-primary);

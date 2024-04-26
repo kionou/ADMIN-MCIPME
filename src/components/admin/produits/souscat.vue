@@ -241,7 +241,7 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
-import { fetchSousCategorieProduit } from '@/lib/testApi.js';
+
 
 export default {
  components: {

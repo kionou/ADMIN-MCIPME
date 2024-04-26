@@ -158,7 +158,7 @@
                         <div class="col">
                             <div class="input-groupe">
                             <label for="SigleMpme"
-                                >Sigle Mpme </label
+                                >Sigle entreprise </label
                             >
                             <input
                                 type="text"
@@ -2764,10 +2764,14 @@ async updateMpmeDonnees(mpmeData) {
         console.log("response", response);
         if (response.data.status === 'success') {
           console.log("Données MPME mises à jour avec succès !",response.data.data);
-         this.EntrepriseOptions = response.data.data.map((country) => ({
-        label:country. IntituleType,
-        value: country.id,
-      }));
+          const filteredData = response.data.data.filter(stat => {
+          return   stat.IntituleType !== 'UNITE INDUSTRIELLE';
+        });
+        this.EntrepriseOptions = filteredData.map((country) => ({
+      label:country. IntituleType,
+      value: country.id,
+    }));
+    console.log("response",this.EntrepriseOptions);
          
         } 
       } catch (error) {

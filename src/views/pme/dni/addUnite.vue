@@ -158,7 +158,7 @@
                       <div class="col">
                           <div class="input-groupe">
                           <label for="SigleMpme"
-                              >Sigle Mpme </label
+                              >Sigle entreprise </label
                           >
                           <input
                               type="text"
