@@ -37,7 +37,7 @@
 
               <form class="form" >
               <!-- Étape 1 -->
-              <div v-if="currentStep === 1">
+              <div v-if="currentStep === 2">
                   <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                   <BCardBody class="pt-0">
               
@@ -372,7 +372,7 @@
               </div>
 
               <!-- Étape 2 -->
-              <div v-if="currentStep === 2">
+              <div v-if="currentStep === 1">
                   <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                   <BCardBody class="pt-0">
               
@@ -2218,9 +2218,18 @@ methods: {
     };
   },
   createMpmeFormData() {
-    console.log('rrr',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)))
+   
   // Création d'un nouvel objet FormData
   const formData = new FormData();
+
+  console.log('rrr',this.step2.FichierRccm)
+  console.log('rrrNif',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)))
+ 
+ JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)).map((el)=>{
+   formData.append( 'ListeSousSecteurActivite',el);
+
+ })
+ 
 
   // Ajout des champs et de leurs valeurs à formData
   formData.append('Region', this.step1.region);
@@ -2245,14 +2254,14 @@ methods: {
   formData.append('CodeStatutJuridique', this.step2.code_st_juriq);
   formData.append('AutreStatutJuridique', this.step2.autr_st_juriq);
   formData.append('PrincipalSecteurActivite', this.step2.prin_sect_acti);
-   formData.append( 'ListeSousSecteurActivite',JSON.parse( JSON.stringify(this.step2.selectedSousSecteurs)));
+  // formData.append( 'ListeSousSecteurActivite',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)));
   formData.append('AnneeProduction1', this.step2.an_prod_1);
   formData.append('PaysSiegeSocial', this.step2.PaysSiegeSocial);
   formData.append('types', this.step2.types);
   formData.append('NumeroRccm', this.step2.nbre_rccm);
-  formData.append('FichierRccm', this.step2.FichierRccm);
+  formData.append('FileRccm', this.step2.FichierRccm?this.step2.FichierRccm:null);
   formData.append('NumeroNif', this.step2.nbre_nif);
-  formData.append('FichierNif', this.step2.FichierNif);
+  formData.append('FileNif', this.step2.FichierNif?this.step2.FichierNif:null);
   formData.append('DateGenerationNif', this.step2.DateGenerationNif);
   formData.append('NumeroTva', this.step2.NumeroTva);
 
@@ -2261,8 +2270,8 @@ methods: {
   formData.append('NbreEmployeGuinneF', this.step3.NbreEmployeGuinneF || 0);
   formData.append('NbreEmployeGuinneH', this.step3.NbreEmployeGuinneH || 0);
   formData.append('NbreEmploye', this.step3.NbreEmployeGuinne || 0);
-  formData.append('PersonnelPermanentFemme', this.step3.pers_per_femm || 0);
-  formData.append('PersonnelPermanentHomme', this.step3.pers_per_homm || 0);
+  formData.append('PersonnelPermanentFemme',  0);
+  formData.append('PersonnelPermanentHomme',  0);
   formData.append('PersonnelTemporaireFemme', this.step3.pers_temp_femm || 0);
   formData.append('PersonnelTemporaireHomme', this.step3.pers_temp_homm || 0);
   formData.append('NbreActionnaireGuinneF', this.step3.NbreActionnaireGuinneF || 0);
@@ -2334,11 +2343,11 @@ methods: {
   //   this.loading = true;
     if (this.currentStep === 1) {
       this.error = "";
-      this.v$.step1.$touch();
+      this.v$.step2.$touch();
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         console.log("mpmeData1", mpmeData);
         this.getSuivant(mpmeData)
        
@@ -2358,7 +2367,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2375,7 +2384,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2392,7 +2401,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2409,7 +2418,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2425,7 +2434,7 @@ methods: {
       this.v$.step6.$touch();
       if (this.v$.$errors.length == 0) {
         this.loading = true
-        const mpmeData = this.createMpmeData();
+        const mpmeData = this.createMpmeFormData();
         console.log("mpmeData1", mpmeData);
         localStorage.setItem('tempMpmeDataUpdateDNCIC', JSON.stringify(mpmeData));
         localStorage.setItem('CodeIdentifiantDNCIC', this.loggedInUser.id);
@@ -2480,6 +2489,8 @@ methods: {
         } else {
           this.storeUserData(this.userData);
          console.log("UserData:", this.userData);
+         console.log("UserData:",this.storeUserData(this.userData));
+
         }
       
       // console.log('UserData:', this.userData.ListeSousSecteurActivite);
@@ -2501,7 +2512,7 @@ methods: {
       const response = await axios.put(`/mcipme/${userId}`, mpmeData, {
         headers: {
           Authorization: `Bearer ${this.loggedInUser.token}`,
-          'Content-Type': 'application/json', 
+          'Content-Type': 'multipart/form-data', 
           
         },
       });
@@ -3048,9 +3059,9 @@ try {
     this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
     this.step2.types = userData.types;
     this.step2.nbre_rccm = userData.NumeroRccm;
-    this.step2.FichierRccm=userData.FichierRccm
+    this.step2.FichierRccm=userData.FichierRccm?userData.FichierRccm:null;
     this.step2.nbre_nif = userData.NumeroNif;
-    this.step2.FichierNif = userData.FichierNif;
+    this.step2.FichierNif = userData.FichierNif?userData.FichierNif:null;
     this.step2.DateGenerationNif = userData.DateGenerationNif;
     this.step2.NumeroTva = userData.NumeroTva;
 
