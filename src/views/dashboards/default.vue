@@ -106,7 +106,7 @@ async  mounted() {
         // },
         {
           icon: "bx bx-purchase-tag-alt",
-          title: "Total emploi crée",
+          title: "Total emplois crées",
           value:  response.data.data[0].EmployersCount || 0,
         },
         {

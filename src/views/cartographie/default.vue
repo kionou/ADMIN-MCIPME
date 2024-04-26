@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Cartographie" pageTitle="Tableau de bord"  :statistic="statistic"/>
+    <!-- <PageHeader title="Cartographie" pageTitle="Tableau de bord"  :statistic="statistic"/> -->
     <div class="cartographie">
         <section>
           <iframe src="https://bd-mcipme.org/enterprise/App/Vues/master.html#/map" title="collect" style="width: 100%; height: 100vh; border: none;"></iframe>

@@ -9,22 +9,24 @@ const router = createRouter({
     {
       path: "/",
       name: "login",
-      component: () => import("../views/account/login.vue"),
+      
+      component: () => import("../views/account/login2.vue"),
     },
     {
       path: "/login",
       name: "login-2",
-      component: () => import("../views/account/login2.vue"),
+      component: () => import("../views/account/login.vue"),
     },
     {
       path: "/reinitialiser",
       name: "reinitialiser",
-      component: () => import("../views/account/recoverpw-sample.vue"),
+      component: () => import("../views/account/recover.vue"),
+
     },
     {
       path: "/reinitialiser2",
       name: "reinitialiser2",
-      component: () => import("../views/account/recover.vue"),
+      component: () => import("../views/account/recoverpw-sample.vue"),
     },
 
     // To finish account
