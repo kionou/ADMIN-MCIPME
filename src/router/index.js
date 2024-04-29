@@ -320,6 +320,20 @@ const router = createRouter({
       props:true,
       component: () => import("../views/cartographie/default.vue"),
     },
+
+
+    {
+      path: "/departements",
+      name: "departements",
+      meta: { requiresAuth: true },
+      component: () => import("../views/departement/default.vue"),
+    },
+    {
+      path: "/roles",
+      name: "roles",
+      meta: { requiresAuth: true },
+      component: () => import("../views/permissions/default.vue"),
+    },
   
   ],
   // mode: "history",

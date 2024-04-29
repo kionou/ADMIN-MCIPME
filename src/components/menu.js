@@ -18,12 +18,12 @@ let menuItems = [
         link: "/utilisateurs",
         parentId: 29,
       },
-      // {
-      //     id: 31,
-      //     label: "menuitems.email.list.reademail",
-      //     link: "/historiques",
-      //     parentId: 29
-      // },
+      {
+          id: 31,
+          label: "menuitems.email.list.role",
+          link: "/roles",
+          parentId: 29
+      },
       // {
       //     id: 32,
       //     label: "menuitems.email.list.droit",
@@ -121,6 +121,12 @@ let menuItems = [
         id: 57,
         label: "menuitems.projects.list.entreprise",
         link: "/types-entreprises",
+        parentId: 37,
+      },
+      {
+        id: 58,
+        label: "menuitems.projects.list.departement",
+        link: "/departements",
         parentId: 37,
       },
       {
