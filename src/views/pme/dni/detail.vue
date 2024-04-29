@@ -158,7 +158,6 @@
                                         </div>
 
                                     </div>
-
                                     <div class="rounded-lg  mt-3">
                         <p class="max-w-2xl mb-1 text-center font-semibold text-gray-900">Nombre d'Employés dans l'Entreprise: Hommes et Femmes</p>
                         <div class="-my-2  sm:-mx-6 lg:-mx-8">
@@ -184,9 +183,9 @@
                                             <tr class="bg-white">
                                             
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneH || 0 }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelPermanentHomme || 0 }}</td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneF || 0 }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelPermanentFemme || 0 }}</td>
                                                 <td
                                                     class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmploye || 0}}</td>
                                                
@@ -196,7 +195,46 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                                   </div>
+
+                                   <div class="rounded-lg  mt-3">
+                        <p class="max-w-2xl mb-1 text-center font-semibold text-gray-900"> Nombre d'Actionnaires dans l'Entreprise: Hommes et Femmes</p>
+                        <div class="-my-2  sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                                <div class="overflow-hidden border-b border-gray-200  rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                               
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Hommes</th>
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Femmes</th>
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Total</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-white">
+                                            
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH || 0 }} </td>
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF || 0 }}</td>
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire || 0}}</td>
+                                            
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                                   </div>
                                 </div>
 
                                 <div class=" card col-xl-6 col-lg-6 col-md-6 py-2 ttb1">
@@ -255,6 +293,17 @@
                                                             <dt class="text-sm font-medium text-gray-500">Numéro Rccm</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroRccm }} </dd>
                                                         </div>
+
+                                                        <div
+                                                            class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                                            <dt class="text-sm font-medium text-gray-500">Type d'entreprise</dt>
+                                                            <dd
+                                                                class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"  v-if="data.type_entreprises">  
+                                                                
+                                                                <span v-for="pme in data.type_entreprises" :key="pme.id" > {{ pme.type_entreprise.IntituleType }} , </span> 
+                                                                
+                                                                </dd>
+                                                        </div>
                                                        
 
                                                         
@@ -265,45 +314,48 @@
                                         </div>
 
                                     </div>
-
-                                    <div class="rounded-lg  mt-3">
-                        <p class="max-w-2xl mb-1 text-center font-semibold text-gray-900"> Nombre d'Actionnaires dans l'Entreprise: Hommes et Femmes</p>
-                        <div class="-my-2  sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                <div class="overflow-hidden border-b border-gray-200  rounded-lg">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                               
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Hommes</th>
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Femmes</th>
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Total</th>
+                                    <div class="card card-action mb-4">
+                                        <div class="card-header align-items-center">
+                                            <h5 class="card-action-title mb-0"><i class="bx bx-list-ul me-2"></i>Details Documents</h5>
+                                          
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="timeline ms-2">
+                                                <li class="timeline-item timeline-item-transparent">
+                                                    <span class="timeline-point timeline-point-primary"></span>
+                                                    <div class="timeline-event">
                                                 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="bg-white">
-                                            
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH || 0 }} </td>
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF || 0 }}</td>
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire || 0}}</td>
-                                            
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                        <div class="d-flex flex-wrap gap-2">
+                                                            <p v-if="data.FichierRccm === null"> Pas de Rccm pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierRccm" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Rccm</span>
+                                                            </a>
+
+                                                            <p v-if="data.FichierNif === null"> Pas de Nif pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierNif" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Nif</span>
+                                                            </a>
+
+                                                            <p v-if="data.FichierCertificat === null"> Pas de certificat pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierCertificat" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Certificat</span>
+                                                            </a>
+                                                           
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 

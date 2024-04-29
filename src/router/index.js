@@ -282,12 +282,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/ministre.vue"),
     },
-    // {
-    //   path: "/demandes-implantations",
-    //   name: "demandes-implantations",
-    //   meta: { requiresAuth: true },
-    //   component: () => import("../views/demandes/implantation.vue"),
-    // },
+    {
+      path: "/types-entreprises",
+      name: "types-entreprises",
+      meta: { requiresAuth: true },
+      component: () => import("../views/entreprise/default.vue"),
+    },
     // {
     //   path: "/demandes-produits",
     //   name: "demandes-produits",

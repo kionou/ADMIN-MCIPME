@@ -38,9 +38,9 @@
           <div class="texte">
           <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
           <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-          <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
+          <p class="texte-content text-truncate" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
           <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
-          <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+          <p class="texte-content text-truncate" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
           <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
@@ -62,10 +62,7 @@
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
                               <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
-                              <BDropdownItem @click="$router.push({ path: '/stock-pme/'+ pme.CodeMpme })" >Stock disponible</BDropdownItem>
-                              <BDropdownItem href="#">Rename</BDropdownItem>
-                              <BDropdownDivider />
-                              <BDropdownItem href="#">Remove</BDropdownItem>
+                             
                             </BDropdown>
                            
                        </li>

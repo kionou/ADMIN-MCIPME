@@ -60,9 +60,9 @@
           }
         }
       },
-      colors: ['#FF6604', '#544fc5'],// Définissez ici les couleurs que vous souhaitez utiliser
       series: [{
         name: 'Secteurs Activite',
+        colorByPoint: true,
         data: [] // Les données seront mises à jour dynamiquement
       }],
     },

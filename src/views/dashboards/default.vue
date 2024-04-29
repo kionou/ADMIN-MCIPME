@@ -56,6 +56,7 @@ export default {
       datay:[],
       datax:[],
       mpme:[],
+      SecteurActiviteOptions:[],
       IndicateursOptions:[],
       regionOptions:[],
       indicateur1:'',
@@ -77,6 +78,7 @@ async  mounted() {
     await this.fetchStaAnnuel()
     await this.fetchMpme()
     await this.fetchRegionOptions()
+    await this.fetchSecteurActiviteOptions()
   },
   methods: {
     
@@ -231,6 +233,21 @@ async  mounted() {
       );
     }
   },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
       NameRegion(id){
           try {
           
@@ -239,6 +256,25 @@ async  mounted() {
           console.log('selectedRegion',selectedRegion);
           if (selectedRegion) {
           return  selectedRegion.NomRegion;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
           } else {
               console.error('Région non trouvée dans les options.');
           }
@@ -325,20 +361,17 @@ async  mounted() {
       <div class="parent" v-for="pme in mpme" :key="pme.id">
      <div class="carde" >
     <div class="content-box">
-        <span class="carde-title" v-if="pme">{{pme.NomMpme }}</span>
-        <!-- <p class="carde-content">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-        </p> -->
-        <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
-        <div class="texte">
-          <p class="texte-content" v-if="pme">Code DNCIC: <span>{{ pme.CodeMpme }}</span></p>
-        <p class="texte-content" v-if="pme">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
-        <p class="texte-content" v-if="pme">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
-        <p class="texte-content" v-if="pme">Taille: <span>{{ pme.SigleMpme }}</span></p>
-        <p class="texte-content" v-if="pme">Email: <span>{{ pme.AdresseEmail }}</span></p>
-        <p class="texte-content" v-if="pme" >Contact: <span> {{ pme.NumeroWhatsApp }}</span></p>
-        <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
-          <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" >   <span class="see-more">
+      <span class="carde-title">{{ pme.NomMpme }}</span>
+          <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
+          <div class="texte">
+            <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>
+          <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
+          <p class="texte-content text-truncate">Secteur Activité : <span>{{ NameActivite(pme.PrincipalSecteurActivite) }}</span></p>
+          <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
+          <p class="texte-content text-truncate">Email : <span>{{ pme.AdresseEmail }}</span></p>
+          <p class="texte-content">Contact : <span> {{ pme.NumeroWhatsApp }}</span></p>
+        <div >
+          <router-link :to="{ name: 'detail-industrielle', params: { id: pme.CodeMpme }}" >   <span class="see-more">
               <i class="bx bx-show"></i>
             </span>
           </router-link>             
@@ -462,8 +495,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

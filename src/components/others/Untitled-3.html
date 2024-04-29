@@ -34,7 +34,8 @@
              </div>   
 
              <div class="container-fluid" style="margin-top: 48px">
-            
+              
+  
                 <form class="form" >
                 <!-- Étape 1 -->
                 <div v-if="currentStep === 1">
@@ -149,7 +150,7 @@
                   {{ resultError["Commune"] }}
                 </small>
               </div>
-                        </div>
+            </div>
                      </div>
                      <div class="content">
                         <p class="titre">INFORMATIONS SUR L'ENTREPRISE</p>
@@ -321,7 +322,7 @@
                                 type="email"
                                 name="email"
                                 id="AdresseEmail"
-                                placeholder="dncicmecl@gmail.com"
+                                placeholder="dnipmecl@gmail.com"
                                 v-model="step1.email"
                                 :class="{ 'error-border': resultError['AdresseEmail'] }"
                                 @input="resultError['AdresseEmail'] = false"
@@ -373,7 +374,691 @@
 
                 <!-- Étape 2 -->
                 <div v-if="currentStep === 2">
-                  <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCardBody class="pt-0">
+                
+                  <div class="form-container">
+                    <div class="content">
+                        <p class="titre">INFORMATIONS SUR L'ACTIVITE</p>
+                        <div class="row mb-3 mt-3 content-group">
+                 <div class="col">
+                <div class="input-groupe">
+                  <label for="AnneeCreation"
+                    >Année de Création <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                    label="Sélectionner une année"
+                    v-model="step2.an_creation"
+                    no-radius  color="info"
+                    :options="yearOptions"
+                    :class="{ 'error-border': resultError['AnneeCreation'] }"
+                    @input="resultError['AnneeCreation'] = false"
+                    search
+                  />
+                
+                </div>
+                <small v-if="v$.step2.an_creation.$error">{{
+                  v$.step2.an_creation.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['AnneeCreation']">
+                  {{ resultError["AnneeCreation"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="AnneeEntreeActivite"
+                    >Année d'Entrée en Activité <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                    v-model="step2.an_entre_acti"
+                    label="Sélectionner une année"
+                    no-radius  color="info"
+                    :options="yearOptions"
+                    :class="{ 'error-border': resultError['AnneeEntreeActivite'] }"
+                    @input="resultError['AnneeEntreeActivite'] = false"
+                    search
+                  />
+                
+                </div>
+                <small v-if="v$.step2.an_entre_acti.$error">{{
+                  v$.step2.an_entre_acti.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['AnneeEntreeActivite']">
+                  {{ resultError["AnneeEntreeActivite"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="CodeStatutJuridique">Statut Juridique</label>
+                  <MazSelect
+                    v-model="step2.code_st_juriq"
+                    label="Sélectionner votre statut juridique"
+                    no-radius  color="info"
+                    :options="StatutJuridiqueOptions"
+                    :class="{ 'error-border': resultError['CodeStatutJuridique'] }"
+                    @input="resultError['CodeStatutJuridique'] = false"
+                   
+                    search
+                  />
+                </div>
+                <small v-if="v$.step2.code_st_juriq.$error">{{
+                  v$.step2.code_st_juriq.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['CodeStatutJuridique']">
+                  {{ resultError["CodeStatutJuridique"] }}
+                </small>
+              </div>
+            </div>
+            <div class="row mb-3 mt-3 content-group">
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="AutreStatutJuridique">Autre Statut Juridique</label>
+                  <MazSelect
+                  label="Sélectionner votre statut juridique"
+                    v-model="step2.autr_st_juriq"
+                    no-radius  color="info"
+                    :options="StatutJuridiqueOptions"
+                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
+                    @input="resultError['AutreStatutJuridique'] = false"
+                    search
+                  />
+                  <!-- <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step2.autr_st_juriq"
+                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
+                    @input="resultError['AutreStatutJuridique'] = false"
+                  /> -->
+                 
+                </div>
+                <small v-if="v$.step2.autr_st_juriq.$error">{{
+                  v$.step2.autr_st_juriq.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['AutreStatutJuridique']">
+                  {{ resultError["AutreStatutJuridique"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PrincipalSecteurActivite"
+                    >Principal Secteur d'Activite <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                  label="Sélectionner votre secteur activité"
+                    v-model="step2.prin_sect_acti"
+                    no-radius  color="info"
+                    :options="SecteurActiviteOptions"
+                    :class="{ 'error-border': resultError['PrincipalSecteurActivite'] }"
+                    @input="resultError['PrincipalSecteurActivite'] = false"
+                   
+                    search
+                  />
+                </div>
+                <small v-if="v$.step2.prin_sect_acti.$error">{{
+                  v$.step2.prin_sect_acti.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['PrincipalSecteurActivite']">
+                  {{ resultError["PrincipalSecteurActivite"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="ListeSousSecteurActivite"
+                    >Liste Sous Secteur Activite <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                  label="Sélectionner vos sous secteurs activités"
+                    v-model="step2.selectedSousSecteurs"
+                    no-radius  color="info"
+                    :options="SousSecteurActiviteOptions"
+                    multiple
+                    :class="{ 'error-border': resultError['ListeSousSecteurActivite'] }"
+                    @input="resultError['ListeSousSecteurActivite'] = false"
+                   
+                    search
+                  />
+                  
+                   
+                
+                <small v-if="v$.step2.selectedSousSecteurs.$error">{{
+                  v$.step2.selectedSousSecteurs.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['ListeSousSecteurActivite']">
+                  {{ resultError["ListeSousSecteurActivite"] }}
+                </small>
+              </div>
+            </div>
+            <div class="row mb-3 mt-3 content-group">
+              
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PaysSiegeSocial"
+                    >Pays du Siège Social <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                  label="Sélectionner votre pays"
+                    v-model="step2.PaysSiegeSocial"
+                    :options="sortedCountryOptions"
+                    v-slot="{ option }"
+                    search
+                    no-radius  color="info"
+                    :class="{ 'error-border': resultError['PaysSiegeSocial'] }"
+                    @input="resultError['PaysSiegeSocial'] = false"
+                    option-value-key="value" option-label-key="label" option-input-value-key="value"
+                   
+                  >
+                    <div
+                      class="flex items-center"
+                      style="
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                        width: 100%;
+                        gap: 1rem;
+                      "
+                    >
+                      <MazAvatar size="0.8rem" :src="option.flag" />
+                      <strong>
+                        {{ option.label }}
+                      </strong>
+                    </div>
+                  </MazSelect>
+                </div>
+                <small v-if="v$.step2.PaysSiegeSocial.$error">{{
+                  v$.step2.PaysSiegeSocial.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['PaysSiegeSocial']">
+                  {{ resultError["PaysSiegeSocial"] }}
+                </small>
+              </div>
+              <!-- <div class="col">
+                <div class="input-groupe">
+                  <label for="ListeSousSecteurActivite"
+                    >Êtes-vous une unité distributrice ? <span class="text-danger">*</span></label
+                  >
+                  <MazSelect label="Sélectionner Oui ou Non"
+                    v-model="step2.distributrice"
+                    no-radius  color="info"
+                    :options="choix"
+                    
+                    search
+                  />
+                  
+                <small v-if="v$.step2.distributrice.$error">{{
+                  v$.step2.distributrice.$errors[0].$message
+                }}</small>
+              </div>
+            </div> -->
+             <div class="col" >
+                <div class="input-groupe">
+                  <label for="ListeSousSecteurActivite"
+                    >Quel est le type de votre entreprise ?  <span class="text-danger">*</span></label
+                  >
+                  <MazSelect
+                  label="Sélectionner le type de votre entreprise"
+                    v-model="step2.types"
+                    no-radius  color="info"
+                    :options="EntrepriseOptions"
+                  
+                    :class="{ 'error-border': resultError['types'] }"
+                    @input="resultError['types'] = false"
+                   multiple
+                    search
+                  />
+                <small v-if="v$.step2.types.$error">{{
+                  v$.step2.types.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['types']">
+                  {{ resultError["types"] }}
+                </small>
+              </div>
+            </div> 
+
+
+            </div>
+
+            <div class="row mb-3 mt-3 content-group">
+              
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PaysSiegeSocial" >Zone Industrielle <span class="text-danger">*</span></label  >
+                    <MazSelect label="Sélectionner la zone industrielle" v-model="step2.CodeZone"  no-radius  color="info"  :options="ZoneOptions"
+                    :class="{ 'error-border': resultError['CodeZone'] }"
+                    @input="resultError['CodeZone'] = false"
+                   
+                    search
+                  />
+                </div>
+                <small v-if="v$.step2.CodeZone.$error">{{
+                  v$.step2.CodeZone.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['CodeZone']">
+                  {{ resultError["CodeZone"] }}
+                </small>
+              </div>
+           
+             <div class="col" >
+                <div class="input-groupe">
+                  <label for="ListeSousSecteurActivite"
+                    >Superficie Occuppée  <span class="text-danger">*</span></label
+                  >
+                  <MazInput v-model="step2.SuperficieOccupee"  no-radius type="number"  color="info" placeholder="440.5" />
+
+                  
+                   
+                
+                <small v-if="v$.step2.SuperficieOccupee.$error">{{
+                  v$.step2.SuperficieOccupee.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['SuperficieOccupee']">
+                  {{ resultError["SuperficieOccupee"] }}
+                </small>
+              </div>
+            </div> 
+
+
+            </div>
+                     </div>
+                     
+                  </div>
+                  <div class="content">
+                        <p class="titre">INFORMATIONS D'IDENTIFICATION COMMERCIALE</p>
+               
+                        <div class="row mb-3 mt-3 content-group">
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NumeroNif">Numero Nif</label>
+                  <input
+                    type="text"
+                    name="NumeroNif"
+                    id="NumeroNif"
+                    placeholder="1234567890L"
+                    v-model="step2.nbre_nif"
+                    :class="{ 'error-border': resultError['NumeroNif'] }"
+                    @input="resultError['NumeroNif'] = false"
+                  />
+                </div>
+              </div>
+              <small v-if="v$.step2.nbre_nif.$error">{{
+                v$.step2.nbre_nif.$errors[0].$message
+              }}</small>
+              <small v-if="resultError['NumeroNif']">
+                {{ resultError["NumeroNif"] }}
+              </small>
+            
+            
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="DateGenerationNif">Date Generation du Numero Nif </label>
+                  <input
+                    type="date"
+                    name="DateGenerationNif"
+                    id="DateGenerationNif"
+                    placeholder=""
+                    v-model="step2.DateGenerationNif"
+                    :class="{ 'error-border': resultError['DateGenerationNif'] }"
+                    @input="resultError['DateGenerationNif'] = false"
+                  />
+                </div>
+              </div>
+              <small v-if="v$.step2.DateGenerationNif.$error">{{
+                v$.step2.DateGenerationNif.$errors[0].$message
+              }}</small>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="FichierNif">Fichier Nif</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                     @change="handleFileUploadNif"
+                    name="FichierNif"
+                    id="FichierNif"
+                    placeholder=""
+                   
+                    :class="{ 'error-border': resultError['FichierNif'] }"
+                    @input="resultError['FichierNif'] = false"
+                  />
+                </div>
+              </div>
+              <small v-if="v$.step2.FichierNif.$error">{{
+                v$.step2.FichierNif.$errors[0].$message
+              }}</small>
+              <small v-if="resultError['FichierNif']">
+                {{ resultError["FichierNif"] }}
+              </small>
+
+             
+            </div>
+
+            <div class="row mb-3 mt-3 content-group">
+             <div class="col">
+                <div class="input-groupe">
+                  <label for="NumeroRccm">Numéro Rccm </label>
+                  <input
+                    type="text"
+                    name="NumeroRccm"
+                    id="NumeroRccm"
+                    placeholder="09R09999999"
+                    v-model="step2.nbre_rccm"
+                    :class="{ 'error-border': resultError['NumeroRccm'] }"
+                    @input="resultError['NumeroRccm'] = false"
+                  />
+                </div>
+              </div>
+                <small v-if="v$.step2.nbre_rccm.$error">{{
+                v$.step2.nbre_rccm.$errors[0].$message
+              }}</small>
+              <small v-if="resultError['NumeroRccm']">
+                {{ resultError["NumeroRccm"] }}
+              </small>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="FichierRccm">Fichier Rccm </label>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                     @change="handleFileUploadRccm"
+                    name="FichierRccm"
+                    id="FichierRccm"
+                    placeholder=""
+                   
+                    :class="{ 'error-border': resultError['FichierRccm'] }"
+                    @input="resultError['FichierRccm'] = false"
+                  />
+                </div>
+              </div>
+                <small v-if="v$.step2.FichierRccm.$error">{{
+                v$.step2.FichierRccm.$errors[0].$message
+              }}</small>
+              <small v-if="resultError['FichierRccm']">
+                {{ resultError["FichierRccm"] }}
+              </small>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NumeroTva">Numero de la TVA</label>
+                  <input
+                    type="text"
+                    name="NumeroTva"
+                    id="NumeroTva"
+                    placeholder="exemple"
+                    v-model="step2.NumeroTva"
+                    :class="{ 'error-border': resultError['NumeroTva'] }"
+                    @input="resultError['NumeroTva'] = false"
+                  />
+                </div>
+              </div>
+              <small v-if="v$.step2.NumeroTva.$error">{{
+                v$.step2.NumeroTva.$errors[0].$message
+              }}</small>
+              <small v-if="resultError['NumeroTva']">
+                {{ resultError["NumeroTva"] }}
+              </small>
+             
+            </div>
+         
+                     </div>
+                </div>
+               
+              </BCardBody>
+                      </BCard>
+                
+                    <div class="btnForm py-3 d-flex items-center justify-content-between">
+                    <button class="btnLogin" @click.prevent="prevStep">Précédent</button>
+                    <button class="btnLogin" @click.prevent="nextStep">Suivant</button>
+                    </div>
+                </div>
+                <!-- Étape 3 -->
+                <div v-if="currentStep === 3">
+                    <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
+                    <BCardBody class="pt-0">
+                
+                  <div class="form-container">
+                    <div class="content">
+                        <p class="titre">INFORMATIONS SUR LES PERSONNELS</p>
+                        <div class="row mb-3 mt-3 content-group">
+              
+                          <div class="col">
+                <div class="input-groupe">
+                  <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
+                  <input
+                    type="text"
+                    name="PersonnelPermanentFemme"
+                    id="PersonnelPermanentFemme"
+                    placeholder="21"
+                    v-model="step3.pers_per_femm"
+                    :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
+                    @input="resultError['PersonnelPermanentFemme'] = false"
+                    option-value-key="value" option-label-key="label" option-input-value-key="value"
+                  />
+                </div>
+                <small v-if="v$.step3.pers_per_femm.$error">{{
+                  v$.step3.pers_per_femm.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['PersonnelPermanentFemme']">
+                  {{ resultError["PersonnelPermanentFemme"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
+                  <input
+                    type="text"
+                    name="PersonnelPermanentHomme"
+                    id="PersonnelPermanentHomme"
+                    placeholder="11"
+                    v-model="step3.pers_per_homm"
+                    :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
+                    @input="resultError['PersonnelPermanentHomme'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.pers_per_homm.$error">{{
+                  v$.step3.pers_per_homm.$errors[0].$message
+                }}</small>
+
+                <small v-if="resultError['PersonnelPermanentHomme']">
+                  {{ resultError["PersonnelPermanentHomme"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreEmploye"
+                    >Nombre d'employés Guinéens<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="NbreEmploye"
+                    id="NbreEmploye"
+                    placeholder="33"
+                    v-model="step3.NbreEmploye"
+                    :class="{ 'error-border': resultError['NbreEmploye'] }"
+                    @input="resultError['NbreEmploye'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreEmploye.$error">{{
+                  v$.step3.NbreEmploye.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreEmploye']">
+                  {{ resultError["NbreEmploye"] }}
+                </small>
+              </div>
+                         </div>
+                        <div class="row mb-3 mt-3 content-group">
+              
+
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreEmployeGuinneF"
+                    >Nombre d'employées féminines Guinéennes</label
+                  >
+                  <input
+                    type="text"
+                    name="NbreEmployeGuinneF"
+                    id="NbreEmployeGuinneF"
+                    placeholder="11"
+                    v-model="step3.NbreEmployeGuinneF"
+                    :class="{ 'error-border': resultError['NbreEmployeGuinneF'] }"
+                    @input="resultError['NbreEmployeGuinneF'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreEmployeGuinneF.$error">{{
+                  v$.step3.NbreEmployeGuinneF.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreEmployeGuinneF']">
+                  {{ resultError["NbreEmployeGuinneF"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreEmployeGuinneH"
+                    >Nombre d'employés masculins Guinéens</label
+                  >
+                  <input
+                    type="text"
+                    name="NbreEmployeGuinneH"
+                    id="NbreEmployeGuinneH"
+                    placeholder="55"
+                    v-model="step3.NbreEmployeGuinneH"
+                    :class="{ 'error-border': resultError['NbreEmployeGuinneH'] }"
+                    @input="resultError['NbreEmployeGuinneH'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreEmployeGuinneH.$error">{{
+                  v$.step3.NbreEmployeGuinneH.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreEmployeGuinneH']">
+                  {{ resultError["NbreEmployeGuinneH"] }}
+                </small>
+              </div>
+                        </div>
+
+                        <div class="row mb-3 mt-3 content-group">
+                        <div class="col">
+                            <div class="input-groupe">
+                            <label for="PersonnelTemporaireFemme"
+                                >Personnel Temporaire Femme
+                            </label>
+                            <input
+                                type="text"
+                                name="PersonnelTemporaireFemme"
+                                id="PersonnelTemporaireFemme"
+                                placeholder="33"
+                                v-model="step3.pers_temp_femm"
+                                :class="{ 'error-border': resultError['PersonnelTemporaireFemme'] }"
+                                @input="resultError['PersonnelTemporaireFemme'] = false"
+                            />
+                            </div>
+                            <small v-if="v$.step3.pers_temp_femm.$error">{{
+                            v$.step3.pers_temp_femm.$errors[0].$message
+                            }}</small>
+                            <small v-if="resultError['PersonnelTemporaireFemme']">
+                            {{ resultError["PersonnelTemporaireFemme"] }}
+                            </small>
+                        </div>
+                        <div class="col">
+                            <div class="input-groupe">
+                            <label for="PersonnelTemporaireHomme"
+                                >Personnel Temporaire Homme
+                            </label>
+                            <input
+                                type="text"
+                                name="PersonnelTemporaireHomme"
+                                id="PersonnelTemporaireHomme"
+                                placeholder="44"
+                                v-model="step3.pers_temp_homm"
+                                :class="{ 'error-border': resultError['PersonnelTemporaireHomme'] }"
+                                @input="resultError['PersonnelTemporaireHomme'] = false"
+                            />
+                            </div>
+                            <small v-if="v$.step3.pers_temp_homm.$error">{{
+                            v$.step3.pers_temp_homm.$errors[0].$message
+                            }}</small>
+                            <small v-if="resultError['PersonnelTemporaireHomme']">
+                            {{ resultError["PersonnelTemporaireHomme"] }}
+                            </small>
+                        </div>
+                        
+                        </div>
+                  </div>
+                  <div class="content">
+                        <p class="titre">INFORMATIONS SUR LES  ACTIONNAIRESE</p>
+                        <div class="row mb-3 mt-3 content-group">
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreActionnaireGuinneF"
+                    >Nombre d'actionnaires Guinéens Femmes</label
+                  >
+                  <input
+                    type="text"
+                    name="NbreActionnaireGuinneF"
+                    id="NbreActionnaireGuinneF"
+                    placeholder="11"
+                    v-model="step3.NbreActionnaireGuinneF"
+                    :class="{ 'error-border': resultError['NbreActionnaireGuinneF'] }"
+                    @input="resultError['NbreActionnaireGuinneF'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreActionnaireGuinneF.$error">{{
+                  v$.step3.NbreActionnaireGuinneF.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreActionnaireGuinneF']">
+                  {{ resultError["NbreActionnaireGuinneF"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreActionnaireGuinneH"
+                    >Nombre d'actionnaires Guinéens Hommes</label
+                  >
+                  <input
+                    type="text"
+                    name="NbreActionnaireGuinneH"
+                    id="NbreActionnaireGuinneH"
+                    placeholder="55"
+                    v-model="step3.NbreActionnaireGuinneH"
+                    :class="{ 'error-border': resultError['NbreActionnaireGuinneH'] }"
+                    @input="resultError['NbreActionnaireGuinneH'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreActionnaireGuinneH.$error">{{
+                  v$.step3.NbreActionnaireGuinneH.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreActionnaireGuinneH']">
+                  {{ resultError["NbreActionnaireGuinneH"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreActionnaireGuinne"
+                    >Nombre d'actionnaires Guinéens</label
+                  >
+                  <input
+                    type="text"
+                    name="NbreActionnaireGuinne"
+                    id="NbreActionnaireGuinne"
+                    placeholder="33"
+                    v-model="step3.NbreActionnaireGuinne"
+                    :class="{ 'error-border': resultError['NbreActionnaireGuinne'] }"
+                    @input="resultError['NbreActionnaireGuinne'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreActionnaireGuinne.$error">{{
+                  v$.step3.NbreActionnaireGuinne.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreActionnaire']">
+                  {{ resultError["NbreActionnaire"] }}
+                </small>
+              </div>
+            </div>
+                     </div>
+                </div>
+               
+              </BCardBody>
+                    </BCard>
+                
+                <div class="btnForm py-3 d-flex items-center justify-content-between">
+                <button class="btnLogin" @click.prevent="prevStep">Précédent</button>
+                <button class="btnLogin" @click.prevent="nextStep">Suivant</button>
+                </div>
+                 </div>
+            <!-- Étape 4 -->
+            <div v-if="currentStep === 4">
+                <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                     <BCardBody class="pt-0">
                 
                   <div class="form-container">
@@ -389,7 +1074,7 @@
                   >
                   <MazSelect
                   label="Sélectionner Monsieur ou Madame"
-                    v-model="step2.titreDirigeant"
+                    v-model="step4.titreDirigeant"
                     no-radius  color="info"
                     :options="titre"
                     :class="{ 'error-border': resultError['TitreDirigeant'] }"
@@ -397,8 +1082,8 @@
                     search
                   />
                 </div>
-                <small v-if="v$.step2.titreDirigeant.$error">{{
-                  v$.step2.titreDirigeant.$errors[0].$message
+                <small v-if="v$.step4.titreDirigeant.$error">{{
+                  v$.step4.titreDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['TitreDirigeant']">
                   {{ resultError["TitreDirigeant"] }}
@@ -414,13 +1099,13 @@
                     name="NomDirigeant"
                     id="NomDirigeant"
                     placeholder="Doe"
-                    v-model="step2.nomDirigeant"
+                    v-model="step4.nomDirigeant"
                     :class="{ 'error-border': resultError['NomDirigeant'] }"
                     @input="resultError['NomDirigeant'] = false"
                   />
                 </div>
-                <small v-if="v$.step2.nomDirigeant.$error">{{
-                  v$.step2.nomDirigeant.$errors[0].$message
+                <small v-if="v$.step4.nomDirigeant.$error">{{
+                  v$.step4.nomDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['NomDirigeant']">
                   {{ resultError["NomDirigeant"] }}
@@ -436,13 +1121,13 @@
                     name="PrenomDirigeant"
                     id="PrenomDirigeant"
                     placeholder="John"
-                    v-model="step2.prenomDirigeant"
+                    v-model="step4.prenomDirigeant"
                     :class="{ 'error-border': resultError['PrenomDirigeant'] }"
                     @input="resultError['PrenomDirigeant'] = false"
                   />
                 </div>
-                <small v-if="v$.step2.prenomDirigeant.$error">{{
-                  v$.step2.prenomDirigeant.$errors[0].$message
+                <small v-if="v$.step4.prenomDirigeant.$error">{{
+                  v$.step4.prenomDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['PrenomDirigeant']">
                   {{ resultError["PrenomDirigeant"] }}
@@ -459,7 +1144,7 @@
                   >
                   <MazSelect
                   label="Sélectionner Masculin ou Feminin"
-                    v-model="step2.sexeDirigeant"
+                    v-model="step4.sexeDirigeant"
                      no-radius  color="info"
                     :options="sexes"
                     :class="{ 'error-border': resultError['SexeDirigeant'] }"
@@ -467,8 +1152,8 @@
                     search
                   />
                 </div>
-                <small v-if="v$.step2.sexeDirigeant.$error">{{
-                  v$.step2.sexeDirigeant.$errors[0].$message
+                <small v-if="v$.step4.sexeDirigeant.$error">{{
+                  v$.step4.sexeDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['SexeDirigeant']">
                   {{ resultError["SexeDirigeant"] }}
@@ -481,7 +1166,7 @@
                   >
                   <MazSelect
                   label="Sélectionner votre pays"
-                    v-model="step2.paysDirigeant"
+                    v-model="step4.paysDirigeant"
                     :options="sortedCountryOptions"
                     v-slot="{ option }"
                     search
@@ -509,8 +1194,8 @@
                     </div>
                   </MazSelect>
                 </div>
-                <small v-if="v$.step2.paysDirigeant.$error">{{
-                  v$.step2.paysDirigeant.$errors[0].$message
+                <small v-if="v$.step4.paysDirigeant.$error">{{
+                  v$.step4.paysDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['PaysDirigeant']">
                   {{ resultError["PaysDirigeant"] }}
@@ -521,18 +1206,18 @@
                   <label for="AnneeNaissanceDirigeant">Année Naissance Dirigeant </label>
                   <MazSelect
                   label="Sélectionner une année"
-                    v-model="step2.anneeNaissanceDirigeant"
+                    v-model="step4.anneeNaissanceDirigeant"
                      no-radius  color="info"
                     :options="yearOptions"
                     :class="{ 'error-border': resultError['AnneeNaissanceDirigeant'] }"
                     @input="resultError['AnneeNaissanceDirigeant'] = false"
                     search
                   />
-                  <!-- <VueDatePicker v-model="step2.anneeNaissanceDirigeant" :year-picker="true"
+                  <!-- <VueDatePicker v-model="step4.anneeNaissanceDirigeant" :year-picker="true"
                                         :year-range="[1940, new Date().getFullYear()]"></VueDatePicker> -->
                 </div>
-                <small v-if="v$.step2.anneeNaissanceDirigeant.$error">{{
-                  v$.step2.anneeNaissanceDirigeant.$errors[0].$message
+                <small v-if="v$.step4.anneeNaissanceDirigeant.$error">{{
+                  v$.step4.anneeNaissanceDirigeant.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['AnneeNaissanceDirigeant']">
                   {{ resultError["AnneeNaissanceDirigeant"] }}
@@ -548,7 +1233,7 @@
                   >
                   <MazSelect
                   label="Sélectionner Oui ou Non"
-                    v-model="step2.dirigeantProprietaire"
+                    v-model="step4.dirigeantProprietaire"
                      no-radius  color="info"
                     :options="choix"
                     :class="{ 'error-border': resultError['DirigeantProprietaire'] }"
@@ -570,8 +1255,8 @@
                     </div>
                   </MazSelect>
                 </div>
-                <small v-if="v$.step2.dirigeantProprietaire.$error">{{
-                  v$.step2.dirigeantProprietaire.$errors[0].$message
+                <small v-if="v$.step4.dirigeantProprietaire.$error">{{
+                  v$.step4.dirigeantProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['DirigeantProprietaire']">
                   {{ resultError["DirigeantProprietaire"] }}
@@ -590,7 +1275,7 @@
                   >
                   <MazSelect
                   label="Sélectionner Monsieur ou Madamed"
-                    v-model="step2.titreProprietaire"
+                    v-model="step4.titreProprietaire"
                      no-radius  color="info"
                     :options="titre"
                     :class="{ 'error-border': resultError['TitreProprietaire'] }"
@@ -598,8 +1283,8 @@
                     search
                   />
                 </div>
-                <small v-if="v$.step2.titreProprietaire.$error">{{
-                  v$.step2.titreProprietaire.$errors[0].$message
+                <small v-if="v$.step4.titreProprietaire.$error">{{
+                  v$.step4.titreProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['TitreProprietaire']">
                   {{ resultError["TitreProprietaire"] }}
@@ -615,13 +1300,13 @@
                     name="NomProprietaire"
                     id="NomProprietaire"
                     placeholder="Doe"
-                    v-model="step2.nomProprietaire"
+                    v-model="step4.nomProprietaire"
                     :class="{ 'error-border': resultError['NomProprietaire'] }"
                     @input="resultError['NomProprietaire'] = false"
                   />
                 </div>
-                <small v-if="v$.step2.nomProprietaire.$error">{{
-                  v$.step2.nomProprietaire.$errors[0].$message
+                <small v-if="v$.step4.nomProprietaire.$error">{{
+                  v$.step4.nomProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['NomProprietaire']">
                   {{ resultError["NomProprietaire"] }}
@@ -637,13 +1322,13 @@
                     name="PrenomProprietaire"
                     id="PrenomProprietaire"
                     placeholder="John"
-                    v-model="step2.prenomProprietaire"
+                    v-model="step4.prenomProprietaire"
                     :class="{ 'error-border': resultError['PrenomProprietaire'] }"
                     @input="resultError['PrenomProprietaire'] = false"
                   />
                 </div>
-                <small v-if="v$.step2.prenomProprietaire.$error">{{
-                  v$.step2.prenomProprietaire.$errors[0].$message
+                <small v-if="v$.step4.prenomProprietaire.$error">{{
+                  v$.step4.prenomProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['PrenomProprietaire']">
                   {{ resultError["PrenomProprietaire"] }}
@@ -659,7 +1344,7 @@
                   >
                   <MazSelect
                   label="Sélectionner Masculin ou Féminin"
-                    v-model="step2.sexeProprietaire"
+                    v-model="step4.sexeProprietaire"
                      no-radius  color="info"
                     :options="sexes"
                     :class="{ 'error-border': resultError['SexeProprietaire'] }"
@@ -667,8 +1352,8 @@
                     search
                   />
                 </div>
-                <small v-if="v$.step2.sexeProprietaire.$error">{{
-                  v$.step2.sexeProprietaire.$errors[0].$message
+                <small v-if="v$.step4.sexeProprietaire.$error">{{
+                  v$.step4.sexeProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['SexeProprietaire']">
                   {{ resultError["SexeProprietaire"] }}
@@ -681,7 +1366,7 @@
                   >
                   <MazSelect
                   label="Sélectionner votre pays"
-                    v-model="step2.paysProprietaire"
+                    v-model="step4.paysProprietaire"
                     :options="sortedCountryOptions"
                     v-slot="{ option }"
                     search
@@ -709,8 +1394,8 @@
                     </div>
                   </MazSelect>
                 </div>
-                <small v-if="v$.step2.paysProprietaire.$error">{{
-                  v$.step2.paysProprietaire.$errors[0].$message
+                <small v-if="v$.step4.paysProprietaire.$error">{{
+                  v$.step4.paysProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['PaysProprietaire']">
                   {{ resultError["PaysProprietaire"] }}
@@ -723,7 +1408,7 @@
                   </label>
                   <MazSelect
                   label="Sélectionner une année"
-                    v-model="step2.anneeNaissanceProprietaire"
+                    v-model="step4.anneeNaissanceProprietaire"
                      no-radius  color="info"
                     :options="yearOptions"
                     :class="{ 'error-border': resultError['AnneeNaissanceProprietaire'] }"
@@ -731,8 +1416,8 @@
                     search
                   />
                 </div>
-                <small v-if="v$.step2.anneeNaissanceProprietaire.$error">{{
-                  v$.step2.anneeNaissanceProprietaire.$errors[0].$message
+                <small v-if="v$.step4.anneeNaissanceProprietaire.$error">{{
+                  v$.step4.anneeNaissanceProprietaire.$errors[0].$message
                 }}</small>
                 <small v-if="resultError['AnneeNaissanceProprietaire']">
                   {{ resultError["AnneeNaissanceProprietaire"] }}
@@ -744,598 +1429,6 @@
                
               </BCardBody>
                  </BCard>
-
-
-                   
-                
-                    <div class="btnForm py-3 d-flex items-center justify-content-between">
-                    <button class="btnLogin" @click.prevent="prevStep">Précédent</button>
-                    <button class="btnLogin" @click.prevent="nextStep">Suivant</button>
-                    </div>
-                </div>
-                <!-- Étape 3 -->
-                <div v-if="currentStep === 3">
-                  <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
-                    <BCardBody class="pt-0">
-                
-                  <div class="form-container">
-                    <div class="content">
-                        <p class="titre">INFORMATIONS SUR L'ACTIVITE</p>
-                        <div class="row mb-3 mt-3 content-group">
-                 <div class="col">
-                <div class="input-groupe">
-                  <label for="AnneeCreation"
-                    >Année de Création <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                    label="Sélectionner une année"
-                    v-model="step3.an_creation"
-                    no-radius  color="info"
-                    :options="yearOptions"
-                    :class="{ 'error-border': resultError['AnneeCreation'] }"
-                    @input="resultError['AnneeCreation'] = false"
-                    search
-                  />
-                
-                </div>
-                <small v-if="v$.step3.an_creation.$error">{{
-                  v$.step3.an_creation.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['AnneeCreation']">
-                  {{ resultError["AnneeCreation"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="AnneeEntreeActivite"
-                    >Année d'Entrée en Activité <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                    v-model="step3.an_entre_acti"
-                    label="Sélectionner une année"
-                    no-radius  color="info"
-                    :options="yearOptions"
-                    :class="{ 'error-border': resultError['AnneeEntreeActivite'] }"
-                    @input="resultError['AnneeEntreeActivite'] = false"
-                    search
-                  />
-                
-                </div>
-                <small v-if="v$.step3.an_entre_acti.$error">{{
-                  v$.step3.an_entre_acti.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['AnneeEntreeActivite']">
-                  {{ resultError["AnneeEntreeActivite"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="CodeStatutJuridique">Statut Juridique</label>
-                  <MazSelect
-                    v-model="step3.code_st_juriq"
-                    label="Sélectionner votre statut juridique"
-                    no-radius  color="info"
-                    :options="StatutJuridiqueOptions"
-                    :class="{ 'error-border': resultError['CodeStatutJuridique'] }"
-                    @input="resultError['CodeStatutJuridique'] = false"
-                   
-                    search
-                  />
-                </div>
-                <small v-if="v$.step3.code_st_juriq.$error">{{
-                  v$.step3.code_st_juriq.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['CodeStatutJuridique']">
-                  {{ resultError["CodeStatutJuridique"] }}
-                </small>
-              </div>
-            </div>
-            <div class="row mb-3 mt-3 content-group">
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="AutreStatutJuridique">Autre Statut Juridique</label>
-                  <MazSelect
-                  label="Sélectionner votre statut juridique"
-                    v-model="step3.autr_st_juriq"
-                    no-radius  color="info"
-                    :options="StatutJuridiqueOptions"
-                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
-                    @input="resultError['AutreStatutJuridique'] = false"
-                    search
-                  />
-                  <!-- <input  type="text"  name="AutreStatutJuridique"  id="AutreStatutJuridique"  placeholder="exemple"  v-model="step3.autr_st_juriq"
-                    :class="{ 'error-border': resultError['AutreStatutJuridique'] }"
-                    @input="resultError['AutreStatutJuridique'] = false"
-                  /> -->
-                
-                </div>
-                <small v-if="v$.step3.autr_st_juriq.$error">{{
-                  v$.step3.autr_st_juriq.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['AutreStatutJuridique']">
-                  {{ resultError["AutreStatutJuridique"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="PrincipalSecteurActivite"
-                    >Principal Secteur d'Activite <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                  label="Sélectionner votre secteur activité"
-                    v-model="step3.prin_sect_acti"
-                    no-radius  color="info"
-                    :options="SecteurActiviteOptions"
-                    :class="{ 'error-border': resultError['PrincipalSecteurActivite'] }"
-                    @input="resultError['PrincipalSecteurActivite'] = false"
-                   
-                    search
-                  />
-                </div>
-                <small v-if="v$.step3.prin_sect_acti.$error">{{
-                  v$.step3.prin_sect_acti.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['PrincipalSecteurActivite']">
-                  {{ resultError["PrincipalSecteurActivite"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="ListeSousSecteurActivite"
-                    >Liste Sous Secteur Activite <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                  label="Sélectionner vos sous secteurs activités"
-                    v-model="step3.selectedSousSecteurs"
-                    no-radius  color="info"
-                    :options="SousSecteurActiviteOptions"
-                    multiple
-                    :class="{ 'error-border': resultError['ListeSousSecteurActivite'] }"
-                    @input="resultError['ListeSousSecteurActivite'] = false"
-                   
-                    search
-                  />
-                  
-                   
-                
-                <small v-if="v$.step3.selectedSousSecteurs.$error">{{
-                  v$.step3.selectedSousSecteurs.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['ListeSousSecteurActivite']">
-                  {{ resultError["ListeSousSecteurActivite"] }}
-                </small>
-              </div>
-            </div>
-            <div class="row mb-3 mt-3 content-group">
-              
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="PaysSiegeSocial"
-                    >Pays du Siège Social <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                  label="Sélectionner votre pays"
-                    v-model="step3.PaysSiegeSocial"
-                    :options="sortedCountryOptions"
-                    v-slot="{ option }"
-                    search
-                    no-radius  color="info"
-                    :class="{ 'error-border': resultError['PaysSiegeSocial'] }"
-                    @input="resultError['PaysSiegeSocial'] = false"
-                    option-value-key="value" option-label-key="label" option-input-value-key="value"
-                   
-                  >
-                    <div
-                      class="flex items-center"
-                      style="
-                        padding-top: 0.5rem;
-                        padding-bottom: 0.5rem;
-                        width: 100%;
-                        gap: 1rem;
-                      "
-                    >
-                      <MazAvatar size="0.8rem" :src="option.flag" />
-                      <strong>
-                        {{ option.label }}
-                      </strong>
-                    </div>
-                  </MazSelect>
-                </div>
-                <small v-if="v$.step3.PaysSiegeSocial.$error">{{
-                  v$.step3.PaysSiegeSocial.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['PaysSiegeSocial']">
-                  {{ resultError["PaysSiegeSocial"] }}
-                </small>
-              </div>
-             <div class="col" >
-                <div class="input-groupe">
-                  <label for="ListeSousSecteurActivite"
-                    >Quel est le type de votre entreprise ?  <span class="text-danger">*</span></label
-                  >
-                  <MazSelect
-                  label="Sélectionner le type de votre entreprise"
-                    v-model="step3.types"
-                    no-radius  color="info"
-                    :options="EntrepriseOptions"
-                    multiple
-                    :class="{ 'error-border': resultError['types'] }"
-                    @input="resultError['types'] = false"
-                   
-                    search
-                  />
-                  
-                   
-                
-                <small v-if="v$.step3.types.$error">{{
-                  v$.step3.types.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['types']">
-                  {{ resultError["types"] }}
-                </small>
-              </div>
-            </div> 
-
-
-            </div>
-                     </div>
-                     
-                  </div>
-                  <div class="content">
-                        <p class="titre">INFORMATIONS D'IDENTIFICATION COMMERCIALE</p>
-               
-                        <div class="row mb-3 mt-3 content-group">
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NumeroNif">Numero Nif</label>
-                  <input
-                    type="text"
-                    name="NumeroNif"
-                    id="NumeroNif"
-                    placeholder="1234567890L"
-                    v-model="step3.NumeroNif"
-                    :class="{ 'error-border': resultError['NumeroNif'] }"
-                    @input="resultError['NumeroNif'] = false"
-                  />
-                </div>
-              </div>
-              <small v-if="v$.step3.NumeroNif.$error">{{
-                v$.step3.NumeroNif.$errors[0].$message
-              }}</small>
-              <small v-if="resultError['NumeroNif']">
-                {{ resultError["NumeroNif"] }}
-              </small>
-            
-            
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="DateGenerationNif">Date Generation du Numero Nif </label>
-                  <input
-                    type="date"
-                    name="DateGenerationNif"
-                    id="DateGenerationNif"
-                    placeholder=""
-                    v-model="step3.DateGenerationNif"
-                    :class="{ 'error-border': resultError['DateGenerationNif'] }"
-                    @input="resultError['DateGenerationNif'] = false"
-                  />
-                </div>
-              </div>
-              <small v-if="v$.step3.DateGenerationNif.$error">{{
-                v$.step3.DateGenerationNif.$errors[0].$message
-              }}</small>
-   
-            </div>
-
-            <div class="row mb-3 mt-3 content-group">
-             <div class="col">
-                <div class="input-groupe">
-                  <label for="NumeroRccm">Numéro Rccm </label>
-                  <input
-                    type="text"
-                    name="NumeroRccm"
-                    id="NumeroRccm"
-                    placeholder="09R09999999"
-                    v-model="step3.NumeroRccm"
-                    :class="{ 'error-border': resultError['NumeroRccm'] }"
-                    @input="resultError['NumeroRccm'] = false"
-                  />
-                </div>
-              </div>
-                <small v-if="v$.step3.NumeroRccm.$error">{{
-                v$.step3.NumeroRccm.$errors[0].$message
-              }}</small>
-              <small v-if="resultError['NumeroRccm']">
-                {{ resultError["NumeroRccm"] }}
-              </small>
-             
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NumeroTva">Numero de la TVA</label>
-                  <input
-                    type="text"
-                    name="NumeroTva"
-                    id="NumeroTva"
-                    placeholder="exemple"
-                    v-model="step3.NumeroTva"
-                    :class="{ 'error-border': resultError['NumeroTva'] }"
-                    @input="resultError['NumeroTva'] = false"
-                  />
-                </div>
-              </div>
-              <small v-if="v$.step3.NumeroTva.$error">{{
-                v$.step3.NumeroTva.$errors[0].$message
-              }}</small>
-              <small v-if="resultError['NumeroTva']">
-                {{ resultError["NumeroTva"] }}
-              </small>
-             
-            </div>
-         
-                     </div>
-                </div>
-               
-              </BCardBody>
-                </BCard>
-
-
-                   
-                
-                <div class="btnForm py-3 d-flex items-center justify-content-between">
-                <button class="btnLogin" @click.prevent="prevStep">Précédent</button>
-                <button class="btnLogin" @click.prevent="nextStep">Suivant</button>
-                </div>
-                 </div>
-            <!-- Étape 4 -->
-            <div v-if="currentStep === 4">
-              <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
-                    <BCardBody class="pt-0">
-                
-                  <div class="form-container">
-                    <div class="content">
-                        <p class="titre">INFORMATIONS SUR LES PERSONNELS</p>
-                        <div class="row mb-3 mt-3 content-group">
-              
-                          <div class="col">
-                <div class="input-groupe">
-                  <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
-                  <input
-                    type="number"
-                    name="PersonnelPermanentFemme"
-                    id="PersonnelPermanentFemme"
-                    placeholder="21"
-                    v-model="step4.pers_per_femm"
-                    :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
-                   
-                    @input="calculateTotalEmployees"
-                    option-value-key="value" option-label-key="label" option-input-value-key="value"
-                  />
-                </div>
-                <small v-if="v$.step4.pers_per_femm.$error">{{
-                  v$.step4.pers_per_femm.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['PersonnelPermanentFemme']">
-                  {{ resultError["PersonnelPermanentFemme"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
-                  <input
-                    type="number"
-                    name="PersonnelPermanentHomme"
-                    id="PersonnelPermanentHomme"
-                    placeholder="11"
-                    v-model="step4.pers_per_homm"
-                    :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
-                    @input="calculateTotalEmployees"
-                  />
-                </div>
-                <small v-if="v$.step4.pers_per_homm.$error">{{
-                  v$.step4.pers_per_homm.$errors[0].$message
-                }}</small>
-
-                <small v-if="resultError['PersonnelPermanentHomme']">
-                  {{ resultError["PersonnelPermanentHomme"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreEmploye"
-                    >Nombre d'employés Guinéens<span class="text-danger"></span></label
-                  >
-                  <input
-                    type="number"
-                    name="NbreEmploye"
-                    id="NbreEmploye"
-                    placeholder="33"
-                    v-model="step4.NbreEmploye"
-                    disabled
-                    :class="{ 'error-border': resultError['NbreEmploye'] }"
-                    @input="resultError['NbreEmploye'] = false"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreEmploye.$error">{{
-                  v$.step4.NbreEmploye.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreEmploye']">
-                  {{ resultError["NbreEmploye"] }}
-                </small>
-              </div>
-                         </div>
-                        <div class="row mb-3 mt-3 content-group">
-              
-
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreEmployeGuinneF"
-                    >Nombre d'employées féminines Guinéennes</label
-                  >
-                  <input
-                    type="number"
-                    name="NbreEmployeGuinneF"
-                    id="NbreEmployeGuinneF"
-                    placeholder="11"
-                    v-model="step4.NbreEmployeGuinneF"
-                    :class="{ 'error-border': resultError['NbreEmployeGuinneF'] }"
-                    @input="resultError['NbreEmployeGuinneF'] = false"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreEmployeGuinneF.$error">{{
-                  v$.step4.NbreEmployeGuinneF.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreEmployeGuinneF']">
-                  {{ resultError["NbreEmployeGuinneF"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreEmployeGuinneH"
-                    >Nombre d'employés masculins Guinéens</label
-                  >
-                  <input
-                    type="number"
-                    name="NbreEmployeGuinneH"
-                    id="NbreEmployeGuinneH"
-                    placeholder="55"
-                    v-model="step4.NbreEmployeGuinneH"
-                    :class="{ 'error-border': resultError['NbreEmployeGuinneH'] }"
-                    @input="resultError['NbreEmployeGuinneH'] = false"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreEmployeGuinneH.$error">{{
-                  v$.step4.NbreEmployeGuinneH.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreEmployeGuinneH']">
-                  {{ resultError["NbreEmployeGuinneH"] }}
-                </small>
-              </div>
-                        </div>
-
-                        <div class="row mb-3 mt-3 content-group">
-                        <div class="col">
-                            <div class="input-groupe">
-                            <label for="PersonnelTemporaireFemme"
-                                >Personnel Temporaire Femme
-                            </label>
-                            <input
-                                type="number"
-                                name="PersonnelTemporaireFemme"
-                                id="PersonnelTemporaireFemme"
-                                placeholder="33"
-                                v-model="step4.pers_temp_femm"
-                                :class="{ 'error-border': resultError['PersonnelTemporaireFemme'] }"
-                                @input="resultError['PersonnelTemporaireFemme'] = false"
-                            />
-                            </div>
-                            <small v-if="v$.step4.pers_temp_femm.$error">{{
-                            v$.step4.pers_temp_femm.$errors[0].$message
-                            }}</small>
-                            <small v-if="resultError['PersonnelTemporaireFemme']">
-                            {{ resultError["PersonnelTemporaireFemme"] }}
-                            </small>
-                        </div>
-                        <div class="col">
-                            <div class="input-groupe">
-                            <label for="PersonnelTemporaireHomme"
-                                >Personnel Temporaire Homme
-                            </label>
-                            <input
-                                type="number"
-                                name="PersonnelTemporaireHomme"
-                                id="PersonnelTemporaireHomme"
-                                placeholder="44"
-                                v-model="step4.pers_temp_homm"
-                                :class="{ 'error-border': resultError['PersonnelTemporaireHomme'] }"
-                                @input="resultError['PersonnelTemporaireHomme'] = false"
-                            />
-                            </div>
-                            <small v-if="v$.step4.pers_temp_homm.$error">{{
-                            v$.step4.pers_temp_homm.$errors[0].$message
-                            }}</small>
-                            <small v-if="resultError['PersonnelTemporaireHomme']">
-                            {{ resultError["PersonnelTemporaireHomme"] }}
-                            </small>
-                        </div>
-                        
-                        </div>
-                  </div>
-                  <div class="content">
-                        <p class="titre">INFORMATIONS SUR LES  ACTIONNAIRESE</p>
-                        <div class="row mb-3 mt-3 content-group">
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreActionnaireGuinneF"
-                    >Nombre d'actionnaires Guinéens Femmes</label
-                  >
-                  <input
-                    type="number"
-                    name="NbreActionnaireGuinneF"
-                    id="NbreActionnaireGuinneF"
-                    placeholder="11"
-                    v-model="step4.NbreActionnaireGuinneF"
-                    :class="{ 'error-border': resultError['NbreActionnaireGuinneF'] }"
-                    @input="updateTotalNumberOfShareholders"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreActionnaireGuinneF.$error">{{
-                  v$.step4.NbreActionnaireGuinneF.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreActionnaireGuinneF']">
-                  {{ resultError["NbreActionnaireGuinneF"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreActionnaireGuinneH"
-                    >Nombre d'actionnaires Guinéens Hommes</label
-                  >
-                  <input
-                    type="number"
-                    name="NbreActionnaireGuinneH"
-                    id="NbreActionnaireGuinneH"
-                    placeholder="55"
-                    v-model="step4.NbreActionnaireGuinneH"
-                    :class="{ 'error-border': resultError['NbreActionnaireGuinneH'] }"
-                    @input="updateTotalNumberOfShareholders"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreActionnaireGuinneH.$error">{{
-                  v$.step4.NbreActionnaireGuinneH.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreActionnaireGuinneH']">
-                  {{ resultError["NbreActionnaireGuinneH"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreActionnaireGuinne"
-                    >Nombre d'actionnaires Guinéens</label
-                  >
-                  <input
-                    type="number"
-                    name="NbreActionnaireGuinne"
-                    id="NbreActionnaireGuinne"
-                    placeholder="33"
-                    disabled
-                    v-model="step4.NbreActionnaireGuinne"
-                    :class="{ 'error-border': resultError['NbreActionnaireGuinne'] }"
-                    @input="resultError['NbreActionnaireGuinne'] = false"
-                  />
-                </div>
-                <small v-if="v$.step4.NbreActionnaireGuinne.$error">{{
-                  v$.step4.NbreActionnaireGuinne.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreActionnaire']">
-                  {{ resultError["NbreActionnaire"] }}
-                </small>
-              </div>
-            </div>
-                     </div>
-                </div>
-               
-              </BCardBody>
-                    </BCard>
                 <div class="btnForm py-3 d-flex items-center justify-content-between">
                 <button class="btnLogin" @click.prevent="prevStep">Précédent</button>
                 <button class="btnLogin" @click.prevent="nextStep">Suivant</button>
@@ -1477,8 +1570,8 @@
                     show-code-on-list
                      no-radius  color="info"
                     :ignored-countries="['AC']"
-                    defaultCountryCode="GN"
                     @update="results = $event"
+                    defaultCountryCode="GN"
                     :success="results?.isValid"
                     :class="{ 'error-border': resultError['TelephoneWhatsAppRepondant'] }"
                     @input="resultError['TelephoneWhatsAppRepondant'] = false"
@@ -1596,7 +1689,7 @@
             <div class="row mb-3 mt-3 content-group">
               <div class="col">
                 <div class="input-groupe">
-                  <label for="LienGoogleMapMpme">Lien Google Map Entreprise</label>
+                  <label for="LienGoogleMapMpme">Lien Google Map Mpme</label>
                   <input
                     v-model="step6.lienGoogleMapMpme"
                     type="text"
@@ -1617,10 +1710,10 @@
 
               <div class="col">
                 <div class="input-groupe">
-                  <label for="LatitudeMpme">Latitude Entreprise</label>
+                  <label for="LatitudeMpme">Latitude Mpme</label>
                   <input
                     v-model="step6.latitudeMpme"
-                    type="number"
+                    type="text"
                     name="LatitudeMpme"
                     id="LatitudeMpme"
                     placeholder="11.3333"
@@ -1638,10 +1731,10 @@
 
               <div class="col">
                 <div class="input-groupe">
-                  <label for="LongitudeMpme">Longitude Entreprise</label>
+                  <label for="LongitudeMpme">Longitude Mpme</label>
                   <input
                     v-model="step6.longitudeMpme"
-                    type="number"
+                    type="text"
                     name="LongitudeMpme"
                     id="LongitudeMpme"
                     placeholder="-12.333"
@@ -1741,124 +1834,16 @@
                 
                 </form>
               </div>
-        </BCardBody>
-        <BModal v-model="AddFichier" hide-footer centered header-class="border-0" title-class="font-18"  >
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">modifier les Fichiers</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                      <div class="input-groupe">
-                <label for="FileNif">Fichier Nif</label>
-                 <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadNif"
-                  name="FileNif"
-                  id="FileNif"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FileNif'] }"
-                  @input="resultError['FileNif'] = false"
-                />
-              </div>
-            </div>
-                  </BCol>
-                </BRow>
-
-                <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                      <div class="input-groupe">
-                <label for="FileRccm">Fichier Rccm</label>
-                 <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadRccm"
-                  name="FileRccm"
-                  id="FileRccm"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FileRccm'] }"
-                  @input="resultError['FileRccm'] = false"
-                />
-              </div>
-            </div>
-                  </BCol>
-                </BRow>
-
-                <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                      <div class="input-groupe">
-                <label for="FileCerti">Certificat</label>
-                 <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadCertificat"
-                  name="FileCerti"
-                  id="FileCerti"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FileCerti'] }"
-                  @input="resultError['FileCerti'] = false"
-                />
-              </div>
-            </div>
-                  </BCol>
-                </BRow>
-
-                   
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="HamdleFile()">Valider</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
+</BCardBody>
+        
+         
        </BCard>
      </BCol>
    </BRow>
+
+
+  
+   
 
  </Layout>
 </template>
@@ -1872,32 +1857,20 @@ import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidNumeri } from "@/functions/rules";
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
-import { useToast } from "vue-toastification";
 
 
 export default {
-  setup() {
-   const toast = useToast();
-   return { toast }
- },
    components: {
    Layout,
    PageHeader,
    Loading ,
    
  },
+ props:['id'],
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
-   calculateTotalEmployees() {
-      // Calculate the total number of Guinean employees
-      return this.step4.NbreEmploye = parseInt(this.step4.pers_per_femm || 0) + parseInt(this.step4.pers_per_homm || 0);
-    },
-    updateTotalNumberOfShareholders() {
-      // Mettre à jour le total en additionnant les valeurs des deux champs
-      return  this.step4.NbreActionnaireGuinne = parseInt(this.step4.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
-    },
    stepperProgress() {
       return (100 / 5) * (this.currentStep - 1) + "%";
     },
@@ -1919,7 +1892,6 @@ export default {
        currentStep: 1,
        error: "",
       resultError: {},
-      AddFichier:false,
       isButtonDisabled: false,
       isOpen: false,
       option:'',
@@ -1932,10 +1904,9 @@ export default {
       StatutJuridiqueOptions: [],
       EntrepriseOptions:[],
       McipmeOptions:[],
+      ZoneOptions:[],
       QuartierOptions: [],
-      FileNif:'',
-      FileRccm:'',
-      FileCerti:'',
+      userData:'',
      
     //   ChiffreOptions: chiffre,
  // Pour stocker les sous-secteurs sélectionnés
@@ -1983,24 +1954,6 @@ export default {
       },
       // etapes 2
       step2:{
-        titreDirigeant: "",
-        nomDirigeant: "",
-        prenomDirigeant: "",
-        sexeDirigeant: "",
-        paysDirigeant: "Guinée",
-        anneeNaissanceDirigeant: "",
-        dirigeantProprietaire: "",
-
-        titreProprietaire: "",
-        nomProprietaire: "",
-        prenomProprietaire: "",
-        sexeProprietaire: "",
-        paysProprietaire: "Guinée",
-        anneeNaissanceProprietaire: "",
-        },
-     
-        // etapes 3
-        step3:{
         an_creation: "",
         an_entre_acti: "",
         code_st_juriq: "",
@@ -2008,31 +1961,52 @@ export default {
         prin_sect_acti: "",
         selectedSousSecteurs: [],
         an_prod_1: "", 
-        PaysSiegeSocial: "Guinée",
+        PaysSiegeSocial: "Guinea",
         distributrice:"",
         types:"",
-        NumeroRccm: "",
-        NumeroNif: "",
+        CodeZone:"",
+        SuperficieOccupee:"",
+
+        nbre_rccm: "",
+        FichierRccm:"",
+        nbre_nif: "",
+        FichierNif:"",
         DateGenerationNif: "",
         NumeroTva: "",
 
       },
+        // etapes 3
+        step3:{
+        NbreEmployeGuinneF:'',
+        NbreEmployeGuinneH:'',
+        NbreEmploye:'',
+
+        pers_per_femm:'',
+        pers_per_homm: '',
+        pers_temp_femm:'' ,
+        pers_temp_homm:'',
        
+
+        NbreActionnaireGuinneF:'' ,
+        NbreActionnaireGuinneH:'' ,
+        NbreActionnaireGuinne:'' ,
+        },
         // etapes 4
         step4:{
-        NbreEmployeGuinneF:0,
-        NbreEmployeGuinneH:0,
-        NbreEmploye:0,
+        titreDirigeant: "",
+        nomDirigeant: "",
+        prenomDirigeant: "",
+        sexeDirigeant: "",
+        paysDirigeant: "Guinea",
+        anneeNaissanceDirigeant: "",
+        dirigeantProprietaire: "",
 
-        pers_per_femm: 0,
-        pers_per_homm: 0,
-        pers_temp_femm: 0,
-        pers_temp_homm: 0,
-       
-
-        NbreActionnaireGuinneF: 0,
-        NbreActionnaireGuinneH: 0,
-        NbreActionnaireGuinne: 0,
+        titreProprietaire: "",
+        nomProprietaire: "",
+        prenomProprietaire: "",
+        sexeProprietaire: "",
+        paysProprietaire: "Guinea",
+        anneeNaissanceProprietaire: "",
         },
         // step5
         step5:{
@@ -2079,24 +2053,7 @@ export default {
     },
     step2:{
 
-titreDirigeant: { require },
- nomDirigeant: { require },
- prenomDirigeant: { require },
- sexeDirigeant: { require },
- paysDirigeant: { require },
- anneeNaissanceDirigeant: {},
- dirigeantProprietaire: { require },
-
- titreProprietaire: { require },
- nomProprietaire: { require },
- prenomProprietaire: { require },
- sexeProprietaire: { require },
- paysProprietaire: { require },
- anneeNaissanceProprietaire: {},
-},
-    step3:{
-
-      an_creation: { require },
+        an_creation: { require },
       an_entre_acti: { require },
       code_st_juriq: {},
       autr_st_juriq: {},
@@ -2104,16 +2061,20 @@ titreDirigeant: { require },
       selectedSousSecteurs: { require },
       PaysSiegeSocial: { require },
       distributrice: {  },
-      types: {},
-      NumeroRccm: {},
-      NumeroNif: {},
+      types: {require},
+      CodeZone:{require},
+      nbre_rccm: {},
+      SuperficieOccupee:{require},
+      FichierRccm:{},
+      nbre_nif: {},
+      FichierNif:{},
       DateGenerationNif: {},
       NumeroTva: {},
     },
-    step4:{
+    step3:{
         NbreEmployeGuinneF:{ ValidNumeri },
         NbreEmployeGuinneH:{ ValidNumeri },
-        NbreEmploye:{ ValidNumeri },
+        NbreEmploye:{require, ValidNumeri },
 
         pers_per_femm: { ValidNumeri },
       pers_per_homm: { ValidNumeri },
@@ -2126,7 +2087,23 @@ titreDirigeant: { require },
       NbreActionnaireGuinne: { ValidNumeri },
 
     },
-   
+    step4:{
+
+     titreDirigeant: { require },
+      nomDirigeant: { require },
+      prenomDirigeant: { require },
+      sexeDirigeant: { require },
+      paysDirigeant: { require },
+      anneeNaissanceDirigeant: {},
+      dirigeantProprietaire: { require },
+
+      titreProprietaire: { require },
+      nomProprietaire: { require },
+      prenomProprietaire: { require },
+      sexeProprietaire: { require },
+      paysProprietaire: { require },
+      anneeNaissanceProprietaire: {},
+    },
     step5:{
       
         titreRepondant: { require },
@@ -2157,13 +2134,7 @@ titreDirigeant: { require },
 async mounted() {
 
    console.log("uusers",this.loggedInUser);
-   const localStorageUserData = localStorage.getItem('tempMpmeDataDNCIC') || null;
-   if(localStorageUserData !== null){
-    const userDataString = JSON.parse(localStorageUserData)
-           this.userData = userDataString
-            this.storeUserDataLocal(userDataString);
-           console.log("UserData:",userDataString );
-   }
+ 
    
    try {
       window.scrollTo({
@@ -2173,6 +2144,7 @@ async mounted() {
       
       console.log("data", this.loggedInUser);
       await Promise.all([
+        this.fetchgetOneMpme(),
         this.fetchMpmeData(),
         this.fetchCountryOptions(),
         this.fetchRegionOptions(),
@@ -2183,9 +2155,8 @@ async mounted() {
         this.fetchSousSecteurActiviteOptions(),
         this.fetchStatutJuridiqueOptions(),
         this.fetchEntrepriseOptions(),
+        this.fetchZoneOptions(),
         this.initializeYears(),
-          // this.confirmDelete()
-
        
       ]);
       
@@ -2196,24 +2167,6 @@ async mounted() {
  },
 
   methods: {
-    triggerToast(errorMessage) {
-  this.toast.error(errorMessage, {
-    position: "top-right",
-    timeout: 5000,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: true,
-    closeButton: "button",
-    icon: "mdi mdi-alert-circle-outline", // Modifier l'icône pour une icône d'erreur
-    rtl: false,
-    className: 'toast-error'
-  });
-},
-
     createMpmeData() {
       return {
         Region: this.step1.region,
@@ -2232,57 +2185,53 @@ async mounted() {
         SiteWeb: this.step1.url,
 
         // step2
-
-        TitreDirigeant: this.step2.titreDirigeant,
-        NomDirigeant: this.step2.nomDirigeant,
-        PrenomDirigeant: this.step2.prenomDirigeant,
-        SexeDirigeant: this.step2.sexeDirigeant,
-        PaysDirigeant: this.step2.paysDirigeant,
-        AnneeNaissanceDirigeant: parseInt(this.step2.anneeNaissanceDirigeant).toString(),
-        DirigeantProprietaire: this.step2.dirigeantProprietaire,
-        TitreProprietaire: this.step2.titreProprietaire,
-        NomProprietaire: this.step2.nomProprietaire,
-        PrenomProprietaire: this.step2.prenomProprietaire,
-        SexeProprietaire: this.step2.sexeProprietaire,
-        PaysProprietaire: this.step2.paysProprietaire,
-        AnneeNaissanceProprietaire: this.step2.anneeNaissanceProprietaire,
-
-       
-
-        // step3
-
-        AnneeCreation:this.step3.an_creation ,
-        AnneeEntreeActivite: this.step3.an_entre_acti ,
-        CodeStatutJuridique: this.step3.code_st_juriq,
-        AutreStatutJuridique: this.step3.autr_st_juriq,
-        PrincipalSecteurActivite: this.step3.prin_sect_acti,
-        ListeSousSecteurActivite: JSON.parse(JSON.stringify(this.step3.selectedSousSecteurs)),
-        AnneeProduction1: this.step3.an_prod_1,
-        PaysSiegeSocial: this.step3.PaysSiegeSocial,
-        types:this.step3.types,
-        NumeroRccm: this.step3.NumeroRccm,
-        // FichierRccm: this.step3.FichierRccm,
-         NumeroNif: this.step3.NumeroNif,
-        //  FichierNif: this.step3.FichierNif,
+        AnneeCreation:this.step2.an_creation ,
+        AnneeEntreeActivite: this.step2.an_entre_acti ,
+        CodeStatutJuridique: this.step2.code_st_juriq,
+        AutreStatutJuridique: this.step2.autr_st_juriq,
+        PrincipalSecteurActivite: this.step2.prin_sect_acti,
+        ListeSousSecteurActivite: JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)),
+        AnneeProduction1: this.step2.an_prod_1,
+        PaysSiegeSocial: this.step2.PaysSiegeSocial,
+        types:this.step2.types,
+        CodeZone:this.step2.CodeZone,
+        SuperficieOccupee:this.step2.SuperficieOccupee,
+        NumeroRccm: this.step2.nbre_rccm,
+        // FichierRccm: this.step2.FichierRccm,
+         NumeroNif: this.step2.nbre_nif,
+        //  FichierNif: this.step2.FichierNif,
         FichierRccm:null,
         FichierNif:null,
-        DateGenerationNif: this.step3.DateGenerationNif,
-        NumeroTva: this.step3.NumeroTva,
+        DateGenerationNif: this.step2.DateGenerationNif,
+        NumeroTva: this.step2.NumeroTva,
 
-        
+        // step3
+        NbreEmployeGuinneF: parseInt(this.step3.NbreEmployeGuinneF) ,
+        NbreEmployeGuinneH: parseInt(this.step3.NbreEmployeGuinneH) ,
+        NbreEmploye:  parseInt(this.step3.NbreEmploye) ,
+        PersonnelPermanentFemme: this.step3.pers_per_femm ,
+        PersonnelPermanentHomme: this.step3.pers_per_homm ,
+        PersonnelTemporaireFemme: this.step3.pers_temp_femm ,
+        PersonnelTemporaireHomme: this.step3.pers_temp_homm ,
+        NbreActionnaireGuinneF: this.step3.NbreActionnaireGuinneF ,
+        NbreActionnaireGuinneH: this.step3.NbreActionnaireGuinneH ,
+        NbreActionnaire: this.step3.NbreActionnaireGuinne ,
        
             // step4
     
-            NbreEmployeGuinneF: parseInt(this.step4.NbreEmployeGuinneF) ,
-        NbreEmployeGuinneH: parseInt(this.step4.NbreEmployeGuinneH) ,
-        NbreEmploye:  parseInt(this.step4.NbreEmploye) ,
-        PersonnelPermanentFemme: this.step4.pers_per_femm  ,
-        PersonnelPermanentHomme: this.step4.pers_per_homm  ,
-        PersonnelTemporaireFemme: this.step4.pers_temp_femm  ,
-        PersonnelTemporaireHomme: this.step4.pers_temp_homm  ,
-        NbreActionnaireGuinneF: this.step4.NbreActionnaireGuinneF  ,
-        NbreActionnaireGuinneH: this.step4.NbreActionnaireGuinneH  ,
-        NbreActionnaire: this.step4.NbreActionnaireGuinne  ,
+        TitreDirigeant: this.step4.titreDirigeant,
+        NomDirigeant: this.step4.nomDirigeant,
+        PrenomDirigeant: this.step4.prenomDirigeant,
+        SexeDirigeant: this.step4.sexeDirigeant,
+        PaysDirigeant: this.step4.paysDirigeant,
+        AnneeNaissanceDirigeant: parseInt(this.step4.anneeNaissanceDirigeant).toString(),
+        DirigeantProprietaire: this.step4.dirigeantProprietaire,
+        TitreProprietaire: this.step4.titreProprietaire,
+        NomProprietaire: this.step4.nomProprietaire,
+        PrenomProprietaire: this.step4.prenomProprietaire,
+        SexeProprietaire: this.step4.sexeProprietaire,
+        PaysProprietaire: this.step4.paysProprietaire,
+        AnneeNaissanceProprietaire: this.step4.anneeNaissanceProprietaire,
        
         // step5
         TitreRepondant: this.step5.titreRepondant,
@@ -2306,353 +2255,150 @@ async mounted() {
         Direction:this.loggedInUser.direction
       };
     },
-    collectStepData(step) {
-    let stepData = {};
-  
-
-// Collecter les données des étapes précédentes
-for (let i = 1; i < step; i++) {
-    const previousStepData = this.collectStepData(i);
-    Object.assign(stepData, previousStepData);
-}
-    
-    switch (step) {
-        case 1:
-            stepData = {
-              ...stepData,
-        Region: this.step1.region,
-        Commune: this.step1.commune,
-        Sousprefecture: this.step1.sous_prefecture,
-        Ville: this.step1.ville,
-        Localisation: this.step1.localisation,
-        SigleMpme: this.step1.sigle_mpme,
-        NomMpme: this.step1.nom,
-        Quartier: this.step1.quartier,
-        Rue: this.step1.rue,
-        BoitePostale: this.step1.boite_postale,
-        NumeroWhatsApp: this.step1.tel_what,
-        NumeroTelephoneSecondaire: this.step1.tel_second,
-        AdresseEmail: this.step1.email,
-        SiteWeb: this.step1.url,
-        Direction:this.loggedInUser.direction
-            };
-            break;
-        case 2:
-            stepData = {
-              ...stepData,
-        TitreDirigeant: this.step2.titreDirigeant,
-        NomDirigeant: this.step2.nomDirigeant,
-        PrenomDirigeant: this.step2.prenomDirigeant,
-        SexeDirigeant: this.step2.sexeDirigeant,
-        PaysDirigeant: this.step2.paysDirigeant,
-        AnneeNaissanceDirigeant: parseInt(this.step2.anneeNaissanceDirigeant).toString(),
-        DirigeantProprietaire: this.step2.dirigeantProprietaire,
-        TitreProprietaire: this.step2.titreProprietaire,
-        NomProprietaire: this.step2.nomProprietaire,
-        PrenomProprietaire: this.step2.prenomProprietaire,
-        SexeProprietaire: this.step2.sexeProprietaire,
-        PaysProprietaire: this.step2.paysProprietaire,
-        AnneeNaissanceProprietaire: this.step2.anneeNaissanceProprietaire,
-        Direction:this.loggedInUser.direction
-
-       
-
-            };
-            break;
-
-            case 3:
-            stepData = {
-              ...stepData,
-        AnneeCreation:this.step3.an_creation ,
-        AnneeEntreeActivite: this.step3.an_entre_acti ,
-        CodeStatutJuridique: this.step3.code_st_juriq,
-        AutreStatutJuridique: this.step3.autr_st_juriq,
-        PrincipalSecteurActivite: this.step3.prin_sect_acti,
-        ListeSousSecteurActivite: JSON.parse(JSON.stringify(this.step3.selectedSousSecteurs)),
-        AnneeProduction1: this.step3.an_prod_1,
-        PaysSiegeSocial: this.step3.PaysSiegeSocial,
-        types:this.step3.types,
-        NumeroRccm: this.step3.NumeroRccm,
-       
-         NumeroNif: this.step3.NumeroNif,
-       
-        DateGenerationNif: this.step3.DateGenerationNif,
-        NumeroTva: this.step3.NumeroTva,
-        Direction:this.loggedInUser.direction
-
-           
-            };
-            break;
-            case 4:
-            stepData = {
-              ...stepData,
-      NbreEmployeGuinneF: parseInt(this.step4.NbreEmployeGuinneF) ,
-      NbreEmployeGuinneH: parseInt(this.step4.NbreEmployeGuinneH) ,
-      NbreEmploye:  parseInt(this.step4.NbreEmploye) ,
-      PersonnelPermanentFemme:parseInt(this.step4.pers_per_femm )  ,
-      PersonnelPermanentHomme: parseInt(this.step4.pers_per_homm )   ,
-      PersonnelTemporaireFemme:parseInt(this.step4.pers_temp_femm )  ,
-      PersonnelTemporaireHomme:parseInt(this.step4.pers_temp_homm )  ,
-      NbreActionnaireGuinneF: parseInt(this.step4.NbreActionnaireGuinneF)   ,
-      NbreActionnaireGuinneH: parseInt(this.step4.NbreActionnaireGuinneH)   ,
-      NbreActionnaire: parseInt(this.step4.NbreActionnaireGuinne )  ,
-      Direction:this.loggedInUser.direction
-            };
-            break;
-            case 5:
-            stepData = {
-              ...stepData,
-          TitreRepondant: this.step5.titreRepondant,
-        NomRepondant: this.step5.nomRepondant,
-        FonctionRepondant: this.step5.fonctionRepondant,
-        AdresseRepondant: this.step5.adresseRepondant,
-        VilleRepondant: this.step5.villeRepondant,
-        TelephoneWhatsAppRepondant: this.step5.telephoneWhatsAppRepondant,
-        Contacter: this.step5.contacter,
-        ExistanceActionnaire: this.step5.existanceActionnaire,
-        ExistanceConseilAdministration: this.step5.existanceConseilAdministration,
-        Direction:this.loggedInUser.direction
-            };
-            break;
-            case 6:
-            stepData = {
-              ...stepData,
-              LienGoogleMapMpme: this.step6.lienGoogleMapMpme,
-        LatitudeMpme: this.step6.latitudeMpme,
-        LongitudeMpme: this.step6.longitudeMpme,
-        AltitudeMpme: this.step6.altitudeMpme,
-        PrecisionGPSMpme: this.step6.precisionGPSMpme,
-        OrigineDonnees: this.step6.origineDonnees,
-
-        Direction:this.loggedInUser.direction
-            };
-            break;
-        // Ajoutez des cas pour chaque étape du formulaire
-        default:
-            break;
-    }
-    
-    return stepData;
-},
-
-
-async nextStep() {
-    try {
-        // Valider les données de l'étape actuelle
-        this.v$[`step${this.currentStep}`].$touch();
-        if (this.v$.$errors.length === 0) {
-          
-            console.log('stepData', this.currentStep);
-            this.loading = true;
-            if( this.currentStep === 6){
-              
-               const stepData = this.collectStepData(this.currentStep);
-                console.log(stepData);
-                  const response = await this.updateMpmeDonnees(stepData) 
-                  console.log('eee',response);
-                  if (response === true) {
-                    this.loading = false;
-                    this.confirmDelete()
-                
-                  } else {
-                      console.error("Erreur lors de l'envoi des données :", response);
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      this.loading = false;
-                  }
-
-            }else if(this.currentStep === 4 || this.currentStep === 5){
-                  
-                  const stepData = this.collectStepData(this.currentStep);
-                  console.log(stepData);
-                  localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(stepData))
-                  const response = await this.updateMpmeDonnees(stepData) 
-                  console.log('eee',response);
-                  if (response === true) {
-                      this.currentStep++;
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                   this.loading = false;
-                  } else {
-                      console.error("Erreur lors de l'envoi des données :", response);
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      this.loading = false;
-                  }
-            }else{
-              const stepData = this.collectStepData(this.currentStep);
-                  console.log(stepData);
-                  localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(stepData));
-                  const response = await this.enregistrerMpmeDonnees(stepData) 
-                  console.log('eee',response);
-                  if (response === true) {
-                      this.currentStep++;
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      this.loading = false;
-                  } else {
-                      console.error("Erreur lors de l'envoi des données :", response);
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      this.loading = false;
-                  }
-
-            }
-
-            
-
-
+    afficherMessageSuccess() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Modifications enregistrées avec succès !',
+        text: 'Voulez-vous voir les modifications ?',
+        showCancelButton: true,
+        confirmButtonText: 'Oui',
+        confirmButtonColor: "#007676",
+        cancelButtonText: 'Non',
+        cancelButtonTextColor: '#FF0000',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/detail-industrielle/${this.id}` })
         } else {
-            // Afficher un message d'erreur à l'utilisateur
-            console.log("Le formulaire contient des erreurs");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-                   this.loading = false;
-        }
-    } catch (error) {
-        // Gérer les erreurs
-        console.error("Une erreur s'est produite :", error);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-         this.loading = false;
-    }
-},
+          this.$router.push({ path: `/industrielles`})
 
-    // async nextStep() {
-    // //   this.loading = true;
-    //   if (this.currentStep === 1) {
-    //     this.error = "";
-    //     this.v$.step1.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       this.currentStep++;
-    //       window.scrollTo({
-    //           top: 0,
-    //           behavior: "smooth",
-    //         });
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+        }
+      });
+    },
+    async nextStep() {
+    //   this.loading = true;
+      if (this.currentStep === 1) {
+        this.error = "";
+        this.v$.step1.$touch();
+        if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
+          const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
+          this.getSuivant(mpmeData)
          
-    //     }
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+         
+        }
          
             
-    //   } else if (this.currentStep === 2) {
-    //     this.error = "";
-    //     this.v$.step2.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       this.currentStep++;
-    //       window.scrollTo({
-    //           top: 0,
-    //           behavior: "smooth",
-    //         });
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+      } else if (this.currentStep === 2) {
+        this.error = "";
+        this.v$.step2.$touch();
+        if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
+          const mpmeData = this.createMpmeData();
+          this.getSuivant(mpmeData)
+          console.log("mpmeData1", mpmeData);
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
          
-    //     }
+        }
        
-    //   } else if (this.currentStep === 3) {
-    //     this.error = "";
-    //     this.v$.step3.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       this.currentStep++;
-    //       window.scrollTo({
-    //           top: 0,
-    //           behavior: "smooth",
-    //         });
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+      } else if (this.currentStep === 3) {
+        this.error = "";
+        this.v$.step3.$touch();
+        if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
+          const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
+          this.getSuivant(mpmeData)
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
          
-    //     }
+        }
            
-    //   }else if (this.currentStep === 4) {
-    //     this.error = "";
-    //     this.v$.step4.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       this.currentStep++;
-    //       window.scrollTo({
-    //           top: 0,
-    //           behavior: "smooth",
-    //         });
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+      }else if (this.currentStep === 4) {
+        this.error = "";
+        this.v$.step4.$touch();
+        if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
+          const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
+          this.getSuivant(mpmeData)
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
          
-    //     }
+        }
           
-    //  }else if (this.currentStep === 5) {
-    //   this.error = "";
-    //     this.v$.step5.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       this.currentStep++;
-    //       window.scrollTo({
-    //           top: 0,
-    //           behavior: "smooth",
-    //         });
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+     }else if (this.currentStep === 5) {
+      this.error = "";
+        this.v$.step5.$touch();
+        if (this.v$.$errors.length == 0) {
+      this.loading = true;
+
+          const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
+          this.getSuivant(mpmeData)
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
          
-    //     }
+        }
           
-    //  }else if (this.currentStep === 6) {
-    //      this.error = "";
-    //     this.v$.step6.$touch();
-    //     if (this.v$.$errors.length == 0) {
-    //       this.loading = true
-    //       const mpmeData = this.createMpmeData();
-    //       console.log("mpmeData1", mpmeData);
-    //       localStorage.setItem('tempMpmeDataDNCIC', JSON.stringify(mpmeData));
-    //       const success = await this.enregistrerMpmeDonnees(mpmeData);
-    //       console.log("success", success);
-    //       if (success) {
-    //           localStorage.removeItem('tempMpmeDataDNCIC')
-    //          setTimeout(()=>{
-    //             this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-    //           }, 5000);
-    //           this.$router.push({ path: '/importatrices' })
-    //         this.loading = false;
-    //       } else {
-    //         console.error("Erreur lors de l'enregistrement des données pour le MPME");
-    //         window.scrollTo({ top: 0, behavior: "smooth" });
-    //         this.loading = false;
-    //       }
+     }else if (this.currentStep === 6) {
+         this.error = "";
+        this.v$.step6.$touch();
+        if (this.v$.$errors.length == 0) {
+          this.loading = true
+          const mpmeData = this.createMpmeData();
+          console.log("mpmeData1", mpmeData);
+          localStorage.setItem('tempMpmeDataUpdateDNI', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiantDNI', this.loggedInUser.id);
+          const success = await this.enregistrerMpmeDonnees(mpmeData);
+          console.log("success", success);
+          if (success) {
+            this.afficherMessageSuccess()  
+            this.loading = false;
+          } else {
+            console.error("Erreur lors de l'enregistrement des données pour le MPME");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            this.loading = false;
+          }
           
-    //     } else {
-    //       console.log("errroor1", this.v$.$errors);
-    //       window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth",
-    //       });
+        } else {
+          console.log("errroor1", this.v$.$errors);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
          
-    //     }
+        }
           
-    //  }
-    // },
+     }
+    },
 
     prevStep() {
       if (this.currentStep > 1) {
@@ -2662,186 +2408,77 @@ async nextStep() {
     },
 
     successmsg:successmsg,
-    async confirmDelete() {
-   // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
-   const result = await Swal.fire({
-     title: 'Voulez-vous ajouter des fichiers concernant l\'entreprise?',
-     text: 'Vous pouvez télécharger des fichiers tels que le NIF, le RCCM et le certificat.',
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonText: 'Oui, ajouter',
-     cancelButtonText: 'Non, annuler',
-     reverseButtons: true
-   });
+    async fetchgetOneMpme() {
+      try {
+        const userId = this.loggedInUser.id;
+        // const userId = 'MPME-1580-2023'
+        const response = await axios.get(`/mcipme/${this.id}`);
+        this.userData = response.data.data.detail;
+        console.log("UserData:", response.data.data);
+        console.log("UserData:", this.userData);
+        const CodeIdentifiant = this.getTempMpmeData('CodeIdentifiantDNI');
+        const localStorageUserData = this.getTempMpmeData('tempMpmeDataUpdateDNI');
+        console.log("UserData:", CodeIdentifiant);
+        console.log("UserData:", localStorageUserData);
 
-   // Si l'utilisateur confirme la suppression
-   if (result.isConfirmed) {
-    event.preventDefault();
-     this.AddFichier = true;
-   }else{
-    localStorage.removeItem('codempmeDNCIC')
-    localStorage.removeItem('tempMpmeDataDNCIC')
-        this.valider()
+          if (CodeIdentifiant === this.id) {
+            const userDataString = JSON.parse(localStorageUserData)
+            this.storeUserDataLocal(userDataString);
+           console.log("UserData:",userDataString );
+          } else {
+            this.storeUserData(this.userData);
+           console.log("UserData:", this.userData);
+          }
+        
+        // console.log('UserData:', this.userData.ListeSousSecteurActivite);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des options des USER :", error);
+        if (error.response.status === 500) {
+          this.$router.push("/");  //a revoir
+        }
+      }
+    },
 
-   }
-       },
-     
     // appeel apî
-    // async enregistrerMpmeDonnees(mpmeData) {
-    //   try {
-       
-    //     const response = await axios.post('/mcipme', mpmeData, {
-    //       headers: {
-    //         Authorization: `Bearer ${this.loggedInUser.token}`,
-             
-    //       },
-    //     });
-
-    //     console.log("response", response);
-    //     if (response.data.status === 'success') {
-    //       console.log("Données MPME mises à jour avec succès !");
-         
-    //       return true;
-    //     } else {
-    //       console.error("Erreur lors de la mise à ", response.data);
-    //       this.error = response.data.message;
-    //       return false;
-    //     }
-    //   } catch (error) {
-    //     console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
-    //     if (  error.response.data.status === "error" ) {
-    //       console.log("aut", error.response.data.status === "error");
-          
-    //       if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-    //             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-    //           this.$router.push("/");  //a revoir
-    //         }
-    //     } else {
-    //       this.formatValidationErrors(error.response.data.errors);
-    //       this.loading = false;
-    //       return false;
-    //     }
-    //   }
-    // },
+ 
     async enregistrerMpmeDonnees(mpmeData) {
-    try {
-        const response = await axios.post('/mcipme', mpmeData, {
-            headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-            },
+      try {
+        const userId = this.id;
+        // const userId = 'MPME-1580-2023'
+
+        const response = await axios.put(`/mcipme/${userId}`, mpmeData, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'application/json', 
+            
+          },
         });
 
         console.log("response", response);
-        if (response.data.status === 'success') {
-            console.log("Données MPME mises à jour avec succès !");
-            localStorage.setItem('codempmeDNCIC', response.data.data.user.Entreprises);
-            return true;
+        if (response.status === 200) {
+          console.log("Données MPME mises à jour avec succès !");
+          return true;
         } else {
-            console.error("Erreur lors de la mise à ", response.data);
-            
-            // Passer à l'étape suivante si l'erreur n'est pas liée à l'étape en cours
-            this.error = response.data.message;
-            return false;
+          console.error("Erreur lors de la mise à ", response.data);
+          this.error = response.data.message;
+          return false;
         }
-    } catch (error) {
-      console.error("Erreur lors de la mise à ", error.response.data.errors);
-//       if (error.response.data.errors) {
-//   const errorKeys = Object.keys(error.response.data.errors);
-//   const currentStepFields = Object.keys(mpmeData);
-//   const errorDetails = {};
-
-//   errorKeys.forEach(key => {
-//     if (currentStepFields.includes(key)) {
-//       errorDetails[key] = {
-//         included: true,
-//         content: error.response.data.errors[key]
-//       };
-//     }
-//   });
-
-//   console.log('errorDetails', errorDetails);
-//     if (errorDetails.included === true) {
-//                 // Passer à l'étape suivante si l'erreur n'est pas liée à l'étape en cours
-//                 this.formatValidationErrors(error.response.data.errors);
-//               return false;
-
-//             }else{
-//               return true;
-//             }
-// }
-   
-          if(error.response.data.errors){
-            const errorKeys = Object.keys(error.response.data.errors);
-            const currentStepFields = Object.keys(mpmeData);
-            const isCurrentStepError = errorKeys.some(key => currentStepFields.includes(key));
-
-            console.log('isCurrentStepError', errorKeys);
-
-            if (isCurrentStepError === true) {
-                // Passer à l'étape suivante si l'erreur n'est pas liée à l'étape en cours
-                this.formatValidationErrors(error.response.data.errors);
-              return false;
-
-            }else{
-              return true;
-            }
-          }
-          else{
-
-            if (error.response && error.response.data.status === "error") {
-                if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
-                    await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-                    this.$router.push("/");
-                }
-            } else {
-                // Afficher les erreurs à l'utilisateur
-                this.formatValidationErrors(error.response.data.errors);
-                this.loading = false;
-            }
-          }
-
-    }
-},
-async updateMpmeDonnees(mpmeData) {
-    try {
-      const CodeMpme = localStorage.getItem('codempmeDNCIC');
-      console.log('codempmeDNCIC',CodeMpme)
-;
-      // const userId = 'MPME-1580-2023'
-
-      const response = await axios.put(`/mcipme/${CodeMpme}`, mpmeData, {
-        headers: {
-          Authorization: `Bearer ${this.loggedInUser.token}`,
-          'Content-Type': 'application/json', 
+      } catch (error) {
+        console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (  error.response.data.status === "error" ) {
+          console.log("aut", error.response.data.status === "error");
           
-        },
-      });
-
-      console.log("response", response);
-      if (response.status === 200) {
-        console.log("Données MPME mises à jour avec succès !");
-        return true;
-      } else {
-        console.error("Erreur lors de la mise à ", response.data);
-        this.error = response.data.message;
-        return false;
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
       }
-    } catch (error) {
-      console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
-      if (  error.response.data.status === "error" ) {
-        console.log("aut", error.response.data.status === "error");
-        
-        if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-            this.$router.push("/");  //a revoir
-          }
-      } else {
-        this.formatValidationErrors(error.response.data.errors);
-        this.loading = false;
-        return false;
-      }
-    }
-  },
+    },
 
     initializeYears() {
       const currentYear = new Date().getFullYear();
@@ -2886,14 +2523,45 @@ async updateMpmeDonnees(mpmeData) {
         console.log("response", response);
         if (response.data.status === 'success') {
           console.log("Données MPME mises à jour avec succès !",response.data.data);
-          const filteredData = response.data.data.filter(stat => {
-          return   stat.IntituleType !== 'UNITE INDUSTRIELLE';
+         this.EntrepriseOptions = response.data.data.map((type) => ({
+        label:type.IntituleType,
+        value: type.id,
+      }));
+      console.log('eeee', this.EntrepriseOptions);
+         
+        } 
+      } catch (error) {
+        console.log("Erreur lors de la mise à jour des données MPME guinee :", error);
+        if (  error.response.data.status === "error" ) {
+          console.log("aut", error.response.data.status === "error");
+          
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+          this.loading = false;
+          return false;
+        }
+      }
+    },
+    async fetchZoneOptions() {
+      try {
+       
+        const response = await axios.get('/zone-industrielles', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`, },
+            params:{statut:true}
         });
-        this.EntrepriseOptions = filteredData.map((country) => ({
-      label:country. IntituleType,
-      value: country.id,
-    }));
-    console.log("response",this.EntrepriseOptions);
+
+        console.log("response", response);
+        if (response.data.status === 'success') {
+          console.log("Données MPME mises à jour avec succès !",response.data.data);
+         this.ZoneOptions = response.data.data.map((country) => ({
+        label:country. IntituleZone,
+        value: country.CodeZone,
+      }));
          
         } 
       } catch (error) {
@@ -3169,49 +2837,63 @@ async updateMpmeDonnees(mpmeData) {
 
       // Maintenant, this.resultError est un objet où les clés sont les noms des champs
       console.log("resultError", this.resultError);
-      for (let key in this.resultError) {
-  if (this.resultError.hasOwnProperty(key)) {
-    // Construire le message d'erreur avec le nom du champ (clé) et son message (valeur)
-    let errorMessage = `${key}: ${this.resultError[key]}`;
-    // Afficher le toast pour chaque erreur
-    this.triggerToast(errorMessage);
-  }
-}
     },
     handleDirigeantProprietaireChange(option) {
       console.log("Données de localité :", option);
       if (option.value === 'Oui') {
         // Copiez les données du dirigeant dans les données du propriétaire
-        this.step2.titreProprietaire = this.step2.titreDirigeant;
-        this.step2.nomProprietaire = this.step2.nomDirigeant;
-        this.step2.prenomProprietaire = this.step2.prenomDirigeant;
-        this.step2.sexeProprietaire = this.step2.sexeDirigeant;
-        this.step2.paysProprietaire = this.step2.paysDirigeant;
-        this.step2.anneeNaissanceProprietaire = this.step2.anneeNaissanceDirigeant;
+        this.step4.titreProprietaire = this.step4.titreDirigeant;
+        this.step4.nomProprietaire = this.step4.nomDirigeant;
+        this.step4.prenomProprietaire = this.step4.prenomDirigeant;
+        this.step4.sexeProprietaire = this.step4.sexeDirigeant;
+        this.step4.paysProprietaire = this.step4.paysDirigeant;
+        this.step4.anneeNaissanceProprietaire = this.step4.anneeNaissanceDirigeant;
       }
     },
 
     handleFileUploadRccm(event) {
-    console.log("File input change");
-    const file = event.target.files[0];
-    console.log("handleFileUploadRccm Selected file:", file);
-    this.FileRccm = file
-  },
-   handleFileUploadNif(event) {
-    console.log("File input change");
-    const file = event.target.files[0];
-    console.log("handleFileUploadNif Selected file:", file);
-    this.FileNif = file
-  },
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("handleFileUploadRccm Selected file:", file);
+      this.step2.FichierRccm = file
+    },
+     handleFileUploadNif(event) {
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("handleFileUploadNif Selected file:", file);
+      this.step2.FichierNif = file
+    },
+    getTempMpmeData(key) {
+      // Votre logique pour récupérer les données du local storage
+      // Assurez-vous de retourner les données ou une valeur par défaut appropriée
+      return localStorage.getItem(key) || null;
+    },
+   async getSuivant(mpmeData){
+         localStorage.setItem('tempMpmeDataUpdateDNI', JSON.stringify(mpmeData));
+          localStorage.setItem('CodeIdentifiantDNI', this.id);
 
-  handleFileUploadCertificat(event) {
-    console.log("File input change");
-    const file = event.target.files[0];
-    console.log("handleFileUploadNif Selected file:", file);
-    this.FileCerti = file
-  },
-
+           const success = await this.enregistrerMpmeDonnees(mpmeData);
+          console.log("success", success);
+          if (success) {
+         
+            this.currentStep++;
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+            this.loading = false;
+          } else {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+            this.loading = false;
+          }
+        
+    },
     storeUserDataLocal(userData) {
+      console.log('okkk storeUserDataLocal',userData.types)
+
 
       this.step1.region = userData.Region;
       this.step1.commune = userData.Commune;
@@ -3228,47 +2910,50 @@ async updateMpmeDonnees(mpmeData) {
       this.step1.email = userData.AdresseEmail;
       this.step1.url = userData.SiteWeb;
 
-      this.step2.titreDirigeant = userData.TitreDirigeant;
-      this.step2.nomDirigeant = userData.NomDirigeant;
-      this.step2.prenomDirigeant = userData.PrenomDirigeant;
-      this.step2.sexeDirigeant = userData.SexeDirigeant;
-      this.step2.paysDirigeant = userData.PaysDirigeant;
-      this.step2.anneeNaissanceDirigeant = userData.AnneeNaissanceDirigeant;
-      this.step2.dirigeantProprietaire = userData.DirigeantProprietaire;
-      this.step2.titreProprietaire = userData.TitreProprietaire;
-      this.step2.nomProprietaire = userData.NomProprietaire;
-      this.step2.prenomProprietaire = userData.PrenomProprietaire;
-      this.step2.sexeProprietaire = userData.SexeProprietaire;
-      this.step2.paysProprietaire = userData.PaysProprietaire;
-      this.step2.anneeNaissanceProprietaire = userData.AnneeNaissanceProprietaire;
+      this.step2.an_creation = userData.AnneeCreation;
+      this.step2.an_entre_acti = userData.AnneeEntreeActivite;
+      this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
+      this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+      this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
+      this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
+      this.step2.an_prod_1 = userData.AnneeProduction1;
+      this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
+      this.step2.types = userData.types;
+      this.step2.CodeZone = userData.CodeZone;
+      this.step2.SuperficieOccupee = userData.SuperficieOccupee;
+      this.step2.nbre_rccm = userData.NumeroRccm;
+      this.step2.FichierRccm=userData.FichierRccm
+      this.step2.nbre_nif = userData.NumeroNif;
+      this.step2.FichierNif = userData.FichierNif;
+      this.step2.DateGenerationNif = userData.DateGenerationNif;
+      this.step2.NumeroTva = userData.NumeroTva;
 
-      this.step3.an_creation = userData.AnneeCreation;
-      this.step3.an_entre_acti = userData.AnneeEntreeActivite;
-      this.step3.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-      this.step3.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
-      this.step3.prin_sect_acti = userData.PrincipalSecteurActivite;
-      this.step3.selectedSousSecteurs = userData.ListeSousSecteurActivite;
-      this.step3.an_prod_1 = userData.AnneeProduction1;
-      this.step3.PaysSiegeSocial = userData.PaysSiegeSocial;
-      this.step3.types = userData.types;
-      this.step3.NumeroRccm = userData.NumeroRccm;
-      this.step3.FichierRccm=userData.FichierRccm
-      this.step3.NumeroNif = userData.NumeroNif;
-      this.step3.FichierNif = userData.FichierNif;
-      this.step3.DateGenerationNif = userData.DateGenerationNif;
-      this.step3.NumeroTva = userData.NumeroTva;
-
-      this.step4.NbreEmployeGuinneF = userData.NbreEmployeGuinneF;
-      this.step4.NbreEmployeGuinneH = userData.NbreEmployeGuinneH;
-      this.step4.NbreEmploye = userData.NbreEmploye;
-      this.step4.pers_per_femm = userData.PersonnelPermanentFemme;
-      this.step4.pers_per_homm = userData.PersonnelPermanentHomme;
-      this.step4.pers_temp_femm = userData.PersonnelTemporaireFemme;
-      this.step4.pers_temp_homm = userData.PersonnelTemporaireHomme;
-      this.step4.NbreActionnaireGuinneF = userData.NbreActionnaireGuinneF;
-      this.step4.NbreActionnaireGuinneH = userData.NbreActionnaireGuinneH;
-      this.step4.NbreActionnaireGuinne = userData.NbreActionnaire;
+      this.step3.NbreEmployeGuinneF = userData.NbreEmployeGuinneF;
+      this.step3.NbreEmployeGuinneH = userData.NbreEmployeGuinneH;
+      this.step3.NbreEmploye = userData.NbreEmploye;
+      this.step3.pers_per_femm = userData.PersonnelPermanentFemme;
+      this.step3.pers_per_homm = userData.PersonnelPermanentHomme;
+      this.step3.pers_temp_femm = userData.PersonnelTemporaireFemme;
+      this.step3.pers_temp_homm = userData.PersonnelTemporaireHomme;
+      this.step3.NbreActionnaireGuinneF = userData.NbreActionnaireGuinneF;
+      this.step3.NbreActionnaireGuinneH = userData.NbreActionnaireGuinneH;
+      this.step3.NbreActionnaireGuinne = userData.NbreActionnaire;
       
+
+      this.step4.titreDirigeant = userData.TitreDirigeant;
+      this.step4.nomDirigeant = userData.NomDirigeant;
+      this.step4.prenomDirigeant = userData.PrenomDirigeant;
+      this.step4.sexeDirigeant = userData.SexeDirigeant;
+      this.step4.paysDirigeant = userData.PaysDirigeant;
+      this.step4.anneeNaissanceDirigeant = userData.AnneeNaissanceDirigeant;
+      this.step4.dirigeantProprietaire = userData.DirigeantProprietaire;
+      this.step4.titreProprietaire = userData.TitreProprietaire;
+      this.step4.nomProprietaire = userData.NomProprietaire;
+      this.step4.prenomProprietaire = userData.PrenomProprietaire;
+      this.step4.sexeProprietaire = userData.SexeProprietaire;
+      this.step4.paysProprietaire = userData.PaysProprietaire;
+      this.step4.anneeNaissanceProprietaire = userData.AnneeNaissanceProprietaire;
+
       this.step5.titreRepondant = userData.TitreRepondant;
       this.step5.nomRepondant = userData.NomRepondant;
       this.step5.fonctionRepondant = userData.FonctionRepondant;
@@ -3289,59 +2974,112 @@ async updateMpmeDonnees(mpmeData) {
      
       // ... Lier d'autres propriétés de la même manière
     },
-    async HamdleFile(){
-      const CodeMpme = localStorage.getItem('codempmeDNCIC');
-      console.log('codempmeDNCIC',CodeMpme)
-  this.loading = true
- const formData = new FormData();
-  formData.append("FileNif",  this.FileNif);
-  formData.append("FileRccm",  this.FileRccm);
-  formData.append("FileCerti", this.FileCerti);
-  formData.append( "codeMpme",CodeMpme )
- 
-  console.log(formData);
-  console.log(
-    this.FileNif,this.id,
-    this.FileRccm, this.FileCerti,
+
+    storeUserData(userData) {
+     
+      let types = []
+      if(userData.type_entreprises.length > 0){
+        userData.type_entreprises.map((el)=>{
+          types.push( parseInt(el.TypeEnterpriseId) )
+        })
+      }
+     
+
+
+      this.step1.region = userData.Region;
+      this.step1.commune = userData.Commune;
+      this.step1.ville = userData.Ville;
+      this.step1.sous_prefecture = userData.Sousprefecture;
+      this.step1.localisation = userData.Localisation;
+      this.step1.sigle_mpme = userData.SigleMpme;
+      this.step1.nom = userData.NomMpme;
+      this.step1.quartier = userData.Quartier;
+      this.step1.rue = userData.Rue;
+      this.step1.boite_postale = userData.BoitePostale;
+      this.step1.tel_what = userData.NumeroWhatsApp;
+      this.step1.tel_second = userData.NumeroTelephoneSecondaire;
+      this.step1.email = userData.AdresseEmail;
+      this.step1.url = userData.SiteWeb;
+
+      this.step2.an_creation = userData.AnneeCreation;
+      this.step2.an_entre_acti = userData.AnneeEntreeActivite;
+      this.step2.code_st_juriq = userData.CodeStatutJuridique;
+      this.step2.autr_st_juriq = userData.AutreStatutJuridique;
+      
+      this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
+      // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
+      this.step2.an_prod_1 = userData.AnneeProduction1;
+      this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
+      //  this.step2.types = types.length === 0 ?userData.types:"1|2".split("|") ;
+       this.step2.types = types ;
+    
+      this.step2.CodeZone = userData.CodeZone;
+      this.step2.SuperficieOccupee = userData.SuperficieOccupee;
+      this.step2.nbre_rccm = userData.NumeroRccm;
+      this.step2.FichierRccm=userData.FichierRccm
+      this.step2.nbre_nif = userData.NumeroNif;
+      this.step2.FichierNif = userData.FichierNif;
+      this.step2.DateGenerationNif = userData.DateGenerationNif;
+      this.step2.NumeroTva = userData.NumeroTva;
+
+      if (userData.ListeSousSecteurActivite.includes("|")) {
+        this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split("|");
+      } else if (userData.ListeSousSecteurActivite.includes(",")) {
+        this.step2.selectedSousSecteurs = JSON.parse(userData.ListeSousSecteurActivite);
+      } else {
+        this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite.split(" ");
+      }
+    
+      this.step3.NbreEmployeGuinneF = userData.NbreEmployeGuinneF;
+      this.step3.NbreEmployeGuinneH = userData.NbreEmployeGuinneH;
+      this.step3.NbreEmploye = userData.NbreEmploye;
+      this.step3.pers_per_femm = userData.PersonnelPermanentFemme;
+      this.step3.pers_per_homm = userData.PersonnelPermanentHomme;
+      this.step3.pers_temp_femm = userData.PersonnelTemporaireFemme;
+      this.step3.pers_temp_homm = userData.PersonnelTemporaireHomme;
+      this.step3.NbreActionnaireGuinneF = userData.NbreActionnaireGuinneF;
+      this.step3.NbreActionnaireGuinneH = userData.NbreActionnaireGuinneH;
+      this.step3.NbreActionnaireGuinne = userData.NbreActionnaire;
+      
+
+      this.step4.titreDirigeant = userData.TitreDirigeant;
+      this.step4.nomDirigeant = userData.NomDirigeant;
+      this.step4.prenomDirigeant = userData.PrenomDirigeant;
+      this.step4.sexeDirigeant = userData.SexeDirigeant;
+      this.step4.paysDirigeant = userData.PaysDirigeant;
+      this.step4.anneeNaissanceDirigeant = userData.AnneeNaissanceDirigeant;
+      this.step4.dirigeantProprietaire = userData.DirigeantProprietaire;
+      this.step4.titreProprietaire = userData.TitreProprietaire;
+      this.step4.nomProprietaire = userData.NomProprietaire;
+      this.step4.prenomProprietaire = userData.PrenomProprietaire;
+      this.step4.sexeProprietaire = userData.SexeProprietaire;
+      this.step4.paysProprietaire = userData.PaysProprietaire;
+      this.step4.anneeNaissanceProprietaire = userData.AnneeNaissanceProprietaire;
+
+      this.step5.titreRepondant = userData.TitreRepondant;
+      this.step5.nomRepondant = userData.NomRepondant;
+      this.step5.fonctionRepondant = userData.FonctionRepondant;
+      this.step5.adresseRepondant = userData.AdresseRepondant;
+      this.step5.villeRepondant = userData.VilleRepondant;
+      this.step5.telephoneWhatsAppRepondant = userData.TelephoneWhatsAppRepondant;
+      this.step5.contacter = userData.Contacter;
+      this.step5.existanceActionnaire = userData.ExistanceActionnaire;
+      this.step5.existanceConseilAdministration = userData.ExistanceConseilAdministration;
+
+      this.step6.lienGoogleMapMpme = userData.LienGoogleMapMpme;
+      this.step6.latitudeMpme = userData.LatitudeMpme;
+      this.step6.longitudeMpme = userData.LongitudeMpme;
+      this.step6.altitudeMpme = userData.AltitudeMpme;
+      this.step6.precisionGPSMpme = userData.PrecisionGPSMpme;
+      this.step6.origineDonnees = userData.OrigineDonnees;
+
+    
+    
+
    
-  );
-   try {
-   const response = await axios.post('/mcipme/pme/attache-files' , formData, {
-       headers: {
-         Authorization: `Bearer ${this.loggedInUser.token}`, 
-        },
-       });
-   console.log('response.login', response.data); 
-   if (response.data.status === "success") { 
-     this.AddFichier = false
-     this.valider()
-   } else {
+      // ... Lier d'autres propriétés de la même manière
+    },
 
-   }
-
-
-
-} catch (error) {
-console.log('response.login', error); 
-
-this.loading = false
-if (error.response.data.status === "error") {
-return this.error = error.response.data.message
-
-} else {
-this.formatValidationErrors(error.response.data.errors);
-}
-}
-
-   },
-   valider(){
-    localStorage.removeItem('codempmeDNCIC')
-    localStorage.removeItem('tempMpmeDataDNCIC')
-    this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-    this.$router.push({ path: '/importatrices' })
-     this.loading = false;
-
-}
   
   },
 }

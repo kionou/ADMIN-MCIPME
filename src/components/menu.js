@@ -118,6 +118,12 @@ let menuItems = [
         parentId: 37,
       },
       {
+        id: 57,
+        label: "menuitems.projects.list.entreprise",
+        link: "/types-entreprises",
+        parentId: 37,
+      },
+      {
         id: 52,
         label: "menuitems.projects.list.categorie",
         link: "/produits",

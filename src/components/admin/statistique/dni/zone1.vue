@@ -60,9 +60,9 @@
           }
         }
       },
-      colors: [ '#544fc5'],// Définissez ici les couleurs que vous souhaitez utiliser
       series: [{
         name: 'Zone Industrielle',
+        colorByPoint: true,
         data: [] // Les données seront mises à jour dynamiquement
       }],
     },

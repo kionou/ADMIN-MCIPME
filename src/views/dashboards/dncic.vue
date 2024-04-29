@@ -78,11 +78,11 @@
         <div class="texte">
           <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
         <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
         <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
-        <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
+        <div >
           <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" >   <span class="see-more">
               <i class="bx bx-show"></i>
             </span>
@@ -162,6 +162,7 @@ export default {
       datax:[],
       mpme:[],
       IndicateursOptions:[],
+      SecteurActiviteOptions:[],
       regionOptions:[],
       indicateur1:'',
       indicateur2:'',
@@ -187,6 +188,8 @@ async  mounted() {
     await this.fetchStaAnnuel()
     await this.fetchMpme()
     await this.fetchRegionOptions()
+    await this.fetchSecteurActiviteOptions()
+
   },
   methods: {
   async fetchStatics() {
@@ -337,6 +340,21 @@ console.log(this.statData);
       );
     }
   },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
       NameRegion(id){
           try {
           
@@ -345,6 +363,25 @@ console.log(this.statData);
           console.log('selectedRegion',selectedRegion);
           if (selectedRegion) {
           return  selectedRegion.NomRegion;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
           } else {
               console.error('Région non trouvée dans les options.');
           }
@@ -462,8 +499,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

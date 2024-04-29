@@ -157,8 +157,8 @@
                      <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Adresse Email</label>
-                     <MazInput v-model="step1.email1"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
-                      <small v-if="v$.step1.email1.$error">{{v$.step1.email1.$errors[0].$message}}</small> 
+                     <MazInput v-model="step1.email"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
+                      <small v-if="v$.step1.email.$error">{{v$.step1.email.$errors[0].$message}}</small> 
                       <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
 
                      </div>
@@ -180,8 +180,8 @@
                      <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Mot de passe </label>
-                     <MazInput v-model="step1.password1"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.password1.$error">{{v$.step1.password1.$errors[0].$message}}</small> 
+                     <MazInput v-model="step1.password"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                      <small v-if="v$.step1.password.$error">{{v$.step1.password.$errors[0].$message}}</small> 
                       <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
                      </div>
                   </BCol>
@@ -189,8 +189,8 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Confirmer le mot de passe </label>
-                     <MazInput v-model="step1.confirm_password1"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.confirm_password1.$error">{{v$.step1.confirm_password1.$errors[0].$message}}</small>
+                     <MazInput v-model="step1.confirm_password"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                      <small v-if="v$.step1.confirm_password.$error">{{v$.step.confirm_password.$errors[0].$message}}</small>
                       <small v-if="!validatePasswordsMatch()" >Les mots de passe ne correspondent pas.</small>
                       <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"] }} </small>
                      </div>
@@ -372,10 +372,10 @@ export default {
       step1:{
              nom:'',
              prenom:'',
-             email1: '',
+             email: '',
              phoneNumber:'',
-             password1: '',
-             confirm_password1:''
+             password: '',
+             confirm_password:''
              
            },
 
@@ -400,7 +400,7 @@ export default {
       lgmin: lgmin(2),
      
     },
-    email1: {
+    email: {
       require,
       ValidEmail
     },
@@ -408,13 +408,13 @@ export default {
       require,
       
     },
-    password1: {
+    password: {
       require,
       lgmin: lgmin(8),
       lgmax: lgmax(100),
       
     },
-    confirm_password1: {
+    confirm_password: {
       require,
       lgmin: lgmin(8),
       lgmax: lgmax(190),

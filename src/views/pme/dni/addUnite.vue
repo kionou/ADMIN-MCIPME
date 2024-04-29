@@ -34,7 +34,7 @@
            </div>   
 
            <div class="container-fluid" style="margin-top: 48px">
-
+          
               <form class="form" >
               <!-- Étape 1 -->
               <div v-if="currentStep === 1">
@@ -164,7 +164,7 @@
                               type="text"
                               name="SigleMpme"
                               id="SigleMpme"
-                              placeholder="DNCIC"
+                              placeholder="DNI"
                               v-model="step1.sigle_mpme"
                               :class="{ 'error-border': resultError['SigleMpme'] }"
                               @input="resultError['SigleMpme'] = false"
@@ -186,7 +186,7 @@
                               type="text"
                               name="nom"
                               id="nom"
-                              placeholder="DNCIC"
+                              placeholder="DNI"
                               v-model="step1.nom"
                               :class="{ 'error-border': resultError['NomMpme'] }"
                               @input="resultError['NomMpme'] = false"
@@ -321,7 +321,7 @@
                               type="email"
                               name="email"
                               id="AdresseEmail"
-                              placeholder="dncicmecl@gmail.com"
+                              placeholder="dniexemple@gmail.com"
                               v-model="step1.email"
                               :class="{ 'error-border': resultError['AdresseEmail'] }"
                               @input="resultError['AdresseEmail'] = false"
@@ -948,24 +948,6 @@
                 {{ resultError["PaysSiegeSocial"] }}
               </small>
             </div>
-            <!-- <div class="col">
-              <div class="input-groupe">
-                <label for="ListeSousSecteurActivite"
-                  >Êtes-vous une unité distributrice ? <span class="text-danger">*</span></label
-                >
-                <MazSelect label="Sélectionner Oui ou Non"
-                  v-model="step3.distributrice"
-                  no-radius  color="info"
-                  :options="choix"
-                  
-                  search
-                />
-                
-              <small v-if="v$.step3.distributrice.$error">{{
-                v$.step3.distributrice.$errors[0].$message
-              }}</small>
-            </div>
-          </div> -->
            <div class="col" >
               <div class="input-groupe">
                 <label for="ListeSousSecteurActivite"
@@ -1083,30 +1065,7 @@
             <small v-if="v$.step3.DateGenerationNif.$error">{{
               v$.step3.DateGenerationNif.$errors[0].$message
             }}</small>
-            <div class="col">
-              <div class="input-groupe">
-                <label for="FichierNif">Fichier Nif</label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadNif"
-                  name="FichierNif"
-                  id="FichierNif"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FichierNif'] }"
-                  @input="resultError['FichierNif'] = false"
-                />
-              </div>
-            </div>
-            <small v-if="v$.step3.FichierNif.$error">{{
-              v$.step3.FichierNif.$errors[0].$message
-            }}</small>
-            <small v-if="resultError['FichierNif']">
-              {{ resultError["FichierNif"] }}
-            </small>
-
-           
+ 
           </div>
 
           <div class="row mb-3 mt-3 content-group">
@@ -1130,28 +1089,7 @@
             <small v-if="resultError['NumeroRccm']">
               {{ resultError["NumeroRccm"] }}
             </small>
-            <div class="col">
-              <div class="input-groupe">
-                <label for="FichierRccm">Fichier Rccm </label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadRccm"
-                  name="FichierRccm"
-                  id="FichierRccm"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FichierRccm'] }"
-                  @input="resultError['FichierRccm'] = false"
-                />
-              </div>
-            </div>
-              <small v-if="v$.step3.FichierRccm.$error">{{
-              v$.step3.FichierRccm.$errors[0].$message
-            }}</small>
-            <small v-if="resultError['FichierRccm']">
-              {{ resultError["FichierRccm"] }}
-            </small>
+           
             <div class="col">
               <div class="input-groupe">
                 <label for="NumeroTva">Numero de la TVA</label>
@@ -1203,7 +1141,7 @@
               <div class="input-groupe">
                 <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
                 <input
-                  type="text"
+                  type="number"
                   name="PersonnelPermanentFemme"
                   id="PersonnelPermanentFemme"
                   placeholder="21"
@@ -1225,7 +1163,7 @@
               <div class="input-groupe">
                 <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
                 <input
-                  type="text"
+                  type="number"
                   name="PersonnelPermanentHomme"
                   id="PersonnelPermanentHomme"
                   placeholder="11"
@@ -1248,7 +1186,7 @@
                   >Nombre d'employés Guinéens<span class="text-danger"></span></label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmploye"
                   id="NbreEmploye"
                   placeholder="33"
@@ -1275,7 +1213,7 @@
                   >Nombre d'employées féminines Guinéennes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmployeGuinneF"
                   id="NbreEmployeGuinneF"
                   placeholder="11"
@@ -1297,7 +1235,7 @@
                   >Nombre d'employés masculins Guinéens</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmployeGuinneH"
                   id="NbreEmployeGuinneH"
                   placeholder="55"
@@ -1322,7 +1260,7 @@
                               >Personnel Temporaire Femme
                           </label>
                           <input
-                              type="text"
+                              type="number"
                               name="PersonnelTemporaireFemme"
                               id="PersonnelTemporaireFemme"
                               placeholder="33"
@@ -1344,7 +1282,7 @@
                               >Personnel Temporaire Homme
                           </label>
                           <input
-                              type="text"
+                              type="number"
                               name="PersonnelTemporaireHomme"
                               id="PersonnelTemporaireHomme"
                               placeholder="44"
@@ -1372,7 +1310,7 @@
                   >Nombre d'actionnaires Guinéens Femmes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinneF"
                   id="NbreActionnaireGuinneF"
                   placeholder="11"
@@ -1394,7 +1332,7 @@
                   >Nombre d'actionnaires Guinéens Hommes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinneH"
                   id="NbreActionnaireGuinneH"
                   placeholder="55"
@@ -1416,7 +1354,7 @@
                   >Nombre d'actionnaires Guinéens</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinne"
                   id="NbreActionnaireGuinne"
                   placeholder="33"
@@ -1433,7 +1371,7 @@
                 {{ resultError["NbreActionnaire"] }}
               </small>
             </div>
-                      </div>
+          </div>
                    </div>
               </div>
              
@@ -1580,9 +1518,8 @@
                   show-code-on-list
                    no-radius  color="info"
                   :ignored-countries="['AC']"
-                  @update="results = $event"
                   defaultCountryCode="GN"
-                  
+                  @update="results = $event"
                   :success="results?.isValid"
                   :class="{ 'error-border': resultError['TelephoneWhatsAppRepondant'] }"
                   @input="resultError['TelephoneWhatsAppRepondant'] = false"
@@ -1700,7 +1637,7 @@
           <div class="row mb-3 mt-3 content-group">
             <div class="col">
               <div class="input-groupe">
-                <label for="LienGoogleMapMpme">Lien Google Map Mpme</label>
+                <label for="LienGoogleMapMpme">Lien Google Map Entreprise</label>
                 <input
                   v-model="step6.lienGoogleMapMpme"
                   type="text"
@@ -1721,10 +1658,10 @@
 
             <div class="col">
               <div class="input-groupe">
-                <label for="LatitudeMpme">Latitude Mpme</label>
+                <label for="LatitudeMpme">Latitude Entreprise</label>
                 <input
                   v-model="step6.latitudeMpme"
-                  type="text"
+                  type="number"
                   name="LatitudeMpme"
                   id="LatitudeMpme"
                   placeholder="11.3333"
@@ -1742,10 +1679,10 @@
 
             <div class="col">
               <div class="input-groupe">
-                <label for="LongitudeMpme">Longitude Mpme</label>
+                <label for="LongitudeMpme">Longitude Entreprise</label>
                 <input
                   v-model="step6.longitudeMpme"
-                  type="text"
+                  type="number"
                   name="LongitudeMpme"
                   id="LongitudeMpme"
                   placeholder="-12.333"
@@ -1846,8 +1783,120 @@
               </form>
             </div>
       </BCardBody>
-      
-       
+      <BModal v-model="AddFichier" hide-footer centered header-class="border-0" title-class="font-18"  >
+   <div>
+ 
+ <div class="account-pages " style="width:100%;">
+   <BContainer>
+     <BRow >
+       <BCol >
+         <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+          border: 1px solid #c9d1d9 !important;">
+           <div class="bg-primary-subtle">
+             <BRow>
+               <BCol cols="12 text-center">
+                 <div class="modalheader p-4">
+                   <h5 class="text-primary">modifier les Fichiers</h5>
+                   
+                 </div>
+               </BCol>
+               
+             </BRow>
+           </div>
+           <BCardBody class="pt-0">
+             <div>
+               <router-link to="#">
+                 <div class="avatar-md profile-user-wid ">
+               <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                 <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+               </span>
+             </div>
+               </router-link>
+             </div>
+             <div class="p-2">
+               <BForm class="form-horizontal">
+                 <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                    <div class="input-groupe">
+              <label for="FileNif">Fichier Nif</label>
+               <input
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                 @change="handleFileUploadNif"
+                name="FileNif"
+                id="FileNif"
+                placeholder=""
+               
+                :class="{ 'error-border': resultError['FileNif'] }"
+                @input="resultError['FileNif'] = false"
+              />
+            </div>
+          </div>
+                </BCol>
+              </BRow>
+
+              <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                    <div class="input-groupe">
+              <label for="FileRccm">Fichier Rccm</label>
+               <input
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                 @change="handleFileUploadRccm"
+                name="FileRccm"
+                id="FileRccm"
+                placeholder=""
+               
+                :class="{ 'error-border': resultError['FileRccm'] }"
+                @input="resultError['FileRccm'] = false"
+              />
+            </div>
+          </div>
+                </BCol>
+              </BRow>
+
+              <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                    <div class="input-groupe">
+              <label for="FileCerti">Certificat</label>
+               <input
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                 @change="handleFileUploadCertificat"
+                name="FileCerti"
+                id="FileCerti"
+                placeholder=""
+               
+                :class="{ 'error-border': resultError['FileCerti'] }"
+                @input="resultError['FileCerti'] = false"
+              />
+            </div>
+          </div>
+                </BCol>
+              </BRow>
+
+                 
+                 <BRow class="mb-0">
+                   <BCol cols="12" class="text-end">
+                     <div class="boutton">
+                     <button class="" @click="HamdleFile()">Valider</button>
+                    </div>
+                   </BCol>
+                 </BRow>
+               </BForm>
+             </div>
+           </BCardBody>
+         </BCard>
+         
+       </BCol>
+     </BRow>
+   </BContainer>
+ </div>
+</div>
+ </BModal>
      </BCard>
    </BCol>
  </BRow>
@@ -1863,9 +1912,15 @@ import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
 import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidNumeri } from "@/functions/rules";
 import {successmsg} from "@/lib/modal.js"
+import Swal from 'sweetalert2'
+import { useToast } from "vue-toastification";
 
 
 export default {
+setup() {
+ const toast = useToast();
+ return { toast }
+},
  components: {
  Layout,
  PageHeader,
@@ -1881,9 +1936,9 @@ computed:{
     return this.step4.NbreEmploye = parseInt(this.step4.pers_per_femm || 0) + parseInt(this.step4.pers_per_homm || 0);
   },
   updateTotalNumberOfShareholders() {
-      // Mettre à jour le total en additionnant les valeurs des deux champs
-      return  this.step4.NbreActionnaireGuinne = parseInt(this.step4.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
-    },
+    // Mettre à jour le total en additionnant les valeurs des deux champs
+    return  this.step4.NbreActionnaireGuinne = parseInt(this.step4.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
+  },
  stepperProgress() {
     return (100 / 5) * (this.currentStep - 1) + "%";
   },
@@ -1905,6 +1960,7 @@ data() {
      currentStep: 1,
      error: "",
     resultError: {},
+    AddFichier:false,
     isButtonDisabled: false,
     isOpen: false,
     option:'',
@@ -1918,6 +1974,9 @@ data() {
     EntrepriseOptions:[],
     McipmeOptions:[],
     QuartierOptions: [],
+    FileNif:'',
+    FileRccm:'',
+    FileCerti:'',
    
   //   ChiffreOptions: chiffre,
 // Pour stocker les sous-secteurs sélectionnés
@@ -1993,14 +2052,11 @@ data() {
       an_prod_1: "", 
       PaysSiegeSocial: "Guinée",
       distributrice:"",
-      types:[5],
+      types:'',
       CodeZone:"",
         SuperficieOccupee:"",
-
       NumeroRccm: "",
-      FichierRccm:"",
       NumeroNif: "",
-      FichierNif:"",
       DateGenerationNif: "",
       NumeroTva: "",
 
@@ -2096,9 +2152,7 @@ anneeNaissanceProprietaire: {},
     CodeZone:{require},
       SuperficieOccupee:{require},
     NumeroRccm: {},
-    FichierRccm:{},
     NumeroNif: {},
-    FichierNif:{},
     DateGenerationNif: {},
     NumeroTva: {},
   },
@@ -2177,6 +2231,8 @@ async mounted() {
       this.fetchEntrepriseOptions(),
       this.fetchZoneOptions(),
       this.initializeYears(),
+        // this.confirmDelete()
+
      
     ]);
     
@@ -2187,6 +2243,24 @@ async mounted() {
 },
 
 methods: {
+  triggerToast(errorMessage) {
+this.toast.error(errorMessage, {
+  position: "top-right",
+  timeout: 5000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: true,
+  closeButton: "button",
+  icon: "mdi mdi-alert-circle-outline", // Modifier l'icône pour une icône d'erreur
+  rtl: false,
+  className: 'toast-error'
+});
+},
+
   createMpmeData() {
     return {
       Region: this.step1.region,
@@ -2197,7 +2271,7 @@ methods: {
       SigleMpme: this.step1.sigle_mpme,
       NomMpme: this.step1.nom,
       Quartier: this.step1.quartier,
-      Rue: this.step1.rue,
+      Rue: this.step1.rue ,
       BoitePostale: this.step1.boite_postale,
       NumeroWhatsApp: this.step1.tel_what,
       NumeroTelephoneSecondaire: this.step1.tel_second,
@@ -2350,11 +2424,9 @@ for (let i = 1; i < step; i++) {
       CodeZone:this.step3.CodeZone,
         SuperficieOccupee:this.step3.SuperficieOccupee,
       NumeroRccm: this.step3.NumeroRccm,
-      // FichierRccm: this.step3.FichierRccm,
+     
        NumeroNif: this.step3.NumeroNif,
-      //  FichierNif: this.step3.FichierNif,
-      FichierRccm:null,
-      FichierNif:null,
+     
       DateGenerationNif: this.step3.DateGenerationNif,
       NumeroTva: this.step3.NumeroTva,
       Direction:this.loggedInUser.direction
@@ -2365,17 +2437,17 @@ for (let i = 1; i < step; i++) {
           case 4:
           stepData = {
             ...stepData,
-      NbreEmployeGuinneF: parseInt(this.step4.NbreEmployeGuinneF) ,
-      NbreEmployeGuinneH: parseInt(this.step4.NbreEmployeGuinneH) ,
-      NbreEmploye:  parseInt(this.step4.NbreEmploye) ,
-      PersonnelPermanentFemme:parseInt(this.step4.pers_per_femm )  ,
-      PersonnelPermanentHomme: parseInt(this.step4.pers_per_homm )   ,
-      PersonnelTemporaireFemme:parseInt(this.step4.pers_temp_femm )  ,
-      PersonnelTemporaireHomme:parseInt(this.step4.pers_temp_homm )  ,
-      NbreActionnaireGuinneF: parseInt(this.step4.NbreActionnaireGuinneF)   ,
-      NbreActionnaireGuinneH: parseInt(this.step4.NbreActionnaireGuinneH)   ,
-      NbreActionnaire: parseInt(this.step4.NbreActionnaireGuinne )  ,
-      Direction:this.loggedInUser.direction
+    NbreEmployeGuinneF: parseInt(this.step4.NbreEmployeGuinneF) ,
+    NbreEmployeGuinneH: parseInt(this.step4.NbreEmployeGuinneH) ,
+    NbreEmploye:  parseInt(this.step4.NbreEmploye) ,
+    PersonnelPermanentFemme:parseInt(this.step4.pers_per_femm )  ,
+    PersonnelPermanentHomme: parseInt(this.step4.pers_per_homm )   ,
+    PersonnelTemporaireFemme:parseInt(this.step4.pers_temp_femm )  ,
+    PersonnelTemporaireHomme:parseInt(this.step4.pers_temp_homm )  ,
+    NbreActionnaireGuinneF: parseInt(this.step4.NbreActionnaireGuinneF)   ,
+    NbreActionnaireGuinneH: parseInt(this.step4.NbreActionnaireGuinneH)   ,
+    NbreActionnaire: parseInt(this.step4.NbreActionnaireGuinne )  ,
+    Direction:this.loggedInUser.direction
           };
           break;
           case 5:
@@ -2413,6 +2485,8 @@ for (let i = 1; i < step; i++) {
   
   return stepData;
 },
+
+
 async nextStep() {
   try {
       // Valider les données de l'étape actuelle
@@ -2428,19 +2502,18 @@ async nextStep() {
                 const response = await this.updateMpmeDonnees(stepData) 
                 console.log('eee',response);
                 if (response === true) {
-                  localStorage.removeItem('codempmeDNI')
-                  localStorage.removeItem('tempMpmeDataDNI')
-                 this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
-                 this.$router.push({ path: '/industrielles' })
-                 this.loading = false;
+                  this.loading = false;
+                  this.confirmDelete()
+              
                 } else {
                     console.error("Erreur lors de l'envoi des données :", response);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                     this.loading = false;
                 }
 
           }else if(this.currentStep === 4 || this.currentStep === 5){
                 
-            const stepData = this.collectStepData(this.currentStep);
+                const stepData = this.collectStepData(this.currentStep);
                 console.log(stepData);
                 localStorage.setItem('tempMpmeDataDNI', JSON.stringify(stepData))
                 const response = await this.updateMpmeDonnees(stepData) 
@@ -2451,6 +2524,7 @@ async nextStep() {
                  this.loading = false;
                 } else {
                     console.error("Erreur lors de l'envoi des données :", response);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                     this.loading = false;
                 }
           }else{
@@ -2465,6 +2539,7 @@ async nextStep() {
                     this.loading = false;
                 } else {
                     console.error("Erreur lors de l'envoi des données :", response);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                     this.loading = false;
                 }
 
@@ -2476,12 +2551,14 @@ async nextStep() {
       } else {
           // Afficher un message d'erreur à l'utilisateur
           console.log("Le formulaire contient des erreurs");
-          this.loading = false;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+                 this.loading = false;
       }
   } catch (error) {
       // Gérer les erreurs
       console.error("Une erreur s'est produite :", error);
-      this.loading = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+       this.loading = false;
   }
 },
 
@@ -2636,7 +2713,30 @@ async nextStep() {
   },
 
   successmsg:successmsg,
+  async confirmDelete() {
+ // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
+ const result = await Swal.fire({
+   title: 'Voulez-vous ajouter des fichiers concernant l\'entreprise?',
+   text: 'Vous pouvez télécharger des fichiers tels que le NIF, le RCCM et le certificat.',
+   icon: 'warning',
+   showCancelButton: true,
+   confirmButtonText: 'Oui, ajouter',
+   cancelButtonText: 'Non, annuler',
+   reverseButtons: true
+ });
 
+ // Si l'utilisateur confirme la suppression
+ if (result.isConfirmed) {
+  event.preventDefault();
+   this.AddFichier = true;
+ }else{
+  localStorage.removeItem('codempmeDNI')
+  localStorage.removeItem('tempMpmeDataDNI')
+      this.valider()
+
+ }
+     },
+   
   // appeel apî
   // async enregistrerMpmeDonnees(mpmeData) {
   //   try {
@@ -2696,13 +2796,37 @@ async nextStep() {
       }
   } catch (error) {
     console.error("Erreur lors de la mise à ", error.response.data.errors);
-          
+//       if (error.response.data.errors) {
+//   const errorKeys = Object.keys(error.response.data.errors);
+//   const currentStepFields = Object.keys(mpmeData);
+//   const errorDetails = {};
+
+//   errorKeys.forEach(key => {
+//     if (currentStepFields.includes(key)) {
+//       errorDetails[key] = {
+//         included: true,
+//         content: error.response.data.errors[key]
+//       };
+//     }
+//   });
+
+//   console.log('errorDetails', errorDetails);
+//     if (errorDetails.included === true) {
+//                 // Passer à l'étape suivante si l'erreur n'est pas liée à l'étape en cours
+//                 this.formatValidationErrors(error.response.data.errors);
+//               return false;
+
+//             }else{
+//               return true;
+//             }
+// }
+ 
         if(error.response.data.errors){
           const errorKeys = Object.keys(error.response.data.errors);
           const currentStepFields = Object.keys(mpmeData);
           const isCurrentStepError = errorKeys.some(key => currentStepFields.includes(key));
 
-          console.log('isCurrentStepError', isCurrentStepError);
+          console.log('isCurrentStepError', errorKeys);
 
           if (isCurrentStepError === true) {
               // Passer à l'étape suivante si l'erreur n'est pas liée à l'étape en cours
@@ -2712,7 +2836,8 @@ async nextStep() {
           }else{
             return true;
           }
-        }else{
+        }
+        else{
 
           if (error.response && error.response.data.status === "error") {
               if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
@@ -2730,13 +2855,12 @@ async nextStep() {
 },
 async updateMpmeDonnees(mpmeData) {
   try {
-    const userId = localStorage.getItem('codempmeDNI');
-    console.log('codempmeDNI',userId)
+    const CodeMpme = localStorage.getItem('codempmeDNI');
+    console.log('codempmeDNI',CodeMpme)
 ;
     // const userId = 'MPME-1580-2023'
-    console.log('codempmeDNI',mpmeData)
 
-    const response = await axios.put(`/mcipme/${userId}`, mpmeData, {
+    const response = await axios.put(`/mcipme/${CodeMpme}`, mpmeData, {
       headers: {
         Authorization: `Bearer ${this.loggedInUser.token}`,
         'Content-Type': 'application/json', 
@@ -2770,8 +2894,6 @@ async updateMpmeDonnees(mpmeData) {
   }
 },
 
-
-
   initializeYears() {
     const currentYear = new Date().getFullYear();
     for (let year = 1900; year <= currentYear; year++) {
@@ -2782,6 +2904,7 @@ async updateMpmeDonnees(mpmeData) {
       value: String(year),
     }));
   },
+
   async fetchZoneOptions() {
       try {
        
@@ -2816,6 +2939,7 @@ async updateMpmeDonnees(mpmeData) {
         }
       }
     },
+
   async fetchMpmeData() {
     // Renommez la méthode pour refléter qu'elle récupère les options de pays
     try {
@@ -2848,6 +2972,9 @@ async updateMpmeDonnees(mpmeData) {
       console.log("response", response);
       if (response.data.status === 'success') {
         console.log("Données MPME mises à jour avec succès !",response.data.data);
+        const uniteIndustrielle = response.data.data.find(country => country.IntituleType === 'UNITE INDUSTRIELLE');
+        console.log('uu',uniteIndustrielle)
+         this.step3.types = uniteIndustrielle.id
        this.EntrepriseOptions = response.data.data.map((country) => ({
       label:country. IntituleType,
       value: country.id,
@@ -3127,6 +3254,14 @@ try {
 
     // Maintenant, this.resultError est un objet où les clés sont les noms des champs
     console.log("resultError", this.resultError);
+    for (let key in this.resultError) {
+if (this.resultError.hasOwnProperty(key)) {
+  // Construire le message d'erreur avec le nom du champ (clé) et son message (valeur)
+  let errorMessage = `${key}: ${this.resultError[key]}`;
+  // Afficher le toast pour chaque erreur
+  this.triggerToast(errorMessage);
+}
+}
   },
   handleDirigeantProprietaireChange(option) {
     console.log("Données de localité :", option);
@@ -3142,17 +3277,24 @@ try {
   },
 
   handleFileUploadRccm(event) {
-    console.log("File input change");
-    const file = event.target.files[0];
-    console.log("handleFileUploadRccm Selected file:", file);
-    this.step2.FichierRccm = file
-  },
-   handleFileUploadNif(event) {
-    console.log("File input change");
-    const file = event.target.files[0];
-    console.log("handleFileUploadNif Selected file:", file);
-    this.step2.FichierNif = file
-  },
+  console.log("File input change");
+  const file = event.target.files[0];
+  console.log("handleFileUploadRccm Selected file:", file);
+  this.FileRccm = file
+},
+ handleFileUploadNif(event) {
+  console.log("File input change");
+  const file = event.target.files[0];
+  console.log("handleFileUploadNif Selected file:", file);
+  this.FileNif = file
+},
+
+handleFileUploadCertificat(event) {
+  console.log("File input change");
+  const file = event.target.files[0];
+  console.log("handleFileUploadNif Selected file:", file);
+  this.FileCerti = file
+},
 
   storeUserDataLocal(userData) {
 
@@ -3234,7 +3376,59 @@ try {
    
     // ... Lier d'autres propriétés de la même manière
   },
+  async HamdleFile(){
+    const CodeMpme = localStorage.getItem('codempmeDNI');
+    console.log('codempmeDNI',CodeMpme)
+this.loading = true
+const formData = new FormData();
+formData.append("FileNif",  this.FileNif);
+formData.append("FileRccm",  this.FileRccm);
+formData.append("FileCerti", this.FileCerti);
+formData.append( "codeMpme",CodeMpme )
 
+console.log(formData);
+console.log(
+  this.FileNif,this.id,
+  this.FileRccm, this.FileCerti,
+ 
+);
+ try {
+ const response = await axios.post('/mcipme/pme/attache-files' , formData, {
+     headers: {
+       Authorization: `Bearer ${this.loggedInUser.token}`, 
+      },
+     });
+ console.log('response.login', response.data); 
+ if (response.data.status === "success") { 
+   this.AddFichier = false
+   this.valider()
+ } else {
+
+ }
+
+
+
+} catch (error) {
+console.log('response.login', error); 
+
+this.loading = false
+if (error.response.data.status === "error") {
+return this.error = error.response.data.message
+
+} else {
+this.formatValidationErrors(error.response.data.errors);
+}
+}
+
+ },
+ valider(){
+  localStorage.removeItem('codempmeDNI')
+  localStorage.removeItem('tempMpmeDataDNI')
+  this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
+  this.$router.push({ path: '/industrielles' })
+   this.loading = false;
+
+}
 
 },
 }
