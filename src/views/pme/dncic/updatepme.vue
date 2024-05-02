@@ -373,7 +373,7 @@
               </div>
 
               <!-- Étape 2 -->
-              <div v-if="currentStep === 1">
+              <div v-if="currentStep === 2">
                   <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                   <BCardBody class="pt-0">
               
@@ -2449,11 +2449,11 @@ methods: {
   //   this.loading = true;
     if (this.currentStep === 1) {
       this.error = "";
-      this.v$.step2.$touch();
+      this.v$.step1.$touch();
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         console.log("mpmeData1", mpmeData);
         this.getSuivant(mpmeData)
        
@@ -2507,7 +2507,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2524,7 +2524,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2540,7 +2540,7 @@ methods: {
       this.v$.step6.$touch();
       if (this.v$.$errors.length == 0) {
         this.loading = true
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         console.log("mpmeData1", mpmeData);
         localStorage.setItem('tempMpmeDataUpdateDNCIC', JSON.stringify(mpmeData));
         localStorage.setItem('CodeIdentifiantDNCIC', this.id);
