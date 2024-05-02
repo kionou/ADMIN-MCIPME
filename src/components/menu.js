@@ -19,7 +19,7 @@ let menuItems = [
         parentId: 29,
       },
       {
-          id: 31,
+          id: 32,
           label: "menuitems.email.list.role",
           link: "/roles",
           parentId: 29
@@ -135,12 +135,12 @@ let menuItems = [
         link: "/produits",
         parentId: 37,
       },
-      {
-        id: 57,
-        label: "menuitems.projects.list.graphe",
-        link: "/graphes",
-        parentId: 37,
-      },
+      // {
+      //   id: 57,
+      //   label: "menuitems.projects.list.graphe",
+      //   link: "/graphes",
+      //   parentId: 37,
+      // },
       {
         id: 53,
         label: "menuitems.projects.list.zone",

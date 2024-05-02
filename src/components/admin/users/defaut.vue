@@ -10,7 +10,7 @@
              <BCardTitle class="mb-0 ">Liste des Utilisateurs(Personnels)</BCardTitle>
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput  v-model="control.name" @input="filterByName"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -359,10 +359,12 @@ export default {
   data() {
     return {
       loading:true,
+      control: { name: '', },
       AddUser:false,
       UpdateUser1:false,
       ToId:'',
       UserOptions:[],
+      data:[],
       currentPage: 1,
       itemsPerPage: 8,
       totalPageArray: [],
@@ -462,7 +464,7 @@ export default {
   },
   methods: {
     validatePasswordsMatch() {
-     return this.step1.password1 === this.step1.confirm_password1;
+     return this.step1.password === this.step1.confirm_password;
     },
     successmsg:successmsg,
     async fetchUsers() {
@@ -476,7 +478,8 @@ export default {
                  // Filtrer les utilisateurs dont Identifiant est null
                  const filteredUsers = response.data.data.filter(user => user.Identifiant === null);
                  console.log(filteredUsers); // Affiche la liste des utilisateurs dont Identifiant est null
-                 this.UserOptions = filteredUsers;
+                 this.data = filteredUsers
+                 this.UserOptions =  this.data;
               
                this.loading = false;
             
@@ -679,7 +682,24 @@ export default {
             behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
           });
         },
-        updatePaginatedItems() {
+        filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.UserOptions =this.data.filter(user => {
+    const Nom = user.Nom || '';
+    const Prenoms = user.Prenoms || '';
+    return Nom.toLowerCase().includes(searchValue) || Prenoms.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.UserOptions = [...this.data];
+ 
+}
+
+},
+    updatePaginatedItems() {
           const startIndex = (this.currentPage - 1) * this.itemsPerPage;
          
           const endIndex = startIndex + this.itemsPerPage;

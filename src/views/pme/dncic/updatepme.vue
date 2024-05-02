@@ -1,7 +1,7 @@
 <template >
   <Layout>
    <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprise" pageTitle="Tableau de bord" />
+ <PageHeader title="Modifier entreprise" pageTitle="Entreprises" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -231,7 +231,7 @@
                           <div class="input-groupe">
                           <label for="Rue">Rue </label>
                           <input
-                              type="number"
+                              type="text"
                               name="Rue"
                               id="Rue"
                               placeholder="12 Conakry"
@@ -1961,6 +1961,7 @@ data() {
     FileNif:'',
     FileRccm:'',
     FileCerti:'',
+    direction:'',
     SousSecteurActiviteOptions: [],
     years: [],
     yearOptions: [],
@@ -2309,7 +2310,8 @@ methods: {
       PrecisionGPSMpme: this.step6.precisionGPSMpme,
       OrigineDonnees: this.step6.origineDonnees,
 
-      Direction:this.loggedInUser.direction
+      Direction:this.direction
+    
     };
   },
 
@@ -2329,7 +2331,7 @@ methods: {
 
 
   
-     formData.append('Direction', 'DNCIC');
+
  
    // Ajout des champs et de leurs valeurs à formData
    formData.append('Region', this.step1.region);
@@ -3181,7 +3183,7 @@ try {
     this.step6.precisionGPSMpme = userData.PrecisionGPSMpme;
     this.step6.origineDonnees = userData.OrigineDonnees;
 
-   
+    this.direction = userData.Direction
     // ... Lier d'autres propriétés de la même manière
   },
 
@@ -3273,7 +3275,7 @@ try {
     this.step6.origineDonnees = userData.OrigineDonnees;
 
   
-  
+      this.direction = userData.Direction
 
  
     // ... Lier d'autres propriétés de la même manière

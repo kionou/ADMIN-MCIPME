@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Detail Entreprise " pageTitle="Tableau de bord" />
+   <PageHeader title="Detail entreprise " pageTitle="Entreprise" />
    <div class="container-xxl flex-grow-1 ">
             <!-- Header -->
             <div class="row">

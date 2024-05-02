@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Types d'entreprises" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Entreprises" pageTitle="Paramétrages" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>

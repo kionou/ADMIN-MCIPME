@@ -1,7 +1,7 @@
 <template >
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprises Distributrices" pageTitle="Tableau de bord" :statistic="statistic" />
+ <PageHeader title="Entreprises Distributrices" pageTitle="Entreprises" :statistic="statistic" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -11,15 +11,14 @@
 
            <div class="flex-shrink-0 d-flex">
              <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
-             <BCol xxl="4" lg="6" class=" me-1">
-             <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+             <BCol xxl="4" lg="8" class=" me-1">
+             <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
            <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
            </div>
          </div>
        </BCardBody>
-      
-       <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+        <BCardBody v-if="paginatedItems.length === 0" class="noresul"> 
           <div >
         <span> Vous n'avez pas encore de pme, vous pouvez également en ajouter un !! </span>
          </div>
@@ -183,8 +182,10 @@ data() {
     
   loading:true,
   AddLogo:false,
+  control: { name: '',},
   IdLogo:'',
   pmeOptions:[],
+  data:[],
   currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
@@ -232,7 +233,7 @@ updateCurrentPage(pageNumber) {
        return  this.pmeOptions.slice(startIndex, endIndex);
      },
    
-async fetchPmes() {
+        async fetchPmes() {
           try {
             const response = await axios.get(`/types-entreprises/${4}`, {
             headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
@@ -241,7 +242,8 @@ async fetchPmes() {
              const filteredUsers = response.data.data.pmes.filter(item => item.pme !== null);
 
                console.log(filteredUsers); 
-              this.pmeOptions = filteredUsers
+               this.data  = filteredUsers ;
+              this.pmeOptions = this.data
               this.UserOptionsPersonnels = filteredUsers.length
              this.loading = false;
           
@@ -429,6 +431,24 @@ async fetchPmes() {
       }
     }
   },
+  filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.pme.NomMpme || '';
+    const CodeMpme = user.pme.CodeMpme || '';
+    const SigleMpme = user.pme.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
 },
 }
 </script>

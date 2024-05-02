@@ -10,7 +10,7 @@
            <BCardTitle class="mb-0 ">Liste des Utilisateurs(Entreprises)</BCardTitle>
            <div class="flex-shrink-0 d-flex">
               <BCol xxl="4" lg="9" class=" me-3">
-             <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+             <MazInput v-model="control.name" @input="filterByName"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
              <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
              
@@ -358,11 +358,15 @@ export default {
  },
  data() {
    return {
+    control: {
+         name: '',
+        },
      loading:true,
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
      UserOptions:[],
+     data:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -481,7 +485,8 @@ async mounted() {
                  // Filtrer les utilisateurs dont Identifiant est null
                  const filteredUsers = response.data.data.filter(user => user.Identifiant !== null);
                  console.log(filteredUsers); // Affiche la liste des utilisateurs dont Identifiant est null
-                 this.UserOptions = filteredUsers;
+                 this.data = filteredUsers
+                 this.UserOptions =  this.data;
               this.loading = false;
            
            } catch (error) {
@@ -682,6 +687,23 @@ async mounted() {
            behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
          });
        },
+       filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.UserOptions =this.data.filter(user => {
+    const Nom = user.Nom || '';
+    const Prenoms = user.Prenoms || '';
+    return Nom.toLowerCase().includes(searchValue) || Prenoms.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.UserOptions = [...this.data];
+ 
+}
+
+},
        updatePaginatedItems() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         

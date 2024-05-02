@@ -1,7 +1,7 @@
 <template>
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Profil" pageTitle="Tableau de bord"  />
+      <PageHeader title="Profil" pageTitle="Gestion Utilisateurs"  />
       <BRow>
         <BCol lg="12">
           <BTabs class="default-tabs" content-class="p-3 text-muted">

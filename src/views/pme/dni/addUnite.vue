@@ -1,7 +1,7 @@
 <template >
   <Layout>
    <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprise" pageTitle="Tableau de bord" />
+ <PageHeader title="Ajouter Unité Industrielle" pageTitle="Unité Industrielle" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -2052,7 +2052,7 @@ data() {
       an_prod_1: "", 
       PaysSiegeSocial: "Guinée",
       distributrice:"",
-      types:'',
+      types:[],
       CodeZone:"",
         SuperficieOccupee:"",
       NumeroRccm: "",
@@ -2974,7 +2974,7 @@ async updateMpmeDonnees(mpmeData) {
         console.log("Données MPME mises à jour avec succès !",response.data.data);
         const uniteIndustrielle = response.data.data.find(country => country.IntituleType === 'UNITE INDUSTRIELLE');
         console.log('uu',uniteIndustrielle)
-         this.step3.types = uniteIndustrielle.id
+         this.step3.types.push(uniteIndustrielle.id) 
        this.EntrepriseOptions = response.data.data.map((country) => ({
       label:country. IntituleType,
       value: country.id,

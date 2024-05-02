@@ -165,7 +165,7 @@
               <BCol>
                 <BCard
                   no-body
-                  class="overflow-hidden"
+                  class=""
                   style="
                     box-shadow: none !important;
                     border: 1px solid #c9d1d9 !important;
@@ -260,7 +260,7 @@
               <BCol>
                 <BCard
                   no-body
-                  class="overflow-hidden"
+                  class=""
                   style="
                     box-shadow: none !important;
                     border: 1px solid #c9d1d9 !important;
@@ -280,22 +280,21 @@
 
                   <BCardBody>
                     <div>
-                      <div
+                      <div v-if="permissionByRole.length === 0">
+                          Pas de permissions pour le moment !
+                      </div>
+                      <div v-else
                         v-for="permission in permissionByRole"
                         :key="permission.id"
                       >
                         <p
                           style="
-                            background-color: #014343;
-
-                            padding-right: 15px;
-                            font-size: 16px;
-                            padding-top: 15px;
-                            padding-bottom: 15px;
-                            padding-left: 15px;
+                            background-color: #F9D310;
+                            padding: 9px 12px;
+                            font-size: 14px;
                             margin-top: 8px;
                             color: white;
-                            border-radius: 5px;
+                          
                           "
                         >
                           {{ traduirePermission(permission.name) }}
@@ -325,7 +324,7 @@
               <BCol>
                 <BCard
                   no-body
-                  class="overflow-hidden"
+                  class=""
                   style="
                     box-shadow: none !important;
                     border: 1px solid #c9d1d9 !important;
@@ -415,8 +414,8 @@
             <BRow>
               <BCol>
                 <BCard
-                  no-body
-                  class="overflow-hidden"
+                
+                  class=""
                   style="
                     box-shadow: none !important;
                     border: 1px solid #c9d1d9 !important;
@@ -622,6 +621,8 @@ export default {
       }
     },
     async fetchPermissions(id) {
+      this.loading = true;
+
       try {
         const response = await axios.get(`/roles/${id}`, {
           headers: {
@@ -654,7 +655,7 @@ export default {
           params: { Direction: this.loggedInUser.direction },
         });
         console.log(response);
-        this.allUsers = response.data.data;
+        this.allUsers =response.data.data.filter(user => user.Identifiant === null);
         this.loading = false;
       } catch (error) {
         console.error("nouvelle erreur", error);

@@ -1,7 +1,7 @@
 <template >
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprises Exportatrices" pageTitle="Tableau de bord" :statistic="statistic" />
+ <PageHeader title="Entreprises Exportatrices" pageTitle="Entreprises" :statistic="statistic" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -12,7 +12,7 @@
            <div class="flex-shrink-0 d-flex">
              <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
              <BCol xxl="4" lg="6" class=" me-1">
-             <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+             <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
            <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
            </div>
@@ -183,8 +183,10 @@ data() {
     
   loading:true,
   AddLogo:false,
+  control: { name: '',},
   IdLogo:'',
   pmeOptions:[],
+  data:[],
   currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
@@ -238,8 +240,9 @@ async fetchPmes() {
             headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
              console.log(response.data.data);
              const filteredUsers = response.data.data.pmes.filter(item => item.pme !== null);
-               console.log(filteredUsers); 
-              this.pmeOptions = filteredUsers;
+              console.log(filteredUsers); 
+               this.data  = filteredUsers ;
+              this.pmeOptions = this.data
               this.UserOptionsPersonnels = filteredUsers.length
              this.loading = false;
           
@@ -427,6 +430,24 @@ async fetchPmes() {
       }
     }
   },
+  filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.pme.NomMpme || '';
+    const CodeMpme = user.pme.CodeMpme || '';
+    const SigleMpme = user.pme.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
 },
 }
 </script>

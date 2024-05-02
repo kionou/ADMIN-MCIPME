@@ -1,7 +1,7 @@
 <template>
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Demandes Implantations" pageTitle="Tableau de bord"  :statistic="statistic"/>
+      <PageHeader title="Zones Industrielles" pageTitle="Paramétrages"  :statistic="statistic"/>
       <BRow>
         <BCol lg="12">
           <BTabs class="default-tabs" content-class="p-3 text-muted">
@@ -10,27 +10,18 @@
                 <span class="d-inline-block d-sm-none">
                   <i class="fas fa-home"></i>
                 </span>
-                <span class="d-none d-sm-inline-block">Demandes en Attente</span>
+                <span class="d-none d-sm-inline-block">Publiques</span>
               </template>
-              <Attente ></Attente> 
+              <zone2 ></zone2>
             </BTab>
             <BTab>
               <template v-slot:title>
                 <span class="d-inline-block d-sm-none">
                   <i class="far fa-user"></i>
                 </span>
-                <span class="d-none d-sm-inline-block">Demandes en Cours</span>
+                <span class="d-none d-sm-inline-block">Privées</span>
               </template>
-              <Cours></Cours>
-            </BTab>
-            <BTab>
-              <template v-slot:title>
-                <span class="d-inline-block d-sm-none">
-                  <i class="far fa-user"></i>
-                </span>
-                <span class="d-none d-sm-inline-block">Demandes Traite</span>
-              </template>
-              <Traiter></Traiter>
+              <!-- <Privee ></Privee> -->
             </BTab>
           </BTabs>
         </BCol>
@@ -39,12 +30,10 @@
   </template>
   
   <script>
-  import Layout from "../../layouts/main.vue";
+  import Layout from "@/layouts/main.vue";
   import PageHeader from "@/components/page-header.vue";
   import Loading from '@/components/others/loading.vue';
-  import Attente from '../../components/admin/demandes/implantation/attente.vue';
-  import Cours from '../../components/admin/demandes/implantation/enCours.vue';
-  import Traiter from '../../components/admin/demandes/implantation/traiter.vue';
+  import zone2 from '@/components/admin/statistique/dni/zone2.vue'
   
   import axios from "@/lib/axiosConfig";
   
@@ -53,9 +42,8 @@
       Layout,
       PageHeader,
       Loading,
-      Attente,
-      Cours,
-      Traiter
+      zone2
+
     },
     data() {
       return {

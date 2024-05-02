@@ -1,7 +1,7 @@
 <template >
   <Layout>
    <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Historiques" pageTitle="Tableau de bord" />
+ <PageHeader title="Historiques" pageTitle="Gestion Utilisateurs" />
  <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -10,8 +10,8 @@
              <BCardTitle class="mb-0 ">Liste des historiques</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+                <BCol xxl="6" lg="12">
+               <MazInput v-model="control.name" @input="filterByName"    no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
                
@@ -104,63 +104,24 @@ export default {
 },
 data() {
  return {
+  control: { name: '',},
    loading:true,
    AddUser:false,
    UpdateUser1:false,
    ToId:'',
    IndicateursOptions:[],
+   data:[],
    currentPage: 1,
    itemsPerPage: 10,
    totalPageArray: [],
     resultError: {},
    v$: useVuelidate(),
      error:'',
-   step1:{
-         
-          code:'',
-          description:'',
-
-        },
-
-          step2:{
-          
-          code:'',
-          description:'',
-         
-     },
+   
  }
 },
 validations: {
- step1:{
-  code: {
-   require
-   
- },
- description: {
-   require,
-   lgmin: lgmin(2),
-   
- },
- 
 
- },
- step2:{
-  code: {
-   require
-   
- },
- description: {
-   require,
-   lgmin: lgmin(2),
-   
- },
- 
-
-         
-     },
-   
-
- 
 },
 computed:{
  loggedInUser() {
@@ -191,8 +152,10 @@ methods: {
   
           });
              console.log(response.data.data);
-              this.IndicateursOptions = response.data.data.data;
-             this.loading = false;
+              const historiques = response.data.data.data;
+              this.data = historiques
+              this.IndicateursOptions =  this.data;
+              this.loading = false;
           
           } catch (error) {
             console.error('errorqqqqq',error);
@@ -206,184 +169,24 @@ methods: {
   formatCreatedAt(createdAt) {
     return moment(createdAt).format('DD/MM/YY HH:mm:ss');
     },
- async HamdleAddUser(){
-   this.error = '',
-   this.resultError= '',
-  this.v$.step1.$touch()
-  if (this.v$.$errors.length == 0 ) {
-     this.loading = true
-       let DataUser = {
-        CodeIndicateur:this.step1.code,
-        Description:this.step1.description,
-        Direction:this.loggedInUser.direction
-       }
-       console.log("eeeee",DataUser);
-       try {
-      
-       const response = await axios.post('/indicateurs' , DataUser, {
-           headers: {
-             Authorization: `Bearer ${this.loggedInUser.token}`,
-           },
+    filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.IndicateursOptions =this.data.filter(user => {
+    const Nom = user.user.Nom || '';
+    const Prenoms = user.user.Prenoms || '';
+    const Actions = user.Action || '';
+    return Nom.toLowerCase().includes(searchValue) || Prenoms.toLowerCase().includes(searchValue) || Actions.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.IndicateursOptions = [...this.data];
  
- 
-         });
-       console.log('response.login', response.data); 
-       if (response.data.status === "success") { 
-         this.AddUser = false
-         this.loading = false
-         this.successmsg("Création d'indicateur",'Votre indicateur a été crée avec succès !')
-         await this.fetchIndicateursOptions()
+}
 
-       } else {
-
-       }
-
-
-
- } catch (error) {
- console.log('response.login', error); 
-
- this.loading = false
- if (error.response.data.status === "error") {
- return this.error = error.response.data.message
-
- } else {
-   this.formatValidationErrors(error.response.data.errors);
- }
- }
-     }else{
-     
-     console.log('pas bon', this.v$.$errors);
-     
-     } 
-       },
-       async confirmDelete(id) {
-   // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
-   const result = await Swal.fire({
-     title: 'Êtes-vous sûr?',
-     text: 'Vous ne pourrez pas revenir en arrière!',
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonText: 'Oui, supprimer!',
-       cancelButtonText: 'Non, annuler!',
-     reverseButtons: true
-   });
-
-   // Si l'utilisateur confirme la suppression
-   if (result.isConfirmed) {
-     this.DeleteUser(id);
-   }
-       },
-       async DeleteUser(id) {
-        this.loading = true
-       
-       try {
-         // Faites une requête pour supprimer l'élément avec l'ID itemId
-         const response = await axios.delete(`/indicateurs/${id}`, {
-           headers: {
-             Authorization: `Bearer ${this.loggedInUser.token}`,
-             
- 
-           },
- 
- 
-         });
-         console.log('Réponse de suppression:', response);
-         if (response.data.status === 'success') {
-           this.loading = false
-          this.successmsg('Supprimé!', 'Votre indicateur a été supprimé.')
-          await this.fetchIndicateursOptions()
- 
-         } else {
-           console.log('error', response.data)
-           this.loading = false
-         }
-       } catch (error) {
-         console.error('Erreur lors de la suppression:', error);
-        
-         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-            this.$router.push("/");  //a revoir
-          }
-         
-       }
- 
-     },
-     async UpdateUser(id) {
-       this.UpdateUser1 = true;
-       this.loading = true;
-
-       try {
-           // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-           const user = this.IndicateursOptions.find(user => user.id === id);
-
-           if (user) {
-               // Utilisez les informations récupérées de l'objet user
-               console.log('Informations de l\'utilisateur:', user);
-
-          this.step2.code = user.CodeIndicateur,
-          this.step2.description = user.Description,
-          this.ToId = id
-           } else {
-               console.log('Utilisateur non trouvé avec l\'ID', id);
-           }
-           this.loading = false;
-       } catch (error) {
-           console.error('Erreur lors de la mise à jour du document:', error);
-          
-           this.loading = false;
-       }
 },
-
- async  submitUpdate(){
- 
-   this.v$.step2.$touch();
-    console.log("bonjour");
- 
-    if (this.v$.$errors.length == 0) {
-      console.log("bonjour");
-       this.loading = true;
-    
-             const dataCath = {
- 
-              CodeIndicateur:this.step2.code,
-              Description:this.step2.description,
-              Direction:this.loggedInUser.direction,
-              id:this.ToId
-           }
-           console.log('dataCath',dataCath);
- 
-      try {
-        const response = await axios.post(`indicateurs/${this.ToId}/update`,dataCath, {
-          headers: {
-           
-            Authorization: `Bearer ${this.loggedInUser.token}`,
-          },
-        });
-        console.log("Réponse du téléversement :", response);
-        if (response.data.status === "success") {
-          await this.fetchIndicateursOptions()
-          this.UpdateUser1 = false
-         this.loading = false
-         this.successmsg("Modification d'indicateur",'Votre indicateur a été modifiée avec succès !')
-         
-          
-        } 
-      } catch (error) {
-        console.error("Erreur lors du téléversement :", error);
-       
-        if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-              await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-            this.$router.push("/");  //a revoir
-          }
-     else{
-       this.formatValidationErrors(error.response.data.errors);
-     }
-      }
-    } else {
-      console.log("cest pas bon ", this.v$.$errors);
-    }
-   },
        updateCurrentPage(pageNumber) {
        this.currentPage = pageNumber;
        window.scrollTo({
@@ -398,24 +201,6 @@ methods: {
        return  this.IndicateursOptions.slice(startIndex, endIndex);
      },
 
-     async formatValidationErrors(errors) {
-   const formattedErrors = {};
-
-   for (const field in errors) {
-     const errorMessages = errors[field]; // Liste complète des messages d'erreur
-     console.log(" errorMessages", errorMessages, typeof errorMessages);
-
-     const concatenatedError = errorMessages.join(", "); // Concaténer les messages d'erreur
-     console.log(" concatenatedError", concatenatedError, typeof concatenatedError);
-
-     formattedErrors[field] = concatenatedError; // Utilisez le nom du champ comme clé
-   }
-
-   this.resultError = formattedErrors; // Stockez les erreurs dans un objet
-
-   // Maintenant, this.resultError est un objet où les clés sont les noms des champs
-   console.log("resultError", this.resultError);
- },
 },
 }
 </script>

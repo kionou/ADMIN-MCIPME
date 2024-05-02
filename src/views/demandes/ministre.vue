@@ -1,7 +1,7 @@
 <template>
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Demandes" pageTitle="Tableau de bord"  :statistic="statistic"/>
+      <PageHeader title="Demandes" pageTitle="Demandes"  :statistic="statistic"/>
       <BRow>
       <BCol lg="12">
         <BTabs class="default-tabs" content-class="p-3 text-muted">
@@ -25,7 +25,6 @@
   import PageHeader from "@/components/page-header.vue";
   import Loading from '@/components/others/loading.vue';
   import Annoter from '../../components/admin/demandes/ministre/annoter.vue';
-  import Traitement from '../../components/admin/demandes/ministre/AnnoteAttente.vue';
   
   import axios from "@/lib/axiosConfig";
   export default {
@@ -34,7 +33,6 @@
     PageHeader,
     Loading,
     Annoter,
-    Traitement
   },
   data() {
     return {

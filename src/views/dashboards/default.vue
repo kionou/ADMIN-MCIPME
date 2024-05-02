@@ -53,14 +53,10 @@ export default {
       loading:true,
       DataOptions:[],
       statData: [],
-      datay:[],
-      datax:[],
       mpme:[],
       SecteurActiviteOptions:[],
       IndicateursOptions:[],
       regionOptions:[],
-      indicateur1:'',
-      indicateur2:'',
       canCancel: false,
       useSlot: false,
      
@@ -74,8 +70,7 @@ export default {
 async  mounted() {
     console.log("index",this.loggedInUser);
     await this.fetchStatics()
-    await this.fetchIndicateursOptions()
-    await this.fetchStaAnnuel()
+
     await this.fetchMpme()
     await this.fetchRegionOptions()
     await this.fetchSecteurActiviteOptions()
@@ -304,57 +299,25 @@ async  mounted() {
      
         </BCol>
     </BRow>
-    <BRow>
-                  
-                  <BCol md="6">
-                   <div class="mb-3 position-relative">
-                     <label for="userpassword">Indicateur</label>
-                     <MazSelect label="" disabled v-model="indicateur1" color="info" no-radius :options="IndicateursOptions"  search />
-               
+  
 
-                   </div>
-                </BCol>
-                <BCol md="6">
-                   <div class="mb-3 position-relative">
-                     <label for="userpassword">Indicateur</label>
-                     <MazSelect label="" disabled v-model="indicateur2" color="info" no-radius :options="IndicateursOptions"  search />
-              
-
-                   </div>
-                </BCol>
-
-               
-      </BRow>
-
-                 <BRow>
+      <BRow>
       <BCol lg="6" >
-        <BCard no-body>
-          <BCardBody>
-            <Zone1 :secteur="indicateur1" ></Zone1>
-          </BCardBody>
-        </BCard>
+        <div>
+          <div>
+            <Zone1  ></Zone1>
+          </div>
+        </div>
       </BCol>
 
       <BCol lg="6" >
-        <BCard no-body>
-          <BCardBody>
-            <Zone :secteur="indicateur1" ></Zone>
-          </BCardBody>
-        </BCard>
+        <div>
+          <div>
+            <Zone ></Zone>
+          </div>
+        </div>
       </BCol>
     </BRow>
-
-    <!-- <BRow>
-      <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle class="mb-4">{{ data.title }}</BCardTitle>
-            <apexchart class="apex-charts" :height="data.height" :type="data.type" dir="ltr" :series="data.chart.series" :options="data.chart.chartOptions">
-            </apexchart>
-          </BCardBody>
-        </BCard>
-      </BCol>
-    </BRow> -->
 
     <BRow class="justify-content-center">
        

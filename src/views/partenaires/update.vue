@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Partenaires" pageTitle="Tableau de bord" />
+   <PageHeader title="Modifier partenaire" pageTitle="Paramétrages" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>

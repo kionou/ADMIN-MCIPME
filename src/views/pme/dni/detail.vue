@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Detail Entreprise " pageTitle="Tableau de bord" />
+   <PageHeader title="Detail Unité Industrielle " pageTitle="Unité Industrielle" />
    <div class="container-xxl flex-grow-1 container-p-y">
             <!-- Header -->
             <div class="row">
@@ -326,10 +326,16 @@
                                                     <div class="timeline-event">
                                                 
                                                         <div class="d-flex flex-wrap gap-2">
-                                                            <p v-if="data.FichierRccm === null"> Pas de Rccm pour l'instant !</p>
+                                                            <!-- <p v-if="data.FichierRccm === null"> Pas de Rccm pour l'instant !</p>
                                                             <a   v-else  :href="data.FichierRccm" class="me-3 d-flex flex-column align-items-center"  download>
                                                                 <img src="@/assets/misc/pdf.png" alt="Document image"
                                                                     width="20" class="me-2" />
+                                                                <span class="h6">Fichier Rccm</span>
+                                                            </a> -->
+
+                                                                <p v-if="data.FichierRccm === null"> Pas de Rccm pour l'instant !</p>
+                                                            <a v-else :href="data.FichierRccm"  class="me-3 d-flex flex-column align-items-center" download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image" width="20" class="me-2" />
                                                                 <span class="h6">Fichier Rccm</span>
                                                             </a>
 
@@ -819,6 +825,21 @@ async  mounted() {
             });
             console.log('this.dataimage',this.dataimage);
         },
+    //     getImageForFile(url) {
+    //         console.log('url',url);
+    //         console.log('url',url.FichierRccm);
+    //     if (url.FichierRccm.endsWith('.pdf')) {
+    //         return require('@/assets/misc/pdf.png');
+    //     } else if (url.FichierRccm.endsWith('.docx') || url.FichierRccm.endsWith('.doc')) {
+    //         return require('@/assets/misc/doc.png');
+    //     } else if (url.FichierRccm.endsWith('.xlsx') || url.FichierRccm.endsWith('.xls')) {
+    //         return require('@/assets/misc/xls.png');
+    //     } else if (url.FichierRccm.endsWith('.pptx') || url.FichierRccm.endsWith('.ppt')) {
+    //         return require('@/assets/misc/ppt.png');
+    //     } else {
+    //         return ''; // Retourner une image par défaut ou une chaîne vide si aucune correspondance
+    //     }
+    // }
         
  },
 }

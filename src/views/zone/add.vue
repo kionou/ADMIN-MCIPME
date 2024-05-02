@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Zones Industrielles" pageTitle="Tableau de bord" />
+   <PageHeader title="Zones Industrielles" pageTitle="Paramétrages" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>

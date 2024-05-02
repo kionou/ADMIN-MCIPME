@@ -6,7 +6,7 @@
      <BCard no-body>
        <BCardBody class="border-bottom">
          <div class="d-flex align-items-center justify-content-between">
-           <BCardTitle class="mb-0 ">Liste des demandes en annoter</BCardTitle>
+           <BCardTitle class="mb-0 ">Liste de {{demande.label}}</BCardTitle>
 
            <div class="flex-shrink-0 d-flex">
               <BCol xxl="4" lg="9" class=" me-3">

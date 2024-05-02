@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Unité Industrielle" pageTitle="Unité Industrielle" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -11,8 +11,8 @@
 
              <div class="flex-shrink-0 d-flex">
                <div @click="$router.push({ path: '/industrielle/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6">
-               <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <BCol xxl="4" lg="9">
+               <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
              </div>
            </div>
@@ -179,9 +179,11 @@ export default {
       
     loading:true,
     AddLogo:false,
+    control: { name: '',},
     IdLogo:'',
     photo:'',
     pmeOptions:[],
+    data:[],
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -227,7 +229,7 @@ async  mounted() {
          const endIndex = startIndex + this.itemsPerPage;
          return  this.pmeOptions.slice(startIndex, endIndex);
        },
-  async fetchPmes() {
+           async fetchPmes() {
             try {
               const response = await axios.get('/mcipme', {
               headers: {
@@ -237,8 +239,10 @@ async  mounted() {
     
             });
                console.log(response.data.data);
-                this.pmeOptions = response.data.data;
-                this.UserOptionsPersonnels = this.pmeOptions.length
+               const mcipmes = response.data.data
+                this.data  = mcipmes ;
+                this.pmeOptions  = this.data
+                this.UserOptionsPersonnels = this.data.length
                this.loading = false;
             
             } catch (error) {
@@ -425,6 +429,24 @@ async  mounted() {
         }
       }
     },
+    filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.NomMpme || '';
+    const CodeMpme = user.CodeMpme || '';
+    const SigleMpme = user.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
  },
 }
 </script>

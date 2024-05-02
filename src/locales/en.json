@@ -90,8 +90,8 @@
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
+        "role": "Rôles et permissions",
         "historique": "Historiques",
-        "droit": "Droit",
         "menu": "Menu"
       }
     },

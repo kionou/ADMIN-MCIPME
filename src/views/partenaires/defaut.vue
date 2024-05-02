@@ -2,7 +2,7 @@
   
      <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Partenaires" pageTitle="Tableau de bord" :statistic="statistic" />
+    <PageHeader title="Liste partenaires" pageTitle="Paramétrages" :statistic="statistic" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
