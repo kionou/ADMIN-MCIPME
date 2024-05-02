@@ -13,7 +13,7 @@
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -282,10 +282,12 @@ export default {
      loading:true,
      AddUser:false,
      UpdateUser1:false,
+     control: { name: '',},
      ToId:'',
      regionOptions:[],
      prefectureOptions:[],
      SelectPrefecture:[],
+     data:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -396,7 +398,8 @@ async mounted() {
         await this.$store.dispatch('fetchPrefectureOptions');
         const options = JSON.parse(JSON.stringify(this.$store.getters['getprefectureOptions'])); // Accéder aux options des pays via le getter
         console.log('Options des Prefecture:', options);
-         this.prefectureOptions = options; 
+        this.data  = options ;
+         this.prefectureOptions =  this.data; 
         
         // Affecter les options à votre propriété sortedCountryOptions
       } catch (error) {
@@ -461,8 +464,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -581,6 +584,22 @@ async mounted() {
         console.log("cest pas bon ", this.v$.$errors);
       }
      },
+     filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.prefectureOptions =this.data.filter(user => {
+    const Nom = user.NomPrefecture || '';
+    return Nom.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.prefectureOptions = [...this.data];
+ 
+}
+
+},
          updateCurrentPage(pageNumber) {
          this.currentPage = pageNumber;
          window.scrollTo({

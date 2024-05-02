@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Zones Industrielles" pageTitle="Tableau de bord" />
+   <PageHeader title="Zones Industrielles" pageTitle="Paramétrages" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -635,7 +635,7 @@ async mounted() {
        formData.append("IntituleZone", this.nom);
        formData.append("SuperficieTotal", this.SuperficieTotal);
        formData.append("TypeZone", this.TypeZone);
-      //  formData.append("Shape", this.selectedFile);
+        // formData.append("Shape", this.selectedFile);
        formData.append("CodeZone", this.code);
        formData.append("Observation", this.Observation);
        formData.append( "CodeQuartier",this.CodeQuartier )

@@ -90,8 +90,8 @@
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
+        "role": "Rôles et permissions",
         "historique": "Historiques",
-        "droit": "Droit",
         "menu": "Menu"
       }
     },
@@ -117,7 +117,9 @@
         "overview": "Partenaires",
         "create": "Secteurs & Sous-secteurs",
         "direction": "Directions",
-        "demande": "Demandes",
+        "demande": "Types de Demandes",
+        "entreprise": "Types d'Entreprises",
+        "departement": "Departements",
         "categorie": "types de Produits",
         "graphe": "types de Graphes",
         "zone": " Zones Industrielles",
@@ -126,12 +128,12 @@
       }
     },
     "tasks": {
-      "text": "Gestion des demandes",
-      "list": {
-        "kanban": "Annoter",
-        "createtask": "Implantations",
-        "marche": "Mise sur le marché"
-      }
+      "text": "Gestion des demandes"
+     
+    },
+
+    "cartographie": {
+      "text": "Cartographie"
     }
    
   }

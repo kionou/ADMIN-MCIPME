@@ -241,7 +241,7 @@ import useVuelidate from '@vuelidate/core';
 import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
-import { fetchSousCategorieProduit } from '@/lib/testApi.js';
+
 
 export default {
  components: {
@@ -467,8 +467,8 @@ async fetchCategorieDetail(code) {
      text: 'Vous ne pourrez pas revenir en arrière!',
      icon: 'warning',
      showCancelButton: true,
-     confirmButtonText: 'Oui, supprimez-le!',
-     cancelButtonText: 'Non, annulez!',
+     confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
      reverseButtons: true
    });
 

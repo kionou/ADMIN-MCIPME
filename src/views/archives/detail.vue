@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Archives" pageTitle="Tableau de bord" />
+   <PageHeader title="Detail Archives" pageTitle="Archives" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -454,8 +454,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 

@@ -2,7 +2,7 @@
   
      <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Partenaires" pageTitle="Tableau de bord" :statistic="statistic" />
+    <PageHeader title="Liste partenaires" pageTitle="Paramétrages" :statistic="statistic" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
@@ -42,10 +42,10 @@
      
     </div>
     <div class="carde-title">{{ partenaire.NomPartenaire }}</div>
-    <!-- <div class="carde-subtitle">
+    <div class="carde-subtitle">
       <p class="texte-content">Url: <span>{{ partenaire.SiteWeb }}</span></p>
       <p class="texte-content">Direction: <span>{{ partenaire.Direction }}</span></p>
-    </div> -->
+    </div>
     <hr class="carde-divider">
     <div class="carde-footer">
       <ul class="list-unstyled hstack gap-1 mb-0">
@@ -185,8 +185,8 @@ async confirmDelete(id) {
         text: 'Vous ne pourrez pas revenir en arrière!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Oui, supprimez-le!',
-        cancelButtonText: 'Non, annulez!',
+        confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
         reverseButtons: true
       });
 
@@ -257,7 +257,7 @@ this.partenairesOptions = [...this.$store.getters['getPartenaires']];
 .carde {
   
   width: 250px;
-  height: 290px;
+  height: 320px;
   background: var(--bg-color);
   border: 2px solid var(--color-primary);
   box-shadow: 4px 4px var(--color-primary);

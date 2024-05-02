@@ -1,7 +1,7 @@
 <template>
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Produits" pageTitle="Tableau de bord" />
+      <PageHeader title="Produits" pageTitle="Paramétrages" />
       <BRow>
         <BCol lg="12">
           <BTabs class="default-tabs" content-class="p-3 text-muted">
@@ -47,7 +47,7 @@
                 <span class="d-inline-block d-sm-none">
                   <i class="far fa-user"></i>
                 </span>
-                <span class="d-none d-sm-inline-block"> Unites</span>
+                <span class="d-none d-sm-inline-block"> Unités</span>
               </template>
               <!-- vrai -->
               <Unites></Unites>

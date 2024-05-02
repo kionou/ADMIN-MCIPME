@@ -13,7 +13,7 @@
  
               <div class="flex-shrink-0 d-flex">
                  <BCol xxl="4" lg="9" class=" me-3">
-                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+                <MazInput v-model="control.name" @input="filterByName"    no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
               </BCol>
                 <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                 
@@ -284,7 +284,9 @@ export default {
      loading:true,
      AddUser:false,
      UpdateUser1:false,
+     control: { name: '',},
      ToId:'',
+     data:[],
      regionOptions:[],
      prefectureOptions:[],
      SelectPrefecture:[],
@@ -408,7 +410,8 @@ async mounted() {
   try {
     await this.$store.dispatch("fetchSous_PrefectureOptions");
     const options = JSON.parse(JSON.stringify(this.$store.getters["getSousprefectureOptions"]));
-    this.sous_prefectureOptions = options;
+    this.data  = options ;
+    this.sous_prefectureOptions =  this.data;
      console.log('Sous-préfecture :', options);
     //  const options = sousprefecturesFromAPI.map(sousprefecture => ({
     //     label: sousprefecture.NomSousPrefecture,
@@ -483,8 +486,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -617,6 +620,22 @@ async mounted() {
          const endIndex = startIndex + this.itemsPerPage;
          return  this.sous_prefectureOptions.slice(startIndex, endIndex);
        },
+       filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.sous_prefectureOptions =this.data.filter(user => {
+    const Nom = user.NomSousPrefecture || '';
+    return Nom.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.sous_prefectureOptions = [...this.data];
+ 
+}
+
+},
 
        async formatValidationErrors(errors) {
      const formattedErrors = {};

@@ -1,16 +1,16 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Detail Entreprise " pageTitle="Tableau de bord" />
-   <div class="container-xxl flex-grow-1 container-p-y">
+   <PageHeader title="Detail entreprise " pageTitle="Entreprise" />
+   <div class="container-xxl flex-grow-1 ">
             <!-- Header -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card mb-4">
+                    <div class="card ">
                         <div class="user-profile-header-banner">
                             <img src="@/assets/img/guinee.jpg" alt="Banner image" class="rounded-top" />
                         </div>
-                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                                 <img v-if="data.profile === null" src="@/assets/img/guinea.png" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                                 <img v-else :src="data.profile" alt="profile image" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
@@ -30,7 +30,7 @@
                                        
                                     </div>
                                 </div>
-                                <hr>
+                                <!-- <hr> -->
                             </div>
                             <!-- <div class="flex-grow-1 mt-3 mt-sm-5">
                                 <div
@@ -81,6 +81,13 @@
                                 Entreprises rattachées
                             </button>
                         </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                data-bs-target="#navs-pills-top-profile12" aria-controls="navs-pills-top-profile12"
+                                aria-selected="false">
+                                Skockages disponibles
+                            </button>
+                        </li>
 
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
@@ -104,7 +111,7 @@
                                                 <div class="border-t border-gray-200">
                                                     <dl>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Sigle Pme</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Sigle DNCIC</dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.SigleMpme }} </dd>
                                                         </div>
                                                         <div
@@ -180,9 +187,9 @@
                                             <tr class="bg-white">
                                             
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneH || 0 }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelPermanentHomme || 0 }}</td>
                                                 <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmployeGuinneF || 0 }}</td>
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.PersonnelPermanentFemme || 0 }}</td>
                                                 <td
                                                     class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreEmploye || 0}}</td>
                                                
@@ -192,7 +199,46 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                                   </div>
+
+                                   <div class="rounded-lg  mt-3">
+                        <p class="max-w-2xl mb-1 text-center font-semibold text-gray-900"> Nombre d'Actionnaires dans l'Entreprise: Hommes et Femmes</p>
+                        <div class="-my-2  sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                                <div class="overflow-hidden border-b border-gray-200  rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                               
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Hommes</th>
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Femmes</th>
+                                                <th scope="col"
+                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                                    Total</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-white">
+                                            
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH || 0 }} </td>
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF || 0 }}</td>
+                                                <td
+                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire || 0}}</td>
+                                            
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                                   </div>
                                 </div>
 
                                 <div class=" card col-xl-6 col-lg-6 col-md-6 py-2 ttb1">
@@ -247,6 +293,12 @@
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.NumeroTva }}</dd>
                                                         </div>
+                                                        <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
+                                                            <dt class="text-sm font-medium text-gray-500">Type d'entreprise</dt>
+                                                            <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2" v-if="data.type_entreprises"> 
+                                                                <span v-for="pme in data.type_entreprises" :key="pme.id" > {{ pme.type_entreprise.IntituleType }} , </span> 
+                                                                 </dd>
+                                                        </div>
 
                                                         
                                                     </dl>
@@ -256,45 +308,48 @@
                                         </div>
 
                                     </div>
-
-                                    <div class="rounded-lg  mt-3">
-                        <p class="max-w-2xl mb-1 text-center font-semibold text-gray-900"> Nombre d'Actionnaires dans l'Entreprise: Hommes et Femmes</p>
-                        <div class="-my-2  sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                <div class="overflow-hidden border-b border-gray-200  rounded-lg">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                               
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Hommes</th>
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Femmes</th>
-                                                <th scope="col"
-                                                    class="px-2 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                                    Total</th>
+                                    <div class="card card-action mb-4">
+                                        <div class="card-header align-items-center">
+                                            <h5 class="card-action-title mb-0"><i class="bx bx-list-ul me-2"></i>Details Documents</h5>
+                                          
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="timeline ms-2">
+                                                <li class="timeline-item timeline-item-transparent">
+                                                    <span class="timeline-point timeline-point-primary"></span>
+                                                    <div class="timeline-event">
                                                 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="bg-white">
-                                            
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneH || 0 }} </td>
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaireGuinneF || 0 }}</td>
-                                                <td
-                                                    class="px-2 py-4 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ data.NbreActionnaire || 0}}</td>
-                                            
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                        <div class="d-flex flex-wrap gap-2">
+                                                            <p v-if="data.FichierRccm === null"> Pas de Rccm pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierRccm" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Rccm</span>
+                                                            </a>
+
+                                                            <p v-if="data.FichierNif === null"> Pas de Nif pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierNif" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Nif</span>
+                                                            </a>
+
+                                                            <p v-if="data.FichierCertificat === null"> Pas de certificat pour l'instant !</p>
+                                                            <a   v-else  :href="data.FichierCertificat" class="me-3 d-flex flex-column align-items-center"  download>
+                                                                <img src="@/assets/misc/pdf.png" alt="Document image"
+                                                                    width="20" class="me-2" />
+                                                                <span class="h6">Fichier Certificat</span>
+                                                            </a>
+                                                           
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                   
                                 </div>
                             </div>
 
@@ -549,7 +604,7 @@
 
 
                         </div>
-                        <div class="tab-pane fade" id="navs-pills-top-profile1" role="tabpanel">
+                    <div class="tab-pane fade" id="navs-pills-top-profile1" role="tabpanel">
                             <BCardBody v-if="paginatedItems.length === 0" class="noresul">
             <div >
           <span> Vous n'êtes relié à aucune entreprise distributrice </span>
@@ -619,6 +674,61 @@
               </BCol>
             </BRow>
                     </div>
+                    <div class="tab-pane fade" id="navs-pills-top-profile12" role="tabpanel">
+                            <BCardBody v-if="StocksOptions.length === 0" class="noresul">
+            <div >
+          <span> L'entreprise n'a pas encore de skockage disponible </span>
+           </div>
+          </BCardBody>
+          <BCardBody v-else>
+             <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+ 
+         <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="stock in StocksOptions" :key="stock.id">
+           <BRow class="align-items-center">
+             <BCol xl="5">
+               <div class="text-center p-2 border-end">
+                 <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                   <span class="avatar-title rounded-circle   font-size-16">
+                    
+                     <img  v-if="stock.produit === null" src="@/assets/img/produits.jpg" alt="" class="w-100 h-100 rounded-circle">
+                     <img v-else :src="stock.produit.ImageProduit" alt="" class="w-100 h-100 rounded-circle">
+                   </span>
+                 </div>
+                 <h5 class="text-truncate pb-1">
+                     {{formatCreatedAt(stock.DateDeMiseAJourStock)  }}
+                 </h5>
+               </div>
+             </BCol>
+ 
+             <BCol xl="7">
+               <div class="p-2 text-center text-xl-start">
+                 <BRow>
+                   <BCol cols="12">
+                     <div>
+                       <p class="text-muted mb-2 text-truncate">Nom du produit </p>
+                       <h5 v-if="stock.produit">{{stock.produit.NomProduit}}</h5>
+                     </div>
+                   </BCol>
+                   
+                 </BRow>
+                 <BRow>
+                     <BCol cols="12">
+                     <div>
+                       <p class="text-muted mb-2 text-truncate">Quantite Réel</p>
+                       <h5>{{stock.QuantiteReel}} </h5>
+                     </div>
+                   </BCol>
+                 </BRow>
+               </div>
+             </BCol>
+           </BRow>
+         </div>    
+             </div>
+           
+          </BCardBody>
+        
+         
+                    </div>
 
                     <div class="tab-pane fade" id="navs-pills-top-messages11" role="tabpanel">
                         <Position :data="data"  :key="childKey"/>
@@ -642,6 +752,7 @@ import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
 import Position from '@/components/admin/pme/position.vue'
 import Pag from '@/components/others/pagination.vue'
+import moment from 'moment';
 
 
 export default {
@@ -673,7 +784,7 @@ export default {
   },
  data() {
    return { 
-    loading:true,
+          loading:true,
          data: '',
          isFullScreen: false,
          childKey: 0,
@@ -682,6 +793,7 @@ export default {
          dataImport:[],
          dataimage:[],
          sous:[],
+         StocksOptions:[],
          currentPage: 1,
          itemsPerPage: 10,
     
@@ -702,8 +814,8 @@ export default {
  },
 async  mounted() {
     await  this.fetchData()
+    await this.fetchStock()
      await   this.fetchDataImport()
-//    await this.fetchDataImage()
  },
  methods: {
     updateCurrentPage(pageNumber) {
@@ -714,11 +826,11 @@ async  mounted() {
     });
   },
  
-  updatePaginatedItems() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.dataImport.slice(startIndex, endIndex);
-  },
+//   updatePaginatedItems() {
+//     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+//     const endIndex = startIndex + this.itemsPerPage;
+//     return this.dataImport.slice(startIndex, endIndex);
+//   },
     async  reloadChild() {
       this.childKey += 1; // Changez la clé pour recharger le composant enfant
     },
@@ -748,15 +860,31 @@ async  mounted() {
             this.dataImport = data
         },
 
-        async fetchDataImage() {
-            const response = await axios.get('/mpme/photos/publication-de-photo-mpme')
-            const data = response.data.data.data
-            this.dataimage = data
-            console.log('image', data);
-            this.dataimage = this.dataimage.filter((img) => {
-            return img.CodeMpme === this.id; // Remplacez "userId" par la propriété qui contient l'ID de l'utilisateur dans vos données de documents.
-            });
-            console.log('this.dataimage',this.dataimage);
+        formatCreatedAt(createdAt) {
+    return moment(createdAt).format('DD/MM/YY ');
+    },
+        async fetchStock() {
+            console.log(this.id)
+      try {
+         const response = await axios.get('/stocks', {
+           headers: { Authorization: `Bearer ${this.loggedInUser.token}`},
+           params:{ code:this.id}
+         });
+         console.log("Réponse du téléversement :", response);
+         if (response.data.status === "success") {
+          
+            this.StocksOptions = response.data.data
+         console.log("Réponse du téléversement :",  this.StocksOptions);
+
+           this.loading =false
+         } 
+       } catch (error) {
+         console.error("Erreur lors du téléversement :", error);
+         if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                 await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+               this.$router.push("/");  //a revoir
+             }
+       }
         },
         
  },

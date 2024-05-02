@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Produits" pageTitle="Tableau de bord" />
+   <PageHeader title="Ajouter Produits" pageTitle="Paramétrages" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -141,54 +141,7 @@
          </BCol>
        </BRow>
 
-       <BCol lg="6">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle>Accordion example</BCardTitle>
-            <p class="card-title-desc">Extend the default collapse behavior to create an accordion.</p>
-            <div role="tablist">
-              <BCard no-body class="mb-1 shadow-none">
-                <BCardHeader  header-tag="header" role="tab">
-                  <h6 class="m-0">
-                    <BLink v-b-toggle.accordion-1 class="text-dark" href="javascript: void(0);">Collapsible Group Item #1</BLink>
-                  </h6>
-                </BCardHeader >
-                <BCollapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
-                  <BCardBody>
-                    <BCardText>{{ text }}</BCardText>
-                  </BCardBody>
-                </BCollapse>
-              </BCard>
-
-              <BCard no-body class="mb-1">
-                <BCardHeader header-tag="header" role="tab">
-                  <h6 class="m-0">
-                    <BLink v-b-toggle.accordion-2 class="text-dark" href="javascript: void(0);">Collapsible Group Item #2</BLink>
-                  </h6>
-                </BCardHeader >
-                <BCollapse id="accordion-2" accordion="my-accordion" role="tabpanel">
-                  <BCardBody>
-                    <BCardText>cccc</BCardText>
-                  </BCardBody>
-                </BCollapse>
-              </BCard>
-
-              <BCard no-body class="mb-1">
-                <BCardHeader  header-tag="header" role="tab">
-                  <h6 class="m-0">
-                    <BLink v-b-toggle.accordion-3 class="text-dark" href="javascript: void(0);">Collapsible Group Item #3</BLink>
-                  </h6>
-                </BCardHeader >
-                <BCollapse id="accordion-3" accordion="my-accordion" role="tabpanel">
-                  <BCardBody>
-                    <BCardText>cccc</BCardText>
-                  </BCardBody>
-                </BCollapse>
-              </BCard>
-            </div>
-          </BCardBody>
-        </BCard>
-      </BCol>
+      
      </BContainer>
    </div>
  </div> 

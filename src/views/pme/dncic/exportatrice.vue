@@ -1,7 +1,7 @@
 <template >
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprises Exportatrices" pageTitle="Tableau de bord" :statistic="statistic" />
+ <PageHeader title="Entreprises Exportatrices" pageTitle="Entreprises" :statistic="statistic" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -12,7 +12,7 @@
            <div class="flex-shrink-0 d-flex">
              <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
              <BCol xxl="4" lg="6" class=" me-1">
-             <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+             <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
            <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
            </div>
@@ -35,11 +35,11 @@
         </p> -->
         <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
         <div class="texte">
-          <p class="texte-content" v-if="pme.pme">Code Pme: <span>{{ pme.pme.CodeMpme }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
         <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
         <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
-        <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
         <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
         <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
           <ul class="list-unstyled hstack gap-1 mb-0">
@@ -61,10 +61,7 @@
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
                               <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
-                              <BDropdownItem @click="$router.push({ path: '/stock-pme/'+ pme.CodeMpme })" >Stock disponible</BDropdownItem>
-                              <BDropdownItem href="#">Rename</BDropdownItem>
-                              <BDropdownDivider />
-                              <BDropdownItem href="#">Remove</BDropdownItem>
+                            
                             </BDropdown>
                      </li>
                    </ul>
@@ -72,7 +69,7 @@
 
         </div>
     </div>
-    <div class="date-box">
+    <div class="date-box" v-if="pme.pme">
        <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
        <img v-else :src="pme.pme.profile" alt="">
     </div>
@@ -186,12 +183,15 @@ data() {
     
   loading:true,
   AddLogo:false,
+  control: { name: '',},
   IdLogo:'',
   pmeOptions:[],
+  data:[],
   currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
    regionOptions:[],
+   SecteurActiviteOptions: [],
    UserOptionsPersonnels:'',
    photo:'',
  }
@@ -216,6 +216,7 @@ async  mounted() {
 console.log("uusers",this.loggedInUser);
  await this.fetchPmes()
  await this.fetchRegionOptions()
+ await this.fetchSecteurActiviteOptions()
 },
 methods: {
 successmsg:successmsg,
@@ -238,9 +239,10 @@ async fetchPmes() {
             const response = await axios.get(`/types-entreprises/${2}`, {
             headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
              console.log(response.data.data);
-             const filteredUsers = response.data.data.pmes;
-               console.log(filteredUsers); 
-              this.pmeOptions = filteredUsers;
+             const filteredUsers = response.data.data.pmes.filter(item => item.pme !== null);
+              console.log(filteredUsers); 
+               this.data  = filteredUsers ;
+              this.pmeOptions = this.data
               this.UserOptionsPersonnels = filteredUsers.length
              this.loading = false;
           
@@ -272,6 +274,21 @@ async fetchPmes() {
       );
     }
   },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
     async confirmDelete(id) {
    // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
    const result = await Swal.fire({
@@ -279,8 +296,8 @@ async fetchPmes() {
      text: 'Vous ne pourrez pas revenir en arrière!',
      icon: 'warning',
      showCancelButton: true,
-     confirmButtonText: 'Oui, supprimez-le!',
-     cancelButtonText: 'Non, annulez!',
+     confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
      reverseButtons: true
    });
 
@@ -343,6 +360,25 @@ async fetchPmes() {
           }
       
  },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
  OpenLogo(id){
   this.photo = photo
   this.AddLogo = true
@@ -394,6 +430,24 @@ async fetchPmes() {
       }
     }
   },
+  filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.pme.NomMpme || '';
+    const CodeMpme = user.pme.CodeMpme || '';
+    const SigleMpme = user.pme.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
 },
 }
 </script>
@@ -452,7 +506,7 @@ display: inline-block;
   font-weight: 900;
   transition: all 0.5s ease-in-out;
   position: absolute;
-  top: -33px;
+  top: -41px;
   right: 24px;
 }
 
@@ -500,8 +554,8 @@ transform: translate3d(0px, 0px, 60px);
 
 .date-box {
 position: absolute;
-top: -24px;
-left: 13px;
+top: -16px;
+  left: 5px;
 height: 60px;
 width: 60px;
 border: 1px solid #fff;

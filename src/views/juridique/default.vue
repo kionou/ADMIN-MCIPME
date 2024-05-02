@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Status Juridique" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Liste status juridiques" pageTitle="Paramétrages" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -444,8 +444,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 

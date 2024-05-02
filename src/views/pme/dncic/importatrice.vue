@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Entreprises Importatrices" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Entreprises Importatrices" pageTitle="Entreprises" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -12,7 +12,7 @@
              <div class="flex-shrink-0 d-flex">
                <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
                <BCol xxl="4" lg="6" class=" me-1">
-               <MazInput v-model="searchQuery"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
              <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
              </div>
@@ -29,18 +29,18 @@
       <div class="parent" v-for="pme in paginatedItems" :key="pme.id">
        <div class="carde" >
       <div class="content-box">
-        <div class="date-box">
+        <div class="date-box" v-if="pme.pme">
          <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
          <img v-else :src="pme.pme.profile" alt="">
       </div>
         <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
           <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content" v-if="pme.pme">Code Pme: <span>{{ pme.pme.CodeMpme }}</span></p>
+          <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
           <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
-          <p class="texte-content" v-if="pme.pme">Secteur Activité: <span>{{ pme.pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content text-truncate" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
           <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
-          <p class="texte-content" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+          <p class="texte-content text-truncate" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
           <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
@@ -62,10 +62,7 @@
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
                               <BDropdownItem  @click="OpenLogo(pme.CodeMpme , pme.pme.profile)">Ajouter un logo</BDropdownItem>
-                              <BDropdownItem @click="$router.push({ path: '/stock-pme/'+ pme.CodeMpme })" >Stock disponible</BDropdownItem>
-                              <BDropdownItem href="#">Rename</BDropdownItem>
-                              <BDropdownDivider />
-                              <BDropdownItem href="#">Remove</BDropdownItem>
+                             
                             </BDropdown>
                            
                        </li>
@@ -200,12 +197,15 @@ export default {
       
     loading:true,
     AddLogo:false,
+    control: { name: '',},
     IdLogo:'',
     pmeOptions:[],
+    data:[],
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
      regionOptions:[],
+     SecteurActiviteOptions: [],
      UserOptionsPersonnels:'',
      photo:'',
    }
@@ -230,6 +230,7 @@ async  mounted() {
   console.log("uusers",this.loggedInUser);
    await this.fetchPmes()
    await this.fetchRegionOptions()
+   await this.fetchSecteurActiviteOptions()
  },
  methods: {
   successmsg:successmsg,
@@ -252,11 +253,12 @@ async  mounted() {
               const response = await axios.get(`/types-entreprises/${1}`, {
               headers: { Authorization: `Bearer ${this.loggedInUser.token}`, }, });
                console.log(response.data.data);
-               const filteredUsers = response.data.data.pmes;
-                 console.log(filteredUsers); 
-                this.pmeOptions = filteredUsers;
-                this.UserOptionsPersonnels = filteredUsers.length
-               this.loading = false;
+               const filteredUsers = response.data.data.pmes.filter(item => item.pme !== null);
+               console.log(filteredUsers); 
+               this.data  = filteredUsers ;
+              this.pmeOptions = this.data
+              this.UserOptionsPersonnels = filteredUsers.length
+             this.loading = false;
             
             } catch (error) {
               console.error('errorqqqqq',error);
@@ -293,8 +295,8 @@ async  mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -303,6 +305,21 @@ async  mounted() {
        this.DeleteUser(id);
      }
          },
+         async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
          async DeleteUser(id) {
           this.loading = true
          
@@ -357,6 +374,25 @@ async  mounted() {
             }
         
    },
+   NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
    OpenLogo(id , photo){
     this.photo = photo
     this.AddLogo = true
@@ -408,6 +444,24 @@ async  mounted() {
         }
       }
     },
+    filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.pme.NomMpme || '';
+    const CodeMpme = user.pme.CodeMpme || '';
+    const SigleMpme = user.pme.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
  },
 }
 </script>
@@ -466,7 +520,7 @@ margin-bottom: 10px !important;
     font-weight: 900;
     transition: all 0.5s ease-in-out;
     position: absolute;
-    top: -33px;
+    top: -41px;
     right: 24px;
 }
 
@@ -514,8 +568,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

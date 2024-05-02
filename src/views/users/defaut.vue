@@ -1,7 +1,7 @@
 <template >
      <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Utilisateurs" pageTitle="Tableau de bord" />
+    <PageHeader title="Utilisateurs" pageTitle="Gestion Utilisateurs" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
@@ -555,8 +555,8 @@ export default {
         text: 'Vous ne pourrez pas revenir en arrière!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Oui, supprimez-le!',
-        cancelButtonText: 'Non, annulez!',
+        confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
         reverseButtons: true
       });
 

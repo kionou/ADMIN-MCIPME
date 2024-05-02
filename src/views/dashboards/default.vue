@@ -5,6 +5,7 @@
 
 
 
+
 import Stat from "@/components/widgets/stat.vue";
 import Transaction from "@/components/widgets/transaction.vue";
 import Emailsent from "@/components/widgets/emailsent.vue";
@@ -13,6 +14,9 @@ import Activity from "@/components/widgets/activity.vue";
 import SellingProduct from "@/components/widgets/selling-product.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
+import SecteurDni from '@/components/admin/statistique/dni/secteur.vue'
+import Zone from '@/components/admin/statistique/dni/zone.vue'
+import Zone1 from '@/components/admin/statistique/dni/zone1.vue'
 
 
 /**
@@ -31,6 +35,9 @@ export default {
     SocialSource,
     Activity,
     SellingProduct,
+    SecteurDni,
+    Zone,
+    Zone1
   },
   computed: {
     loggedInUser() {
@@ -46,9 +53,10 @@ export default {
       loading:true,
       DataOptions:[],
       statData: [],
-     
-      
-    
+      mpme:[],
+      SecteurActiviteOptions:[],
+      IndicateursOptions:[],
+      regionOptions:[],
       canCancel: false,
       useSlot: false,
      
@@ -62,8 +70,13 @@ export default {
 async  mounted() {
     console.log("index",this.loggedInUser);
     await this.fetchStatics()
+
+    await this.fetchMpme()
+    await this.fetchRegionOptions()
+    await this.fetchSecteurActiviteOptions()
   },
   methods: {
+    
   async fetchStatics() {
             try {
               const response = await axios.get('/directions/statistics/dashboards', {
@@ -83,14 +96,14 @@ async  mounted() {
           title: "Total unités industrielles",
            value: response.data.data[0].PmeCount || 0,
         },
-        {
-          icon: "bx bx-archive-in",
-          title: " Total production ",
-          value:  response.data.data[0].TotalProduction|| 0,
-        },
+        // {
+        //   icon: "bx bx-archive-in",
+        //   title: " Total production ",
+        //   value:  response.data.data[0].TotalProduction|| 0,
+        // },
         {
           icon: "bx bx-purchase-tag-alt",
-          title: "Total emploi crée",
+          title: "Total emplois crées",
           value:  response.data.data[0].EmployersCount || 0,
         },
         {
@@ -118,6 +131,156 @@ async  mounted() {
             }
             }
           },
+          async fetchIndicateursOptions() {
+    try {
+              const response = await axios.get('/indicateurs', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+    
+            });
+               console.log(response.data.data);
+                this.IndicateursOptions = response.data.data.map(sousprefecture => ({
+                label: sousprefecture.Description,
+                value: sousprefecture.id,  }));
+                 this.indicateur1 = response.data.data[0].id
+                 this.indicateur2 = response.data.data[1].id
+               
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+    },
+    async fetchStaAnnuel() {
+        try {
+          const response = await axios.get(`/indicateurs/statistics/${this.indicateur1}`, {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+
+          const dataFromAPI = response.data.data;
+          console.log('eee', dataFromAPI)
+          const categories = dataFromAPI.map(item => item.IntituleZone); // Récupérer les noms des unités industrielles
+            this.datay = categories
+          // Mettre à jour les catégories
+  
+          // Mettre à jour les données du graphique avec les données de l'API
+          this.datax = dataFromAPI.map(item => parseInt(item.nb));
+        } catch (error) {
+          console.error(error);
+          if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('user/clearLoggedInUser');
+            this.$router.push("/"); //a revoir
+          }
+        }
+      },
+      async fetchMpme() {
+        try {
+          const response = await axios.get('/mcipme', {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+  
+          const dataFromAPI = response.data.data;
+          console.log(dataFromAPI);
+
+          // Triez les données par date de création (supposons que la propriété soit `dateCreation`)
+        const sortedData = dataFromAPI.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        // Prenez les quatre premières entreprises
+        const latestFourCompanies = sortedData.slice(0, 4);
+
+        console.log(latestFourCompanies);
+        this.mpme = latestFourCompanies
+          
+  
+          this.loading = false;
+        } catch (error) {
+          console.error(error);
+        
+        }
+      },
+      async fetchRegionOptions() {
+    // Renommez la méthode pour refléter qu'elle récupère les options de pays
+    try {
+      await this.$store.dispatch("fetchRegionOptions");
+      const options = JSON.parse(
+        JSON.stringify(this.$store.getters["getRegionOptions2"])
+       
+      ); // Accéder aux options des pays via le getter
+      console.log(options);
+      this.regionOptions = options;
+      // Affecter les options à votre propriété sortedCountryOptions
+      this.loading = false
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+    }
+  },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
+      NameRegion(id){
+          try {
+          
+     
+         const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.NomRegion;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
  },
 };
 </script>
@@ -136,109 +299,60 @@ async  mounted() {
      
         </BCol>
     </BRow>
-    <BRow>
-      <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle class="mb-4">{{ data.title }}</BCardTitle>
-            <apexchart class="apex-charts" :height="data.height" :type="data.type" dir="ltr" :series="data.chart.series" :options="data.chart.chartOptions">
-            </apexchart>
-          </BCardBody>
-        </BCard>
+  
+
+      <BRow>
+      <BCol lg="6" >
+        <div>
+          <div>
+            <Zone1  ></Zone1>
+          </div>
+        </div>
+      </BCol>
+
+      <BCol lg="6" >
+        <div>
+          <div>
+            <Zone ></Zone>
+          </div>
+        </div>
       </BCol>
     </BRow>
 
     <BRow class="justify-content-center">
-      <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
+       
+      <div class="parent" v-for="pme in mpme" :key="pme.id">
+     <div class="carde" >
+    <div class="content-box">
+      <span class="carde-title">{{ pme.NomMpme }}</span>
+          <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
+          <div class="texte">
+            <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>
+          <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
+          <p class="texte-content text-truncate">Secteur Activité : <span>{{ NameActivite(pme.PrincipalSecteurActivite) }}</span></p>
+          <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
+          <p class="texte-content text-truncate">Email : <span>{{ pme.AdresseEmail }}</span></p>
+          <p class="texte-content">Contact : <span> {{ pme.NumeroWhatsApp }}</span></p>
+        <div >
+          <router-link :to="{ name: 'detail-industrielle', params: { id: pme.CodeMpme }}" >   <span class="see-more">
               <i class="bx bx-show"></i>
             </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
+          </router-link>             
+
         </div>
     </div>
-  </div>
-       </div>
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
-        </div>
+    <div class="date-box" v-if="pme">
+       <img v-if="pme.profile === null" src="@/assets/img/guinea.png" alt="">
+       <img v-else :src="pme.profile" alt="">
     </div>
-  </div>
-       </div>
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
-        </div>
-    </div>
-  </div>
-       </div>
+</div>
+</div>
+   </div> 
 
     
       
     </BRow>
-
-
+ 
  
   </Layout>
 </template>
@@ -344,8 +458,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

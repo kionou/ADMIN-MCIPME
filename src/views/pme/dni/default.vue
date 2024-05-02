@@ -1,7 +1,7 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Unité Industrielle" pageTitle="Unité Industrielle" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -11,8 +11,8 @@
 
              <div class="flex-shrink-0 d-flex">
                <div @click="$router.push({ path: '/industrielle/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6">
-               <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <BCol xxl="4" lg="9">
+               <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
              </div>
            </div>
@@ -31,11 +31,11 @@
           <span class="carde-title">{{ pme.NomMpme }}</span>
           <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
-            <p class="texte-content" v-if="pme">Code Pme : <span>{{ pme.CodeMpme }}</span></p>
+            <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>
           <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
-          <p class="texte-content">Secteur Activité : <span>{{ pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content text-truncate">Secteur Activité : <span>{{ NameActivite(pme.PrincipalSecteurActivite) }}</span></p>
           <p class="texte-content">Superficie Occupée : <span>{{ pme.SuperficieOccupee || 0 }} ha</span></p>
-          <p class="texte-content">Email : <span>{{ pme.AdresseEmail }}</span></p>
+          <p class="texte-content text-truncate">Email : <span>{{ pme.AdresseEmail }}</span></p>
           <p class="texte-content">Contact : <span> {{ pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
@@ -58,10 +58,6 @@
                                 <i class="mdi mdi-dots-vertical"></i>
                               </template>
                               <BDropdownItem  @click="OpenLogo(pme.CodeMpme ,pme.profile)">Ajouter un logo</BDropdownItem>
-                              <BDropdownItem href="#">Edit</BDropdownItem>
-                              <BDropdownItem href="#">Rename</BDropdownItem>
-                              <BDropdownDivider />
-                              <BDropdownItem href="#">Remove</BDropdownItem>
                             </BDropdown>
                        </li>
                      </ul>
@@ -183,14 +179,17 @@ export default {
       
     loading:true,
     AddLogo:false,
+    control: { name: '',},
     IdLogo:'',
     photo:'',
     pmeOptions:[],
+    data:[],
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
      regionOptions:[],
      UserOptionsPersonnels:'',
+     SecteurActiviteOptions: [],
    }
  },
  computed:{
@@ -213,10 +212,24 @@ async  mounted() {
   console.log("uusers",this.loggedInUser);
    await this.fetchPmes()
    await this.fetchRegionOptions()
+   await this.fetchSecteurActiviteOptions()
  },
  methods: {
   successmsg:successmsg,
-  async fetchPmes() {
+  updateCurrentPage(pageNumber) {
+         this.currentPage = pageNumber;
+         window.scrollTo({
+           top: 0,
+           behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+         });
+       },
+       updatePaginatedItems() {
+         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        
+         const endIndex = startIndex + this.itemsPerPage;
+         return  this.pmeOptions.slice(startIndex, endIndex);
+       },
+           async fetchPmes() {
             try {
               const response = await axios.get('/mcipme', {
               headers: {
@@ -226,8 +239,10 @@ async  mounted() {
     
             });
                console.log(response.data.data);
-                this.pmeOptions = response.data.data;
-                this.UserOptionsPersonnels = this.pmeOptions.length
+               const mcipmes = response.data.data
+                this.data  = mcipmes ;
+                this.pmeOptions  = this.data
+                this.UserOptionsPersonnels = this.data.length
                this.loading = false;
             
             } catch (error) {
@@ -258,6 +273,21 @@ async  mounted() {
         );
       }
     },
+    async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
     async confirmDelete(id) {
      // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
      const result = await Swal.fire({
@@ -265,8 +295,8 @@ async  mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -329,6 +359,25 @@ async  mounted() {
             }
         
    },
+   NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
    OpenLogo(id , photo){
     this.photo = photo
     this.AddLogo = true
@@ -380,6 +429,24 @@ async  mounted() {
         }
       }
     },
+    filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.pmeOptions =this.data.filter(user => {
+    const Nom = user.NomMpme || '';
+    const CodeMpme = user.CodeMpme || '';
+    const SigleMpme = user.SigleMpme || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme.toLowerCase().includes(searchValue) || SigleMpme.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.pmeOptions = [...this.data];
+ 
+}
+
+},
  },
 }
 </script>
@@ -438,7 +505,7 @@ margin-bottom: 10px !important;
     font-weight: 900;
     transition: all 0.5s ease-in-out;
     position: absolute;
-    top: -33px;
+    top: -41px;
     right: 24px;
 }
 
@@ -486,8 +553,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

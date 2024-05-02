@@ -1,7 +1,6 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Localités" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -11,7 +10,7 @@
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput v-model="control.name" @input="filterByName"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -261,8 +260,10 @@ export default {
      loading:true,
      AddUser:false,
      UpdateUser1:false,
+     control: { name: '',},
      ToId:'',
      regionOptions:[],
+     data:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -343,7 +344,8 @@ async mounted() {
          
         ); // Accéder aux options des pays via le getter
         console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
+        this.data  = options ;
+        this.regionOptions = this.data; // Affecter les options à votre propriété sortedCountryOptions
         this.loading = false
       } catch (error) {
         console.error(
@@ -409,8 +411,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
@@ -528,6 +530,22 @@ async mounted() {
         console.log("cest pas bon ", this.v$.$errors);
       }
      },
+     filterByName() {
+this.currentPage = 1;
+if (this.control.name !== null) {
+   const tt = this.control.name;
+  const  searchValue = tt.toLowerCase()
+  this.regionOptions =this.data.filter(user => {
+    const Nom = user.NomRegion || '';
+    return Nom.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.regionOptions = [...this.data];
+ 
+}
+
+},
          updateCurrentPage(pageNumber) {
          this.currentPage = pageNumber;
          window.scrollTo({

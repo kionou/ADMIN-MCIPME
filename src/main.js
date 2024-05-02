@@ -9,11 +9,13 @@ import './assets/core.css'
 import VueApexCharts from "vue3-apexcharts";
 import vClickOutside from "click-outside-vue3";
 import { registerScrollSpy } from 'vue3-scroll-spy';
+import HighchartsVue from 'highcharts-vue'
 import {createBootstrap} from 'bootstrap-vue-next'
-import { CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/vue';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import 'maz-ui/styles'
 import 'vuetify/styles'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import * as components from 'vuetify/components'
@@ -82,13 +84,14 @@ app.component('MazInputCode', MazInputCode)
 
   
    store.dispatch('auth/loadMyAuthenticatedUser').then(() => {
-    app.use(pinia)
+   app.use(pinia)
   app.use(router)
   app.use(store);
-
+  app.use(HighchartsVue)
   app.use(createBootstrap())
   app.use(VueApexCharts)
   app.use(vClickOutside)
+  app.use(Toast)
   app.use(i18n)
   app.use(vuetify);
   app.use(registerScrollSpy)

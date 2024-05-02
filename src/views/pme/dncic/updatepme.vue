@@ -1,7 +1,7 @@
 <template >
   <Layout>
    <Loading v-if="loading" style="z-index: 99999;"></Loading>
- <PageHeader title="Entreprise" pageTitle="Tableau de bord" />
+ <PageHeader title="Modifier entreprise" pageTitle="Entreprises" />
  <BRow>
    <BCol lg="12">
      <BCard no-body>
@@ -17,6 +17,7 @@
       :class="{ current: currentStep == item, success: currentStep > item }"
       v-for="item in 6"
       :key="item"
+      @click="goToStep(item)"
     >
       <div class="stepper-item-counter">
         <img
@@ -34,7 +35,7 @@
            </div>   
 
            <div class="container-fluid" style="margin-top: 48px">
-
+            <p class="aider" @click="AddFichier = true">Cliquez ici pour modifier les fichiers de l'entreprise</p>
               <form class="form" >
               <!-- Étape 1 -->
               <div v-if="currentStep === 2">
@@ -158,7 +159,7 @@
                       <div class="col">
                           <div class="input-groupe">
                           <label for="SigleMpme"
-                              >Sigle Mpme </label
+                              >Sigle entreprise </label
                           >
                           <input
                               type="text"
@@ -662,28 +663,7 @@
             <small v-if="v$.step2.DateGenerationNif.$error">{{
               v$.step2.DateGenerationNif.$errors[0].$message
             }}</small>
-            <div class="col">
-              <div class="input-groupe">
-                <label for="FichierNif">Fichier Nif</label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadNif"
-                  name="FichierNif"
-                  id="FichierNif"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FichierNif'] }"
-                  @input="resultError['FichierNif'] = false"
-                />
-              </div>
-            </div>
-            <small v-if="v$.step2.FichierNif.$error">{{
-              v$.step2.FichierNif.$errors[0].$message
-            }}</small>
-            <small v-if="resultError['FichierNif']">
-              {{ resultError["FichierNif"] }}
-            </small>
+            
 
            
           </div>
@@ -709,28 +689,7 @@
             <small v-if="resultError['NumeroRccm']">
               {{ resultError["NumeroRccm"] }}
             </small>
-            <div class="col">
-              <div class="input-groupe">
-                <label for="FichierRccm">Fichier Rccm </label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                   @change="handleFileUploadRccm"
-                  name="FichierRccm"
-                  id="FichierRccm"
-                  placeholder=""
-                 
-                  :class="{ 'error-border': resultError['FichierRccm'] }"
-                  @input="resultError['FichierRccm'] = false"
-                />
-              </div>
-            </div>
-              <small v-if="v$.step2.FichierRccm.$error">{{
-              v$.step2.FichierRccm.$errors[0].$message
-            }}</small>
-            <small v-if="resultError['FichierRccm']">
-              {{ resultError["FichierRccm"] }}
-            </small>
+           
             <div class="col">
               <div class="input-groupe">
                 <label for="NumeroTva">Numero de la TVA</label>
@@ -779,13 +738,13 @@
               <div class="input-groupe">
                 <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
                 <input
-                  type="text"
+                  type="number"
                   name="PersonnelPermanentFemme"
                   id="PersonnelPermanentFemme"
                   placeholder="21"
                   v-model="step3.pers_per_femm"
                   :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
-                  @input="resultError['PersonnelPermanentFemme'] = false"
+                  @input="calculateTotalEmployees"
                   option-value-key="value" option-label-key="label" option-input-value-key="value"
                 />
               </div>
@@ -800,13 +759,13 @@
               <div class="input-groupe">
                 <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
                 <input
-                  type="text"
+                  type="number"
                   name="PersonnelPermanentHomme"
                   id="PersonnelPermanentHomme"
                   placeholder="11"
                   v-model="step3.pers_per_homm"
                   :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
-                  @input="resultError['PersonnelPermanentHomme'] = false"
+                  @input="calculateTotalEmployees"
                 />
               </div>
               <small v-if="v$.step3.pers_per_homm.$error">{{
@@ -823,11 +782,12 @@
                   >Nombre d'employés Guinéens<span class="text-danger">*</span></label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmploye"
                   id="NbreEmploye"
                   placeholder="33"
                   v-model="step3.NbreEmploye"
+                  disabled
                   :class="{ 'error-border': resultError['NbreEmploye'] }"
                   @input="resultError['NbreEmploye'] = false"
                 />
@@ -849,7 +809,7 @@
                   >Nombre d'employées féminines Guinéennes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmployeGuinneF"
                   id="NbreEmployeGuinneF"
                   placeholder="11"
@@ -871,7 +831,7 @@
                   >Nombre d'employés masculins Guinéens</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreEmployeGuinneH"
                   id="NbreEmployeGuinneH"
                   placeholder="55"
@@ -896,7 +856,7 @@
                               >Personnel Temporaire Femme
                           </label>
                           <input
-                              type="text"
+                              type="number"
                               name="PersonnelTemporaireFemme"
                               id="PersonnelTemporaireFemme"
                               placeholder="33"
@@ -918,7 +878,7 @@
                               >Personnel Temporaire Homme
                           </label>
                           <input
-                              type="text"
+                              type="number"
                               name="PersonnelTemporaireHomme"
                               id="PersonnelTemporaireHomme"
                               placeholder="44"
@@ -946,13 +906,13 @@
                   >Nombre d'actionnaires Guinéens Femmes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinneF"
                   id="NbreActionnaireGuinneF"
                   placeholder="11"
                   v-model="step3.NbreActionnaireGuinneF"
                   :class="{ 'error-border': resultError['NbreActionnaireGuinneF'] }"
-                  @input="resultError['NbreActionnaireGuinneF'] = false"
+                  @input="updateTotalNumberOfShareholders"
                 />
               </div>
               <small v-if="v$.step3.NbreActionnaireGuinneF.$error">{{
@@ -968,13 +928,13 @@
                   >Nombre d'actionnaires Guinéens Hommes</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinneH"
                   id="NbreActionnaireGuinneH"
                   placeholder="55"
                   v-model="step3.NbreActionnaireGuinneH"
                   :class="{ 'error-border': resultError['NbreActionnaireGuinneH'] }"
-                  @input="resultError['NbreActionnaireGuinneH'] = false"
+                  @input="updateTotalNumberOfShareholders"
                 />
               </div>
               <small v-if="v$.step3.NbreActionnaireGuinneH.$error">{{
@@ -990,10 +950,11 @@
                   >Nombre d'actionnaires Guinéens</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   name="NbreActionnaireGuinne"
                   id="NbreActionnaireGuinne"
                   placeholder="33"
+                  disabled
                   v-model="step3.NbreActionnaireGuinne"
                   :class="{ 'error-border': resultError['NbreActionnaireGuinne'] }"
                   @input="resultError['NbreActionnaireGuinne'] = false"
@@ -1501,7 +1462,7 @@
             <div class="col">
               <div class="input-groupe">
                 <label for="VilleRepondant"
-                  >Ville du Repondant <span class="text-danger">*</span></label
+                  >Ville du Repondant <span class="text-danger"></span></label
                 >
                 <input
                   v-model="step5.villeRepondant"
@@ -1532,6 +1493,7 @@
                   show-code-on-list
                    no-radius  color="info"
                   :ignored-countries="['AC']"
+                  defaultCountryCode="GN"
                   @update="results = $event"
                   :success="results?.isValid"
                   :class="{ 'error-border': resultError['TelephoneWhatsAppRepondant'] }"
@@ -1671,10 +1633,10 @@
 
             <div class="col">
               <div class="input-groupe">
-                <label for="LatitudeMpme">Latitude Mpme</label>
+                <label for="LatitudeMpme">Latitude Entreprise</label>
                 <input
                   v-model="step6.latitudeMpme"
-                  type="text"
+                  type="number"
                   name="LatitudeMpme"
                   id="LatitudeMpme"
                   placeholder="11.3333"
@@ -1692,10 +1654,10 @@
 
             <div class="col">
               <div class="input-groupe">
-                <label for="LongitudeMpme">Longitude Mpme</label>
+                <label for="LongitudeMpme">Longitude Entreprise</label>
                 <input
                   v-model="step6.longitudeMpme"
-                  type="text"
+                  type="number"
                   name="LongitudeMpme"
                   id="LongitudeMpme"
                   placeholder="-12.333"
@@ -1795,9 +1757,122 @@
               
               </form>
             </div>
-</BCardBody>
+      </BCardBody>
       
-       
+      <BModal v-model="AddFichier" hide-footer centered header-class="border-0" title-class="font-18"  >
+     <div>
+   
+   <div class="account-pages " style="width:100%;">
+     <BContainer>
+       <BRow >
+         <BCol >
+           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+            border: 1px solid #c9d1d9 !important;">
+             <div class="bg-primary-subtle">
+               <BRow>
+                 <BCol cols="12 text-center">
+                   <div class="modalheader p-4">
+                     <h5 class="text-primary">modifier les Fichiers</h5>
+                     
+                   </div>
+                 </BCol>
+                 
+               </BRow>
+             </div>
+             <BCardBody class="pt-0">
+               <div>
+                 <router-link to="#">
+                   <div class="avatar-md profile-user-wid ">
+                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+                 </span>
+               </div>
+                 </router-link>
+               </div>
+               <div class="p-2">
+                 <BForm class="form-horizontal">
+                   <BRow>
+                     <BCol md="12">
+                     <div class="mb-3 position-relative">
+                      <div class="input-groupe">
+                <label for="FileNif">Fichier Nif</label>
+                 <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                   @change="handleFileUploadNif"
+                  name="FileNif"
+                  id="FileNif"
+                  placeholder=""
+                 
+                  :class="{ 'error-border': resultError['FileNif'] }"
+                  @input="resultError['FileNif'] = false"
+                />
+              </div>
+            </div>
+                  </BCol>
+                </BRow>
+
+                <BRow>
+                     <BCol md="12">
+                     <div class="mb-3 position-relative">
+                      <div class="input-groupe">
+                <label for="FileRccm">Fichier Rccm</label>
+                 <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                   @change="handleFileUploadRccm"
+                  name="FileRccm"
+                  id="FileRccm"
+                  placeholder=""
+                 
+                  :class="{ 'error-border': resultError['FileRccm'] }"
+                  @input="resultError['FileRccm'] = false"
+                />
+              </div>
+            </div>
+                  </BCol>
+                </BRow>
+
+                <BRow>
+                     <BCol md="12">
+                     <div class="mb-3 position-relative">
+                      <div class="input-groupe">
+                <label for="FileCerti">Certificat</label>
+                 <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                   @change="handleFileUploadCertificat"
+                  name="FileCerti"
+                  id="FileCerti"
+                  placeholder=""
+                 
+                  :class="{ 'error-border': resultError['FileCerti'] }"
+                  @input="resultError['FileCerti'] = false"
+                />
+              </div>
+            </div>
+                  </BCol>
+                </BRow>
+
+                   
+                   <BRow class="mb-0">
+                     <BCol cols="12" class="text-end">
+                       <div class="boutton">
+                       <button class="" @click="HamdleFile()">Valider</button>
+                      </div>
+                     </BCol>
+                   </BRow>
+                 </BForm>
+               </div>
+             </BCardBody>
+           </BCard>
+           
+         </BCol>
+       </BRow>
+     </BContainer>
+   </div>
+ </div>
+   </BModal>
      </BCard>
    </BCol>
  </BRow>
@@ -1818,9 +1893,15 @@ import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidNumeri } from "@/functions/rules";
 import {successmsg} from "@/lib/modal.js"
 import Swal from 'sweetalert2'
+import { useToast } from "vue-toastification";
+
 
 
 export default {
+  setup() {
+   const toast = useToast();
+   return { toast }
+ },
  components: {
  Layout,
  PageHeader,
@@ -1832,6 +1913,14 @@ computed:{
  loggedInUser() {
    return this.$store.getters['auth/myAuthenticatedUser'];
  },
+ calculateTotalEmployees() {
+      // Calculate the total number of Guinean employees
+      return this.step3.NbreEmploye = parseInt(this.step3.pers_per_femm || 0) + parseInt(this.step3.pers_per_homm || 0);
+    },
+    updateTotalNumberOfShareholders() {
+      // Mettre à jour le total en additionnant les valeurs des deux champs
+      return  this.step3.NbreActionnaireGuinne = parseInt(this.step3.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
+    },
  stepperProgress() {
     return (100 / 5) * (this.currentStep - 1) + "%";
   },
@@ -1852,6 +1941,7 @@ data() {
      loading:false,
      currentStep: 1,
      error: "",
+     AddFichier:false,
     resultError: {},
     isButtonDisabled: false,
     isOpen: false,
@@ -1868,9 +1958,10 @@ data() {
     ZoneOptions:[],
     QuartierOptions: [],
     userData:'',
-   
-  //   ChiffreOptions: chiffre,
-// Pour stocker les sous-secteurs sélectionnés
+    FileNif:'',
+    FileRccm:'',
+    FileCerti:'',
+    direction:'',
     SousSecteurActiviteOptions: [],
     years: [],
     yearOptions: [],
@@ -1922,15 +2013,13 @@ data() {
       prin_sect_acti: "",
       selectedSousSecteurs: [],
       an_prod_1: "", 
-      PaysSiegeSocial: "Guinea",
+      PaysSiegeSocial: "Guinée",
       distributrice:"",
       types:"",
       
 
       nbre_rccm: "",
-      FichierRccm:"",
       nbre_nif: "",
-      FichierNif:"",
       DateGenerationNif: "",
       NumeroTva: "",
 
@@ -1957,7 +2046,7 @@ data() {
       nomDirigeant: "",
       prenomDirigeant: "",
       sexeDirigeant: "",
-      paysDirigeant: "Guinea",
+      paysDirigeant: "Guinée",
       anneeNaissanceDirigeant: "",
       dirigeantProprietaire: "",
 
@@ -1965,7 +2054,7 @@ data() {
       nomProprietaire: "",
       prenomProprietaire: "",
       sexeProprietaire: "",
-      paysProprietaire: "Guinea",
+      paysProprietaire: "Guinée",
       anneeNaissanceProprietaire: "",
       },
       // step5
@@ -2023,9 +2112,8 @@ validations: {
     distributrice: {  },
     types: {require},
     nbre_rccm: {},
-    FichierRccm:{},
     nbre_nif: {},
-    FichierNif:{},
+
     DateGenerationNif: {},
     NumeroTva: {},
   },
@@ -2068,7 +2156,7 @@ validations: {
     nomRepondant: { require },
     fonctionRepondant: { require },
     adresseRepondant: { require },
-    villeRepondant: { require },
+    villeRepondant: {  },
     telephoneWhatsAppRepondant: { require },
     contacter: { require },
     existanceActionnaire: { require },
@@ -2125,13 +2213,25 @@ async mounted() {
 },
 
 methods: {
+  triggerToast(errorMessage) {
+  this.toast.error(errorMessage, {
+    position: "top-right",
+    timeout: 5000,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: "mdi mdi-alert-circle-outline", // Modifier l'icône pour une icône d'erreur
+    rtl: false,
+    className: 'toast-error'
+  });
+},
    createMpmeData() {
-    const formDataRccm = new FormData();
-    const formDataNif = new FormData();
-
-  // Ajout des champs et de leurs valeurs à formData
-  formDataRccm.append('FichierRccm', this.step2.FichierRccm);
-  formDataNif.append('FichierNif', this.step2.FichierNif);
+   
     return {
       Region: this.step1.region,
       Commune: this.step1.commune,
@@ -2159,11 +2259,7 @@ methods: {
       PaysSiegeSocial: this.step2.PaysSiegeSocial,
       types:this.step2.types,
       NumeroRccm: this.step2.nbre_rccm,
-      // FichierRccm: this.step2.FichierRccm,
-       NumeroNif: this.step2.nbre_nif,
-      //  FichierNif: this.step2.FichierNif,
-      FichierRccm:formDataRccm,
-      FichierNif:formDataNif,
+       NumeroNif: this.step2.nbre_nif, 
       DateGenerationNif: this.step2.DateGenerationNif,
       NumeroTva: this.step2.NumeroTva,
 
@@ -2171,13 +2267,13 @@ methods: {
       NbreEmployeGuinneF: parseInt(this.step3.NbreEmployeGuinneF) ,
       NbreEmployeGuinneH: parseInt(this.step3.NbreEmployeGuinneH) ,
       NbreEmploye:  parseInt(this.step3.NbreEmploye) ,
-      PersonnelPermanentFemme: this.step3.pers_per_femm || 0,
-      PersonnelPermanentHomme: this.step3.pers_per_homm || 0,
-      PersonnelTemporaireFemme: this.step3.pers_temp_femm || 0,
-      PersonnelTemporaireHomme: this.step3.pers_temp_homm || 0,
-      NbreActionnaireGuinneF: this.step3.NbreActionnaireGuinneF || 0,
-      NbreActionnaireGuinneH: this.step3.NbreActionnaireGuinneH || 0,
-      NbreActionnaire: this.step3.NbreActionnaireGuinne || 0,
+      PersonnelPermanentFemme:parseInt(this.step3.pers_per_femm )  ,
+      PersonnelPermanentHomme: parseInt(this.step3.pers_per_homm )   ,
+      PersonnelTemporaireFemme:parseInt(this.step3.pers_temp_femm )  ,
+      PersonnelTemporaireHomme:parseInt(this.step3.pers_temp_homm )  ,
+      NbreActionnaireGuinneF: parseInt(this.step3.NbreActionnaireGuinneF)   ,
+      NbreActionnaireGuinneH: parseInt(this.step3.NbreActionnaireGuinneH)   ,
+      NbreActionnaire: parseInt(this.step3.NbreActionnaireGuinne ),
      
           // step4
   
@@ -2214,112 +2310,119 @@ methods: {
       PrecisionGPSMpme: this.step6.precisionGPSMpme,
       OrigineDonnees: this.step6.origineDonnees,
 
-      Direction:this.loggedInUser.direction
+      Direction:this.direction
+    
     };
   },
-  createMpmeFormData() {
+
+ async createMpmeFormData() {
    
-  // Création d'un nouvel objet FormData
-  const formData = new FormData();
-
-  console.log('rrr',this.step2.FichierRccm)
-  console.log('rrrNif',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)))
- 
- JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)).map((el)=>{
-   formData.append( 'ListeSousSecteurActivite',el);
-
- })
+   // Création d'un nouvel objet FormData
+   const formData = new FormData();
  
 
-  // Ajout des champs et de leurs valeurs à formData
-  formData.append('Region', this.step1.region);
-  formData.append('Commune', this.step1.commune);
-  formData.append('Sousprefecture', this.step1.sous_prefecture);
-  formData.append('Ville', this.step1.ville);
-  formData.append('Localisation', this.step1.localisation);
-  formData.append('SigleMpme', this.step1.sigle_mpme);
-  formData.append('NomMpme', this.step1.nom);
-  formData.append('Quartier', this.step1.quartier);
-  formData.append('Rue', this.step1.rue);
-  formData.append('BoitePostale', this.step1.boite_postale);
-  formData.append('NumeroWhatsApp', this.step1.tel_what);
-  formData.append('NumeroTelephoneSecondaire', this.step1.tel_second);
-  formData.append('AdresseEmail', this.step1.email);
-  formData.append('SiteWeb', this.step1.url);
+  //  console.log('rrrNif',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)))
+  
+  JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)).map((el)=>{
+    formData.append( 'ListeSousSecteurActivite[]',el);
+ 
+  })
+ 
 
-  // step2
 
-  formData.append('AnneeCreation', this.step2.an_creation);
-  formData.append('AnneeEntreeActivite', this.step2.an_entre_acti);
-  formData.append('CodeStatutJuridique', this.step2.code_st_juriq);
-  formData.append('AutreStatutJuridique', this.step2.autr_st_juriq);
-  formData.append('PrincipalSecteurActivite', this.step2.prin_sect_acti);
-  // formData.append( 'ListeSousSecteurActivite',JSON.parse(JSON.stringify(this.step2.selectedSousSecteurs)));
-  formData.append('AnneeProduction1', this.step2.an_prod_1);
-  formData.append('PaysSiegeSocial', this.step2.PaysSiegeSocial);
-  formData.append('types', this.step2.types);
-  formData.append('NumeroRccm', this.step2.nbre_rccm);
-  formData.append('FileRccm', this.step2.FichierRccm?this.step2.FichierRccm:null);
-  formData.append('NumeroNif', this.step2.nbre_nif);
-  formData.append('FileNif', this.step2.FichierNif?this.step2.FichierNif:null);
-  formData.append('DateGenerationNif', this.step2.DateGenerationNif);
-  formData.append('NumeroTva', this.step2.NumeroTva);
+  
 
-  // step3
+ 
+   // Ajout des champs et de leurs valeurs à formData
+   formData.append('Region', this.step1.region);
+   formData.append('Commune', this.step1.commune);
+   formData.append('Sousprefecture', this.step1.sous_prefecture);
+   formData.append('Ville', this.step1.ville);
+   formData.append('Localisation', this.step1.localisation);
+   formData.append('SigleMpme', this.step1.sigle_mpme);
+   formData.append('NomMpme', this.step1.nom);
+   formData.append('Quartier', this.step1.quartier);
+   formData.append('Rue', this.step1.rue);
+   formData.append('BoitePostale', this.step1.boite_postale);
+   formData.append('NumeroWhatsApp', this.step1.tel_what);
+   formData.append('NumeroTelephoneSecondaire', this.step1.tel_second);
+   formData.append('AdresseEmail', this.step1.email);
+   formData.append('SiteWeb', this.step1.url);
+ 
+   // step2
+ 
+   formData.append('AnneeCreation', this.step2.an_creation);
+   formData.append('AnneeEntreeActivite', this.step2.an_entre_acti);
+   formData.append('CodeStatutJuridique', this.step2.code_st_juriq);
+   formData.append('AutreStatutJuridique', this.step2.autr_st_juriq);
+   formData.append('PrincipalSecteurActivite', this.step2.prin_sect_acti);
+  //  formData.append( 'ListeSousSecteurActivite[]',[1210]);
+   formData.append('AnneeProduction1', this.step2.an_prod_1);
+   formData.append('PaysSiegeSocial', this.step2.PaysSiegeSocial);
+   formData.append('types', this.step2.types);
+   formData.append('NumeroRccm', this.step2.nbre_rccm);
+   formData.append('NumeroNif', this.step2.nbre_nif);
+   formData.append('NumeroTva', this.step2.NumeroTva);
+ 
+   // step3
+ 
+   formData.append('NbreEmployeGuinneF', this.step3.NbreEmployeGuinneF || 0);
+   formData.append('NbreEmployeGuinneH', this.step3.NbreEmployeGuinneH || 0);
+   formData.append('NbreEmploye', this.step3.NbreEmployeGuinne || 0);
+   formData.append('PersonnelPermanentFemme',  0);
+   formData.append('PersonnelPermanentHomme',  0);
+   formData.append('PersonnelTemporaireFemme', this.step3.pers_temp_femm || 0);
+   formData.append('PersonnelTemporaireHomme', this.step3.pers_temp_homm || 0);
+   formData.append('NbreActionnaireGuinneF', this.step3.NbreActionnaireGuinneF || 0);
+   formData.append('NbreActionnaireGuinneH', this.step3.NbreActionnaireGuinneH || 0);
+   formData.append('NbreActionnaire', this.step3.NbreActionnaireGuinne || 0);
+ 
+   // step4
+ 
+   formData.append('TitreDirigeant', this.step4.titreDirigeant);
+   formData.append('NomDirigeant', this.step4.nomDirigeant);
+   formData.append('PrenomDirigeant', this.step4.prenomDirigeant);
+   formData.append('SexeDirigeant', this.step4.sexeDirigeant);
+   formData.append('PaysDirigeant', this.step4.paysDirigeant);
+   formData.append('AnneeNaissanceDirigeant', parseInt(this.step4.anneeNaissanceDirigeant).toString());
+   formData.append('DirigeantProprietaire', this.step4.dirigeantProprietaire);
+   formData.append('TitreProprietaire', this.step4.titreProprietaire);
+   formData.append('NomProprietaire', this.step4.nomProprietaire);
+   formData.append('PrenomProprietaire', this.step4.prenomProprietaire);
+   formData.append('SexeProprietaire', this.step4.sexeProprietaire);
+   formData.append('PaysProprietaire', this.step4.paysProprietaire);
+   formData.append('AnneeNaissanceProprietaire', this.step4.anneeNaissanceProprietaire);
+ 
+ // step5
+ 
+   formData.append('TitreRepondant', this.step5.titreRepondant);
+   formData.append('NomRepondant', this.step5.nomRepondant);
+   formData.append('FonctionRepondant', this.step5.fonctionRepondant);
+   formData.append('AdresseRepondant', this.step5.adresseRepondant);
+   formData.append('VilleRepondant', this.step5.villeRepondant);
+   formData.append('TelephoneWhatsAppRepondant', this.step5.telephoneWhatsAppRepondant);
+   formData.append('Contacter', this.step5.contacter);
+   formData.append('ExistanceActionnaire', this.step5.existanceActionnaire);
+   formData.append('ExistanceConseilAdministration', this.step5.existanceConseilAdministration);
+ 
+   // step6
+ 
+   formData.append('LienGoogleMapMpme', this.step6.lienGoogleMapMpme);
+   formData.append('LatitudeMpme', this.step6.latitudeMpme);
+   formData.append('LongitudeMpme', this.step6.longitudeMpme);
+   formData.append('AltitudeMpme', this.step6.altitudeMpme);
+   formData.append('PrecisionGPSMpme', this.step6.precisionGPSMpme);
+   formData.append('OrigineDonnees', this.step6.origineDonnees);
+ 
+ 
+   // Retourne l'objet FormData créé
+   return formData;
+  
+ }, 
+  updateTotalNumberOfShareholders(){
+    return  this.step4.NbreActionnaireGuinne = parseInt(this.step4.NbreActionnaireGuinneF || 0) + parseInt(this.step4.NbreActionnaireGuinneH || 0);
+  },
 
-  formData.append('NbreEmployeGuinneF', this.step3.NbreEmployeGuinneF || 0);
-  formData.append('NbreEmployeGuinneH', this.step3.NbreEmployeGuinneH || 0);
-  formData.append('NbreEmploye', this.step3.NbreEmployeGuinne || 0);
-  formData.append('PersonnelPermanentFemme',  0);
-  formData.append('PersonnelPermanentHomme',  0);
-  formData.append('PersonnelTemporaireFemme', this.step3.pers_temp_femm || 0);
-  formData.append('PersonnelTemporaireHomme', this.step3.pers_temp_homm || 0);
-  formData.append('NbreActionnaireGuinneF', this.step3.NbreActionnaireGuinneF || 0);
-  formData.append('NbreActionnaireGuinneH', this.step3.NbreActionnaireGuinneH || 0);
-  formData.append('NbreActionnaire', this.step3.NbreActionnaireGuinne || 0);
-
-  // step4
-
-  formData.append('TitreDirigeant', this.step4.titreDirigeant);
-  formData.append('NomDirigeant', this.step4.nomDirigeant);
-  formData.append('PrenomDirigeant', this.step4.prenomDirigeant);
-  formData.append('SexeDirigeant', this.step4.sexeDirigeant);
-  formData.append('PaysDirigeant', this.step4.paysDirigeant);
-  formData.append('AnneeNaissanceDirigeant', parseInt(this.step4.anneeNaissanceDirigeant).toString());
-  formData.append('DirigeantProprietaire', this.step4.dirigeantProprietaire);
-  formData.append('TitreProprietaire', this.step4.titreProprietaire);
-  formData.append('NomProprietaire', this.step4.nomProprietaire);
-  formData.append('PrenomProprietaire', this.step4.prenomProprietaire);
-  formData.append('SexeProprietaire', this.step4.sexeProprietaire);
-  formData.append('PaysProprietaire', this.step4.paysProprietaire);
-  formData.append('AnneeNaissanceProprietaire', this.step4.anneeNaissanceProprietaire);
-
-// step5
-
-  formData.append('TitreRepondant', this.step5.titreRepondant);
-  formData.append('NomRepondant', this.step5.nomRepondant);
-  formData.append('FonctionRepondant', this.step5.fonctionRepondant);
-  formData.append('AdresseRepondant', this.step5.adresseRepondant);
-  formData.append('VilleRepondant', this.step5.villeRepondant);
-  formData.append('TelephoneWhatsAppRepondant', this.step5.telephoneWhatsAppRepondant);
-  formData.append('Contacter', this.step5.contacter);
-  formData.append('ExistanceActionnaire', this.step5.existanceActionnaire);
-  formData.append('ExistanceConseilAdministration', this.step5.existanceConseilAdministration);
-
-  // step6
-
-  formData.append('LienGoogleMapMpme', this.step6.lienGoogleMapMpme);
-  formData.append('LatitudeMpme', this.step6.latitudeMpme);
-  formData.append('LongitudeMpme', this.step6.longitudeMpme);
-  formData.append('AltitudeMpme', this.step6.altitudeMpme);
-  formData.append('PrecisionGPSMpme', this.step6.precisionGPSMpme);
-  formData.append('OrigineDonnees', this.step6.origineDonnees);
-
-  formData.append('Direction', this.loggedInUser.direction);
-
-  // Retourne l'objet FormData créé
-  return formData;
-}, 
   afficherMessageSuccess() {
     Swal.fire({
       icon: 'success',
@@ -2332,12 +2435,15 @@ methods: {
       cancelButtonTextColor: '#FF0000',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.$router.push({ path: `/detail-entreprise/${this.id}` })
+        this.$router.push({ path: `/detail-entreprises/${this.id}` })
       } else {
         this.$router.push({ path: `/importatrices`})
 
       }
     });
+  },
+  goToStep(step) {
+    this.currentStep = step;
   },
   async nextStep() {
   //   this.loading = true;
@@ -2437,7 +2543,7 @@ methods: {
         const mpmeData = this.createMpmeFormData();
         console.log("mpmeData1", mpmeData);
         localStorage.setItem('tempMpmeDataUpdateDNCIC', JSON.stringify(mpmeData));
-        localStorage.setItem('CodeIdentifiantDNCIC', this.loggedInUser.id);
+        localStorage.setItem('CodeIdentifiantDNCIC', this.id);
         const success = await this.enregistrerMpmeDonnees(mpmeData);
         console.log("success", success);
         if (success) {
@@ -2471,7 +2577,7 @@ methods: {
   successmsg:successmsg,
   async fetchgetOneMpme() {
     try {
-      const userId = this.loggedInUser.id;
+     ;
       // const userId = 'MPME-1580-2023'
       const response = await axios.get(`/mcipme/${this.id}`);
       this.userData = response.data.data.detail;
@@ -2506,13 +2612,14 @@ methods: {
 
   async enregistrerMpmeDonnees(mpmeData) {
     try {
-      const userId = this.id;
+      const CodeMpme = this.id;
       // const userId = 'MPME-1580-2023'
 
-      const response = await axios.put(`/mcipme/${userId}`, mpmeData, {
+      const response = await axios.put(`/mcipme/${CodeMpme}`, mpmeData, {
         headers: {
           Authorization: `Bearer ${this.loggedInUser.token}`,
-          'Content-Type': 'multipart/form-data', 
+          //  'Content-Type': 'multipart/form-data', 
+             'Content-Type': 'application/json', 
           
         },
       });
@@ -2542,6 +2649,35 @@ methods: {
       }
     }
   },
+
+//   async  enregistrerMpmeDonnees(mpmeData) {
+//     try {
+//         const CodeMpme = this.id;
+//         // const formData = createMpmeFormData(mpmeData); // Créez votre objet FormData ici
+
+//         const response = await fetch(`https://bd-mcipme.org/bd-services/public/api/mcipme/${CodeMpme}`, {
+//             method: 'PUT',
+//             headers: {
+//                 Authorization: `Bearer ${this.loggedInUser.token}`,
+//             },
+//             body: mpmeData,
+//         });
+
+//         if (response.ok) {
+//             console.log("Données MPME mises à jour avec succès !");
+//             return true;
+//         } else {
+//             console.error("Erreur lors de la mise à jour des données MPME :", response.statusText);
+//             const responseData = await response.json();
+//             console.error("Détails de l'erreur :", responseData);
+//             return false;
+//         }
+//     } catch (error) {
+//         console.error("Erreur lors de la mise à jour des données MPME :", error);
+//         return false;
+//     }
+// },
+
 
   initializeYears() {
     const currentYear = new Date().getFullYear();
@@ -2586,10 +2722,15 @@ methods: {
       console.log("response", response);
       if (response.data.status === 'success') {
         console.log("Données MPME mises à jour avec succès !",response.data.data);
-       this.EntrepriseOptions = response.data.data.map((country) => ({
+       const filteredData = response.data.data.filter(stat => {
+          return   stat.IntituleType !== 'UNITE INDUSTRIELLE';
+        });
+        this.EntrepriseOptions = filteredData.map((country) => ({
       label:country. IntituleType,
       value: country.id,
     }));
+    console.log("response",this.EntrepriseOptions);
+
        
       } 
     } catch (error) {
@@ -2899,6 +3040,14 @@ try {
 
     // Maintenant, this.resultError est un objet où les clés sont les noms des champs
     console.log("resultError", this.resultError);
+    for (let key in this.resultError) {
+  if (this.resultError.hasOwnProperty(key)) {
+    // Construire le message d'erreur avec le nom du champ (clé) et son message (valeur)
+    let errorMessage = `${key}: ${this.resultError[key]}`;
+    // Afficher le toast pour chaque erreur
+    this.triggerToast(errorMessage);
+  }
+}
   },
   handleDirigeantProprietaireChange(option) {
     console.log("Données de localité :", option);
@@ -2917,13 +3066,20 @@ try {
     console.log("File input change");
     const file = event.target.files[0];
     console.log("handleFileUploadRccm Selected file:", file);
-    this.step2.FichierRccm = file
+    this.FileRccm = file
   },
    handleFileUploadNif(event) {
     console.log("File input change");
     const file = event.target.files[0];
     console.log("handleFileUploadNif Selected file:", file);
-    this.step2.FichierNif = file
+    this.FileNif = file
+  },
+
+  handleFileUploadCertificat(event) {
+    console.log("File input change");
+    const file = event.target.files[0];
+    console.log("handleFileUploadNif Selected file:", file);
+    this.FileCerti = file
   },
   getTempMpmeData(key) {
     // Votre logique pour récupérer les données du local storage
@@ -2931,6 +3087,7 @@ try {
     return localStorage.getItem(key) || null;
   },
  async getSuivant(mpmeData){
+  console.log('mpmeDatatest',mpmeData , JSON.stringify(mpmeData))
        localStorage.setItem('tempMpmeDataUpdateDNCIC', JSON.stringify(mpmeData));
         localStorage.setItem('CodeIdentifiantDNCIC', this.loggedInUser.id);
 
@@ -2972,17 +3129,16 @@ try {
 
     this.step2.an_creation = userData.AnneeCreation;
     this.step2.an_entre_acti = userData.AnneeEntreeActivite;
-    this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-    this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+    this.step2.code_st_juriq = userData.CodeStatutJuridique;
+    this.step2.autr_st_juriq = userData.AutreStatutJuridique;
     this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
     this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
     this.step2.an_prod_1 = userData.AnneeProduction1;
     this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
     this.step2.types = userData.types;
     this.step2.nbre_rccm = userData.NumeroRccm;
-    this.step2.FichierRccm=userData.FichierRccm
     this.step2.nbre_nif = userData.NumeroNif;
-    this.step2.FichierNif = userData.FichierNif;
+
     this.step2.DateGenerationNif = userData.DateGenerationNif;
     this.step2.NumeroTva = userData.NumeroTva;
 
@@ -3029,11 +3185,17 @@ try {
     this.step6.precisionGPSMpme = userData.PrecisionGPSMpme;
     this.step6.origineDonnees = userData.OrigineDonnees;
 
-   
+    this.direction = userData.Direction
     // ... Lier d'autres propriétés de la même manière
   },
 
   storeUserData(userData) {
+    let types = []
+      if(userData.type_entreprises.length > 0){
+        userData.type_entreprises.map((el)=>{
+          types.push( parseInt(el.TypeEnterpriseId) )
+        })
+      }
     this.step1.region = userData.Region;
     this.step1.commune = userData.Commune;
     this.step1.ville = userData.Ville;
@@ -3051,17 +3213,15 @@ try {
 
     this.step2.an_creation = userData.AnneeCreation;
     this.step2.an_entre_acti = userData.AnneeEntreeActivite;
-    this.step2.code_st_juriq = parseInt(userData.CodeStatutJuridique);
-    this.step2.autr_st_juriq = parseInt(userData.AutreStatutJuridique);
+    this.step2.code_st_juriq = userData.CodeStatutJuridique;
+    this.step2.autr_st_juriq = userData.AutreStatutJuridique;
     this.step2.prin_sect_acti = userData.PrincipalSecteurActivite;
     // this.step2.selectedSousSecteurs = userData.ListeSousSecteurActivite;
     this.step2.an_prod_1 = userData.AnneeProduction1;
     this.step2.PaysSiegeSocial = userData.PaysSiegeSocial;
-    this.step2.types = userData.types;
+    this.step2.types = types;
     this.step2.nbre_rccm = userData.NumeroRccm;
-    this.step2.FichierRccm=userData.FichierRccm?userData.FichierRccm:null;
     this.step2.nbre_nif = userData.NumeroNif;
-    this.step2.FichierNif = userData.FichierNif?userData.FichierNif:null;
     this.step2.DateGenerationNif = userData.DateGenerationNif;
     this.step2.NumeroTva = userData.NumeroTva;
 
@@ -3117,11 +3277,62 @@ try {
     this.step6.origineDonnees = userData.OrigineDonnees;
 
   
-  
+      this.direction = userData.Direction
 
  
     // ... Lier d'autres propriétés de la même manière
   },
+
+  async HamdleFile(){
+ 
+  
+       this.loading = true
+       const formData = new FormData();
+        formData.append("FileNif",  this.FileNif);
+        formData.append("FileRccm",  this.FileRccm);
+        formData.append("FileCerti", this.FileCerti);
+        formData.append( "codeMpme",this.id )
+ 
+       
+         
+        console.log(formData);
+        console.log(
+          this.FileNif,this.id,
+          this.FileRccm, this.FileCerti,
+         
+        );
+         try {
+         const response = await axios.post('/mcipme/pme/attache-files' , formData, {
+             headers: {
+               Authorization: `Bearer ${this.loggedInUser.token}`, 
+              },
+             });
+         console.log('response.login', response.data); 
+         if (response.data.status === "success") { 
+       
+           this.AddFichier = false
+           this.loading = false
+           this.successmsg("Mise a jour",'Vos fichiers ont ete mise a jour  avec succès !')
+
+         } else {
+
+         }
+
+
+
+   } catch (error) {
+   console.log('response.login', error); 
+
+   this.loading = false
+   if (error.response.data.status === "error") {
+   return this.error = error.response.data.message
+
+   } else {
+     this.formatValidationErrors(error.response.data.errors);
+   }
+   }
+      
+         },
 
 
 },
@@ -3330,6 +3541,7 @@ flex-direction: column;
 align-items: center;
 color: #c5c5c5;
 transition: all 500ms ease;
+cursor:pointer;
 }
 
 .stepper-item-counter {
@@ -3341,7 +3553,9 @@ background-color: #fff;
 border-radius: 100%;
 border: 2px solid #c5c5c5;
 position: relative;
+
 }
+
 
 .stepper-item-counter .icon-success {
 position: absolute;
@@ -3566,6 +3780,18 @@ transition: border-color 300ms ease-in-out;
 
   font-size:1.6rem;
 }
+}
+
+.aider {
+  text-align: center;
+  color:#F9D310 ;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+  font-weight: bold;
+}
+
+.aider:hover {
+  color: var(--color-primary);
 }
  
 </style>

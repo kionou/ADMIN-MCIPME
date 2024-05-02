@@ -6,7 +6,7 @@
      <BCard no-body>
        <BCardBody class="border-bottom">
          <div class="d-flex align-items-center justify-content-between">
-           <BCardTitle class="mb-0 ">Liste des demandes en annoter</BCardTitle>
+           <BCardTitle class="mb-0 ">Liste de {{demande.label}}</BCardTitle>
 
            <div class="flex-shrink-0 d-flex">
               <BCol xxl="4" lg="9" class=" me-3">
@@ -32,38 +32,53 @@
              <BThead class="table-light" style="">
                <BTr>
               
-                 <BTh scope="col">Code Demande</BTh>
-                 <BTh scope="col">Type Demande</BTh>
+                 
+                 <BTh scope="col" v-if="demande.icon !== 1">Type Demande</BTh>
                  <BTh scope="col">Nom Prenom</BTh>
                  <BTh scope="col">Contact</BTh>
-                 <BTh scope="col">Produit </BTh>
+                 <BTh scope="col">№ Carte Biometrique</BTh>
+                 <BTh scope="col">Produit Alimentaire </BTh>
                  <BTh scope="col">Statut</BTh>
                  <BTh scope="col">Fichiers</BTh>
                </BTr>
              </BThead>
              <BTbody>
                <BTr v-for="region in paginatedItems" :key="region.id">
-                 <BTd>DNCIC-001 </BTd>
-                 <BTd>Implantation</BTd>
-                 <BTd>Bouare Bouare</BTd>
+                 <BTd v-if="demande.icon !== 1 && region.type_demande">{{ region.type_demande.LibelleTypeDemandes }}</BTd>
+                 <BTd>{{ region.Nom }}  {{ region.Prenoms }}</BTd>
                  <BTd> <h5 class="font-size-14 text-truncate">
-                      <span class="text-dark">+224 60123456</span>
+                      <span class="text-dark">{{ region.Telephone }}</span>
                     </h5>
                     <p class="mb-0">
                       
-                      <span class="fw-medium">exemple@gmail.com</span>
+                      <span class="fw-medium">{{ region.Email }}</span>
                     </p>
                     </BTd>
-                 <BTd>Produit 1</BTd>
+                    <BTd>{{ region.NumeroCarteBiometric }} </BTd>
+                 <BTd>{{ region.ProduitAlimentaire }}</BTd>
                  
                 
                 
                  <BTd>
                    <ul class="list-unstyled hstack gap-1 mb-0">
                     
-                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                       <Blink href="#"  class="btn btn-sm btn-soft-info"> En cours...</Blink>
+                     <li data-bs-toggle="tooltip" v-if="region.traitements.length === 0  " data-bs-placement="top" aria-label="Edit">
+                       <Blink href="#"  @click="confirmDelete(region.id)"  class="btn btn-sm btn-soft-info"> Annote</Blink>
                      </li>
+
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'EN COURS'" data-bs-placement="top" aria-label="Edit">
+                      <Blink href="#" @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info">EN COURS..</Blink>
+
+                     </li>
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'ACCEPTER'" data-bs-placement="top" aria-label="View">
+                       <Blink href="#"    class="btn btn-sm btn-soft-primary"> ACCEPTER</Blink>
+                     </li>
+
+                     <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'REJETER'" data-bs-placement="top" aria-label="Delete">
+                       <Blink href="#"    class="btn btn-sm btn-soft-danger"> REJETER</Blink>
+                     </li>
+                      
+                     
                    
                     
                    </ul>
@@ -77,12 +92,12 @@
                             <template #button-content>
                               <i class="mdi mdi-dots-vertical"></i>
                             </template>
-                            <BDropdownItem  href="#"> <i class="mdi mdi-download-outline"></i> Rccm</BDropdownItem>
-                            <BDropdownItem href="#" > <i class="mdi mdi-download-outline"></i> Biometrique</BDropdownItem>
-                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Certificat</BDropdownItem>
-                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Carte Biometrique </BDropdownItem>
-                            <BDropdownDivider />
-                            <BDropdownItem href="#"><i class="mdi mdi-download-outline"></i> Lettre</BDropdownItem>
+                            <BDropdownItem  :href="region.FileRccm" download > <i class="mdi mdi-download-outline"></i> Rccm</BDropdownItem>
+                            <BDropdownItem :href="region.LettreManuscrite" download > <i class="mdi mdi-download-outline"></i> Lettre</BDropdownItem>
+                            <BDropdownItem :href="region.Certificat" download><i class="mdi mdi-download-outline"></i> Certificat</BDropdownItem>
+                            <BDropdownItem v-if="region.FileCarteBiometric === null" :href="region.FileCarteBiometric" download ><i class="mdi mdi-download-outline"></i>  Biometrique </BDropdownItem>
+                            
+                            
                           </BDropdown>
                      </li>
                     
@@ -106,7 +121,7 @@
  </BRow>
 
 
- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+ <!-- <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
    <div>
  
  <div class="account-pages " style="width:100%;">
@@ -180,9 +195,9 @@
    </BContainer>
  </div>
 </div>
- </BModal>
+ </BModal> -->
 
- <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
+ <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" size="lg" >
    <div>
  
  <div class="account-pages " style="width:100%;">
@@ -195,7 +210,7 @@
              <BRow>
                <BCol cols="12 text-center">
                  <div class="modalheader p-4">
-                   <h5 class="text-primary">Modifier un utilisateur</h5>
+                   <h5 class="text-primary">Observations lors de l'enquête.</h5>
                    
                  </div>
                </BCol>
@@ -215,29 +230,60 @@
              <div class="p-2">
                <BForm class="form-horizontal">
                  <BRow>
-                   <BCol md="12">
+                   <BCol md="6">
                    <div class="mb-3 position-relative">
-                     <label for="userpassword">Code Region</label>
-                   <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                    <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                    <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                     <label for="userpassword">Après l'enquête, acceptez-vous la demande ?</label>
+                     <MazSelect label="Sélectionner une reponse"  v-model="Statut" no-radius  color="info" :options="choix" search />
+                    <small v-if="v$.Statut.$error">{{v$.Statut.$errors[0].$message}}</small> 
+                    <small v-if="resultError['Statut']"> {{ resultError["Statut"] }} </small>
 
                    </div>
-                </BCol>
+                    </BCol>
 
-               
+                    <BCol md="6">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Date d'arrêt</label>
+                   <MazInput v-model="DateSignatureArreter"  no-radius type="date" name="date"  color="info" placeholder="001" />
+                    <small v-if="v$.DateSignatureArreter.$error">{{v$.DateSignatureArreter.$errors[0].$message}}</small> 
+                    <small v-if="resultError['DateSignatureArreter']"> {{ resultError["DateSignatureArreter"] }} </small>
+
+                   </div>
+                    </BCol>
+
                  </BRow>
-                 <BCol md="12">
+
+                 <BRow>
+                  <BCol md="12">
+                    <label for="userpassword">Fichier d'arrêt.</label>
+                      <div class="mb-3 position-relative">
+                        <input type="file" name="file" id="file" 
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                        @change="handleFileChange" />
+                      <!-- <label for="file">
+                        <i class="dripicons-cloud-download"></i>
+                      Joindre une pièce
+                      </label> -->
+                      </div>
+                      <small v-if="resultError['Arreter']"> {{ resultError["Arreter"] }} </small>
+                   </BCol>
+                  </BRow>
+              
+              
+
+                 <BRow>
+                 
+                    <BCol md="12">
                    <div class="mb-3 position-relative">
-                     <label for="userpassword">Nom Region</label>
-                   <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
-                    <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                    <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                     <label for="userpassword">Observations</label>
+                   <MazTextarea v-model="Observations"  no-radius type="date" name="code"  color="info" placeholder="Commentaire" />
+                  
+    
+                    <small v-if="v$.Observations.$error">{{v$.Observations.$errors[0].$message}}</small> 
+                    <small v-if="resultError['Observations']"> {{ resultError["Observations"] }} </small>
 
                    </div>
-                </BCol>
-                 <BRow>
-                  
+                    </BCol>
+              
                  </BRow>
 
                  <BRow class="mb-0">
@@ -247,6 +293,7 @@
                     </div>
                    </BCol>
                  </BRow>
+
                </BForm>
              </div>
            </BCardBody>
@@ -281,58 +328,53 @@ export default {
  Pag,
  MazPhoneNumberInput,
 },
+props:['demande'],
 data() {
  return {
    loading:true,
    AddUser:false,
    UpdateUser1:false,
    ToId:'',
-   regionOptions:[],
+   demandeOptions:[],
    currentPage: 1,
    itemsPerPage: 8,
    totalPageArray: [],
     resultError: {},
    v$: useVuelidate(),
+        Statut:'',
+        Arreter:'',
+        DateSignatureArreter:'',
+        Observations:'',
+        selectedFile:'',
      error:'',
-   step1:{
-          code:'',
-          nom:'',
+     choix: [
+      { label: "Oui", value: "ACCEPTER" },
+      { label: "Non", value: "REJETER" },
+    ],
+       
 
-        },
-
-          step2:{
-           code:'',
-          nom:'',
          
-     },
  }
 },
 validations: {
- step1:{
-   code: {
-   require
-   
- },
- nom: {
+ 
+ Statut: {
    require,
    lgmin: lgmin(2),
 
  },
+ selectedFile: {
 
  },
- step2:{
-   code: {
-   require
-   
- },
- nom: {
+ DateSignatureArreter: {
    require,
+
+
+ },
+ Observations: {
    lgmin: lgmin(2),
 
  },
-
-         
-     },
    
 
  
@@ -342,41 +384,66 @@ computed:{
    return this.$store.getters['auth/myAuthenticatedUser'];
  },
  totalPages() {
- return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+ return Math.ceil(this.demandeOptions.length / this.itemsPerPage);
  },
  paginatedItems() {
    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
    const endIndex = startIndex + this.itemsPerPage;
-   return this.regionOptions.slice(startIndex, endIndex);
+   return this.demandeOptions.slice(startIndex, endIndex);
  },
 },
 async mounted() {
  console.log("uusers",this.loggedInUser);
-await this.fetchRegionOptions()
+ await this.fetchDemande1()
+
+console.log("demande",this.demande);
+
 },
 methods: {
- validatePasswordsMatch() {
-  return this.step1.password === this.step1.confirm_password;
- },
+
  successmsg:successmsg,
- async fetchRegionOptions() {
-    // Renommez la méthode pour refléter qu'elle récupère les options de pays
-    try {
-      await this.$store.dispatch("fetchRegionOptions");
-      const options = JSON.parse(
-        JSON.stringify(this.$store.getters["getRegionOptions2"])
-       
-      ); // Accéder aux options des pays via le getter
-      console.log(options);
-      this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
-      this.loading = false
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des options des pays :",
-        error.message
-      );
+ async fetchDemande1() {
+  try {
+    const response = await axios.get('/demande-autorisations', {
+      headers: { Authorization: `Bearer ${this.loggedInUser.token}`},
+      params:{
+        annotate: this.demande.icon,
+        type: this.demande.id,
+        Direction: this.loggedInUser.direction
+      }
+    });
+
+    const typeDemandes = response.data.data;
+
+    // Filtrer les données en fonction des paramètres annotate et type
+//     const filteredDemandes = typeDemandes.filter(demande => {
+//   return this.demande.id === null ? 
+//     demande.Annote === this.demande.icon :
+//     demande.Annote === this.demande.icon && demande.TypeDemandeId === this.demande.id;
+// });
+
+    this.demandeOptions = typeDemandes; // Mettre à jour demandeOptions avec les données filtrées
+    console.log('demande filtrée', this.demandeOptions);
+
+    this.loading = false;
+  } catch (error) {
+    console.error('Error fetching demande:', error);
+    if (error.response && (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401)) {
+      await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+      this.$router.push("/");
     }
-  },
+  }
+},
+
+handleFileChange(event) {
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+      this.selectedFile = file;
+      console.log('eee',this.selectedFile)
+    },
+
+
  async HamdleAddUser(){
    this.error = '',
    this.resultError= '',
@@ -402,7 +469,7 @@ methods: {
          this.AddUser = false
          this.loading = false
          this.successmsg("Création de region",'Votre region a été crée avec succès !')
-         await this.fetchRegionOptions()
+         await this.fetchDemande1()
 
        } else {
 
@@ -430,14 +497,14 @@ methods: {
        async confirmDelete(id) {
    // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
    const result = await Swal.fire({
-     title: 'Êtes-vous sûr?',
-     text: 'Vous ne pourrez pas revenir en arrière!',
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonText: 'Oui, supprimez-le!',
-     cancelButtonText: 'Non, annulez!',
-     reverseButtons: true
-   });
+  title: 'Êtes-vous sûr de vouloir valider cette demande?',
+  text: 'Une fois validée, le traitement commencera et vous ne pourrez pas revenir en arrière!',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Oui, valider!',
+  cancelButtonText: 'Non, annuler!',
+  reverseButtons: true
+});
 
    // Si l'utilisateur confirme la suppression
    if (result.isConfirmed) {
@@ -446,14 +513,12 @@ methods: {
        },
        async DeleteUser(id) {
         this.loading = true
-       
+       let data = { autorisation:id}
        try {
          // Faites une requête pour supprimer l'élément avec l'ID itemId
-         const response = await axios.delete(`/regions/${id}`, {
+         const response = await axios.post('/demande-autorisations/annoter',data, {
            headers: {
              Authorization: `Bearer ${this.loggedInUser.token}`,
-             
- 
            },
  
  
@@ -461,8 +526,9 @@ methods: {
          console.log('Réponse de suppression:', response);
          if (response.data.status === 'success') {
            this.loading = false
-          this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-          await this.fetchRegionOptions()
+           this.successmsg('Succès!', 'L\'action a été effectuée avec succès.');
+          await this.fetchDemande1()
+          location.reload();
  
          } else {
            console.log('error', response.data)
@@ -481,57 +547,43 @@ methods: {
      },
      async UpdateUser(id) {
        this.UpdateUser1 = true;
-       this.loading = true;
-
-       try {
-           // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-           const user = this.regionOptions.find(user => user.id === id);
-
-           if (user) {
-               // Utilisez les informations récupérées de l'objet user
-               console.log('Informations de l\'utilisateur:', user);
-
-          this.step2.code = user.CodeRegion,
-          this.step2.nom = user.NomRegion,
-          this.ToId = user.CodeRegion
-           } else {
-               console.log('Utilisateur non trouvé avec l\'ID', id);
-           }
-           this.loading = false;
-       } catch (error) {
-           console.error('Erreur lors de la mise à jour du document:', error);
-          
-           this.loading = false;
-       }
+       this.ToId = id
+    
 },
 
  async  submitUpdate(){
  
-   this.v$.step2.$touch();
+   this.v$.$touch();
     console.log("bonjour");
  
     if (this.v$.$errors.length == 0) {
       console.log("bonjour");
-       this.loading = true;
-    
-             const dataCath = {
- 
-         CodeRegion:this.step2.code,
-         NomRegion:this.step2.nom,
-         Statut:1
-           }
-           console.log('dataCath',dataCath);
+         this.loading = true;
+        const formData = new FormData();
+        formData.append("DemandeId",  this.ToId);
+        formData.append("Statut", this.Statut);
+        formData.append("Arreter", this.selectedFile);
+        formData.append("DateSignatureArreter", this.DateSignatureArreter);
+        formData.append("Observations", this.Observations);
+         
+        console.log(formData);
+        console.log(
+          this.ToId,this.Statut,
+          this.selectedFile, 
+          this.DateSignatureArreter, this.Observations 
+        );
  
       try {
-        const response = await axios.put(`regions/${this.ToId}`,dataCath, {
+        const response = await axios.post('demande-autorisations/ajouter-observation',formData, {
           headers: {
            
             Authorization: `Bearer ${this.loggedInUser.token}`,
+            'Content-Type': 'multipart/form-data'
           },
         });
         console.log("Réponse du téléversement :", response);
         if (response.data.status === "success") {
-          await this.fetchRegionOptions()
+          await this.fetchDemande1()
           this.UpdateUser1 = false
          this.loading = false
          this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
@@ -564,7 +616,7 @@ methods: {
        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       
        const endIndex = startIndex + this.itemsPerPage;
-       return  this.regionOptions.slice(startIndex, endIndex);
+       return  this.demandeOptions.slice(startIndex, endIndex);
      },
 
      async formatValidationErrors(errors) {

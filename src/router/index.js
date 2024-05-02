@@ -9,22 +9,24 @@ const router = createRouter({
     {
       path: "/",
       name: "login",
-      component: () => import("../views/account/login.vue"),
+      
+      component: () => import("../views/account/login2.vue"),
     },
     {
       path: "/login",
       name: "login-2",
-      component: () => import("../views/account/login2.vue"),
+      component: () => import("../views/account/login.vue"),
     },
     {
       path: "/reinitialiser",
       name: "reinitialiser",
-      component: () => import("../views/account/recoverpw-sample.vue"),
+      component: () => import("../views/account/recover.vue"),
+
     },
     {
       path: "/reinitialiser2",
       name: "reinitialiser2",
-      component: () => import("../views/account/recover.vue"),
+      component: () => import("../views/account/recoverpw-sample.vue"),
     },
 
     // To finish account
@@ -269,29 +271,29 @@ const router = createRouter({
 
     // To start demandes
     {
-      path: "/demandes",
-      name: "demandes",
+      path: "/types-demandes",
+      name: "types-demandes",
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/type.vue"),
     },
     {
-      path: "/demandes-annoter",
-      name: "demandes-annoter",
+      path: "/demandes",
+      name: "demandes",
       meta: { requiresAuth: true },
       component: () => import("../views/demandes/ministre.vue"),
     },
     {
-      path: "/demandes-implantations",
-      name: "demandes-implantations",
+      path: "/types-entreprises",
+      name: "types-entreprises",
       meta: { requiresAuth: true },
-      component: () => import("../views/demandes/implantation.vue"),
+      component: () => import("../views/entreprise/default.vue"),
     },
-    {
-      path: "/demandes-produits",
-      name: "demandes-produits",
-      meta: { requiresAuth: true },
-      component: () => import("../views/demandes/marche.vue"),
-    },
+    // {
+    //   path: "/demandes-produits",
+    //   name: "demandes-produits",
+    //   meta: { requiresAuth: true },
+    //   component: () => import("../views/demandes/marche.vue"),
+    // },
 
     // To start directions
     {
@@ -309,6 +311,43 @@ const router = createRouter({
       meta: { requiresAuth: true },
       props:true,
       component: () => import("../views/stocks/stockbypme.vue"),
+    },
+
+    {
+      path: "/cartographie",
+      name: "cartographie",
+      meta: { requiresAuth: true },
+      props:true,
+      component: () => import("../views/cartographie/default.vue"),
+    },
+
+
+    {
+      path: "/departements",
+      name: "departements",
+      meta: { requiresAuth: true },
+      component: () => import("../views/departement/default.vue"),
+    },
+    {
+      path: "/roles",
+      name: "roles",
+      meta: { requiresAuth: true },
+      component: () => import("../views/permissions/default.vue"),
+    },
+
+
+    {
+      path: "/test",
+      name: "test",
+      meta: { requiresAuth: true },
+      component: () => import("../views/test.vue"),
+    },
+
+    {
+      path: "/canvas",
+      name: "canvas",
+      meta: { requiresAuth: true },
+      component: () => import("../views/test1.vue"),
     },
   
   ],

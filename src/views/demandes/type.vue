@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999"></Loading>
-    <PageHeader title="Demandes" pageTitle="Tableau de bord" />
+    <PageHeader title="Type de Demande" pageTitle="Paramétrages" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
@@ -387,7 +387,7 @@ export default {
       libelle: {
         require,
         lgmin: lgmin(2),
-        lgmax: lgmax(50),
+
       },
     },
     step2: {
@@ -483,7 +483,7 @@ export default {
 
         let DataUser = {
           LibelleTypeDemandes: this.step1.libelle,
-          Direction: specificElement,
+          Direction: this.loggedInUser.direction,
         };
 
         try {

@@ -480,8 +480,8 @@ const response = await axios.post('/formes' , formes, {
      text: 'Vous ne pourrez pas revenir en arrière!',
      icon: 'warning',
      showCancelButton: true,
-     confirmButtonText: 'Oui, supprimez-le!',
-     cancelButtonText: 'Non, annulez!',
+     confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
      reverseButtons: true
    });
 

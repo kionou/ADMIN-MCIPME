@@ -13,6 +13,27 @@
           </BCol>
       </BRow>
       <BRow>
+                  
+                  <BCol md="6">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Indicateur</label>
+                     <MazSelect label="" disabled v-model="indicateur1" color="info" no-radius :options="IndicateursOptions"  search />
+               
+
+                   </div>
+                </BCol>
+                <BCol md="6">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Indicateur</label>
+                     <MazSelect label="" disabled v-model="indicateur2" color="info" no-radius :options="IndicateursOptions"  search />
+              
+
+                   </div>
+                </BCol>
+
+               
+      </BRow>
+      <!-- <BRow>
         <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
           <BCard no-body>
             <BCardBody>
@@ -22,93 +43,60 @@
             </BCardBody>
           </BCard>
         </BCol>
-      </BRow>
+      </BRow> -->
+      <BRow>
+      <BCol lg="6" >
+        <BCard no-body>
+          <BCardBody>
+            <SecteurDncic  ></SecteurDncic>
+          </BCardBody>
+        </BCard>
+      </BCol>
+
+      <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
+          <BCard no-body>
+            <BCardBody>
+              <BCardTitle class="mb-4">{{ data.title }}</BCardTitle>
+              <apexchart class="apex-charts" :height="data.height" :type="data.type" dir="ltr" :series="data.chart.series" :options="data.chart.chartOptions">
+              </apexchart>
+            </BCardBody>
+          </BCard>
+        </BCol>
+    </BRow>
   
-      <BRow class="justify-content-center">
-        <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
+      <BRow class="justify-content-center" >
+        
+    
+       <div class="parent" v-for="pme in mpme" :key="pme.id">
+     <div class="carde" >
+    <div class="content-box">
+        <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
+        <!-- <p class="carde-content">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+        </p> -->
+        <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
+        <div class="texte">
+          <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
+        <p class="texte-content" v-if="pme.pme">Region: <span>{{ NameRegion(pme.pme.Region) }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Secteur Activité: <span>{{ NameActivite(pme.pme.PrincipalSecteurActivite)  }}</span></p>
+        <p class="texte-content" v-if="pme.pme">Taille: <span>{{ pme.pme.SigleMpme }}</span></p>
+        <p class="texte-content text-truncate" v-if="pme.pme">Email: <span>{{ pme.pme.AdresseEmail }}</span></p>
+        <p class="texte-content" v-if="pme.pme" >Contact: <span> {{ pme.pme.NumeroWhatsApp }}</span></p>
+        <div >
+          <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" >   <span class="see-more">
               <i class="bx bx-show"></i>
             </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
+          </router-link>             
+
         </div>
     </div>
-  </div>
-       </div>
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
-        </div>
+    <div class="date-box" v-if="pme.pme">
+       <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
+       <img v-else :src="pme.pme.profile" alt="">
     </div>
-  </div>
-       </div>
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">Cimenterie Guinee</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-           <img src="../../assets/img/guinea.png" alt="">
-        </div>
-    </div>
-  </div>
-       </div>
+</div>
+</div>
+   </div>  
   
      
         
@@ -133,6 +121,8 @@ import Activity from "@/components/widgets/activity.vue";
 import SellingProduct from "@/components/widgets/selling-product.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
+import Secteur from '@/components/admin/statistique/dncic/secteur.vue'
+import SecteurDncic from '@/components/admin/statistique/dncic/secteur2.vue'
 
 
 /**
@@ -151,6 +141,8 @@ export default {
     SocialSource,
     Activity,
     SellingProduct,
+    Secteur,
+    SecteurDncic
   },
   computed: {
     loggedInUser() {
@@ -166,6 +158,14 @@ export default {
       loading:true,
       DataOptions:[],
       statData: [],
+      datay:[],
+      datax:[],
+      mpme:[],
+      IndicateursOptions:[],
+      SecteurActiviteOptions:[],
+      regionOptions:[],
+      indicateur1:'',
+      indicateur2:'',
       loading:true,
      
       
@@ -183,6 +183,13 @@ export default {
 async  mounted() {
     console.log("index",this.loggedInUser);
     await this.fetchStatics()
+    await this.fetchIndicateursOptions()
+  
+    await this.fetchStaAnnuel()
+    await this.fetchMpme()
+    await this.fetchRegionOptions()
+    await this.fetchSecteurActiviteOptions()
+
   },
   methods: {
   async fetchStatics() {
@@ -194,18 +201,28 @@ async  mounted() {
               },
     
             });
-               console.log(response.data.data);
-                this.DataOptions = response.data.data;
-                this.statData = this.DataOptions.map((stat) => {
-                  const lowercaseTitle = stat.type_entreprise.IntituleType.toLowerCase(); // Mettre le titre en minuscules
-                  const capitalizedTitle = lowercaseTitle.charAt(0).toUpperCase() + lowercaseTitle.slice(1); // Mettre la première lettre en majuscule
-                  return {
-                      icon: "bx bx-copy-alt",
-                      title: capitalizedTitle,
-                      value: stat.nb || 0,
-                  };
-                });
-               console.log(this.statData);
+            console.log(response.data.data); // Assurez-vous que vos données sont correctement récupérées
+
+// Filtrer les types d'entreprises en excluant les "unités industrielles"
+const filteredData = response.data.data.filter(stat => {
+  return stat.type_entreprise.IntituleType.toLowerCase() !== 'unite industrielle';
+});
+
+// Traiter les données filtrées
+this.statData = filteredData.map(stat => {
+  // Convertir le titre en minuscules
+  const lowercaseTitle = stat.type_entreprise.IntituleType.toLowerCase();
+  // Mettre la première lettre en majuscule
+  const capitalizedTitle = lowercaseTitle.charAt(0).toUpperCase() + lowercaseTitle.slice(1);
+  // Retourner un objet avec les informations nécessaires
+  return {
+    icon: "bx bx-copy-alt",
+    title: capitalizedTitle,
+    value: stat.nb || 0,
+  };
+});
+
+console.log(this.statData);
                this.statData.push(
                   {
                       icon: "bx bx-copy-alt",
@@ -227,6 +244,155 @@ async  mounted() {
             
             }
           },
+          async fetchIndicateursOptions() {
+    try {
+              const response = await axios.get('/indicateurs', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+              params:{Direction: this.loggedInUser.direction}
+    
+            });
+               console.log(response.data.data);
+                this.IndicateursOptions = response.data.data.map(sousprefecture => ({
+                label: sousprefecture.Description,
+                value: sousprefecture.id,  }));
+                 this.indicateur1 = response.data.data[0].id
+               
+               
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+            
+            }
+    },
+    async fetchStaAnnuel() {
+        try {
+          const response = await axios.get(`/indicateurs/statistics/${this.indicateur1}`, {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+
+          const dataFromAPI = response.data.data;
+          console.log('eee', dataFromAPI)
+          const categories = dataFromAPI.map(item => item.IntituleZone); // Récupérer les noms des unités industrielles
+            this.datay = categories
+          // Mettre à jour les catégories
+  
+          // Mettre à jour les données du graphique avec les données de l'API
+          this.datax = dataFromAPI.map(item => parseInt(item.nb));
+        } catch (error) {
+          console.error(error);
+          if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('user/clearLoggedInUser');
+            this.$router.push("/"); //a revoir
+          }
+        }
+      },
+
+          async fetchMpme() {
+        try {
+          const response = await axios.get('/liste-entreprise-importatrices-exportatrices', {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+  
+          const dataFromAPI = response.data.data;
+          console.log(dataFromAPI);
+
+          // Triez les données par date de création (supposons que la propriété soit `dateCreation`)
+        const sortedData = dataFromAPI.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        // Prenez les quatre premières entreprises
+        const latestFourCompanies = sortedData.slice(0, 4);
+
+        console.log(latestFourCompanies);
+        this.mpme = latestFourCompanies
+          
+  
+          this.loading = false;
+        } catch (error) {
+          console.error(error);
+        
+        }
+      },
+      async fetchRegionOptions() {
+    // Renommez la méthode pour refléter qu'elle récupère les options de pays
+    try {
+      await this.$store.dispatch("fetchRegionOptions");
+      const options = JSON.parse(
+        JSON.stringify(this.$store.getters["getRegionOptions2"])
+       
+      ); // Accéder aux options des pays via le getter
+      console.log(options);
+      this.regionOptions = options;
+      // Affecter les options à votre propriété sortedCountryOptions
+      this.loading = false
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+    }
+  },
+  async fetchSecteurActiviteOptions() {
+      try {
+        await this.$store.dispatch("fetchSecteurActiviteOptions" , this.loggedInUser); // Action spécifique aux secteurs d'activité
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getsecteurActiviteOptions"])
+        );
+        this.SecteurActiviteOptions = options;
+        console.log('rrrr',options);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des secteurs d'activité:",
+          error.message
+        );
+      }
+    },
+      NameRegion(id){
+          try {
+          
+     
+         const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.NomRegion;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
+ NameActivite(id){
+          try {
+          
+     console.log( this.SecteurActiviteOptions);
+         const selectedRegion = this.SecteurActiviteOptions.find(region => region.value === id );    
+          console.log('selectedRegion',selectedRegion);
+          if (selectedRegion) {
+          return  selectedRegion.label;         
+          } else {
+              console.error('Région non trouvée dans les options.');
+          }
+          } catch (error) {
+            console.error(
+        "Erreur lors de la récupération des options des pays :",
+        error.message
+      );
+          }
+      
+ },
  },
 };
 </script>
@@ -333,8 +499,8 @@ margin-bottom: 10px !important;
 
 .date-box {
   position: absolute;
-  top: -24px;
-  left: 13px;
+  top: -16px;
+  left: 5px;
   height: 60px;
   width: 60px;
   border: 1px solid #fff;

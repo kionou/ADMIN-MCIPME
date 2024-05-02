@@ -1,7 +1,7 @@
 <template>
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Secteurs" pageTitle="Tableau de bord" />
+      <PageHeader title="Secteurs" pageTitle="Paramétrages" />
       <BRow>
         <BCol lg="12">
           <BTabs class="default-tabs" content-class="p-3 text-muted">
@@ -12,7 +12,7 @@
                 </span>
                 <span class="d-none d-sm-inline-block">Secteurs</span>
               </template>
-              <Secteur ></Secteur>
+              <SecteurActivite ></SecteurActivite>
             </BTab>
             <BTab>
               <template v-slot:title>
@@ -33,7 +33,7 @@
   import Layout from "../../layouts/main.vue";
   import PageHeader from "@/components/page-header.vue";
   import Loading from '@/components/others/loading.vue';
-  import Secteur from '../../components/admin/secteurs/secteurs.vue';
+  import SecteurActivite from '../../components/admin/secteurs/secteurs.vue';
   import SousSecteur from '../../components/admin/secteurs/sousSecteur.vue';
   
   
@@ -42,7 +42,7 @@
       Layout,
       PageHeader,
       Loading,
-      Secteur,
+      SecteurActivite,
       SousSecteur
     },
     data() {

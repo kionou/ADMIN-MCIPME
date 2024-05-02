@@ -1,7 +1,7 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" :statistic="statistic" />
+   <PageHeader title="Liste indicateurs" pageTitle="Paramétrages" :statistic="statistic" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
@@ -43,10 +43,12 @@
               </div>
 
               <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
+                <!-- <h5 class="text-truncate font-size-15">
                   <BLink href="#" class="text-dark">{{ indicateur.Description }}</BLink>
-                </h5>
-                <p class="text-muted mb-4"></p>
+                </h5> -->
+                <p class="text-muted mb-4">
+                  {{ indicateur.Description }}
+                </p>
                 <div class="avatar-group">
                  
                  
@@ -94,7 +96,7 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
      <div>
    
    <div class="account-pages " style="width:100%;">
@@ -128,7 +130,7 @@
                  <BForm class="form-horizontal">
                   
                    <BRow >
-                  <BCol md="6">
+                  <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Code</label>
                        <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
@@ -137,19 +139,24 @@
 
                      </div>
                   </BCol>
-                  <BCol md="6">
+                 
+                   </BRow>
+
+                   <BRow >
+                    <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom ou Description</label>
-                     <MazInput v-model="step1.description"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                     <MazTextarea v-model="step1.description"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
                      <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
                       <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
+                 
                    </BRow>
                   
-                
-                <BRow>
+                   
+                <!-- <BRow>
                   <BCol md="">
                      <div class="mb-3 position-relative">
                        <label for="userpassword"> Est-ce qu'un graphe ?</label>
@@ -168,7 +175,7 @@
 
                      </div>
                   </BCol>
-                  </BRow>
+                  </BRow> -->
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -319,8 +326,6 @@ export default {
            
             code:'',
             description:'',
-            IsGraphical:'',
-            TypeGraphicId:'',
   
           },
 
@@ -343,16 +348,7 @@ export default {
      lgmin: lgmin(2),
      
    },
-   IsGraphical: {
-     require,
-    
-     
-   },
-   TypeGraphicId: {
-     require,
   
-     
-   },
    
   
    },
@@ -449,6 +445,7 @@ async mounted() {
            await this.fetchIndicateursOptions()
 
          } else {
+          this.loading = false
 
          }
 
@@ -463,6 +460,8 @@ async mounted() {
 
    } else {
      this.formatValidationErrors(error.response.data.errors);
+     this.loading = false
+
    }
    }
        }else{
@@ -478,8 +477,8 @@ async mounted() {
        text: 'Vous ne pourrez pas revenir en arrière!',
        icon: 'warning',
        showCancelButton: true,
-       confirmButtonText: 'Oui, supprimez-le!',
-       cancelButtonText: 'Non, annulez!',
+       confirmButtonText: 'Oui, supprimer!',
+       cancelButtonText: 'Non, annuler!',
        reverseButtons: true
      });
 
