@@ -38,7 +38,7 @@
             <p class="aider" @click="AddFichier = true">Cliquez ici pour modifier les fichiers de l'entreprise</p>
               <form class="form" >
               <!-- Étape 1 -->
-              <div v-if="currentStep === 2">
+              <div v-if="currentStep === 1">
                   <BCard no-body class="" style=" box-shadow:none !important; border: 1px solid #c9d1d9 !important; border-radius:0 !important">
                   <BCardBody class="pt-0">
               
