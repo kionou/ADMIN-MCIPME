@@ -2473,7 +2473,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2490,7 +2490,7 @@ methods: {
       if (this.v$.$errors.length == 0) {
     this.loading = true;
 
-        const mpmeData = this.createMpmeFormData();
+        const mpmeData = this.createMpmeData();
         this.getSuivant(mpmeData)
       } else {
         console.log("errroor1", this.v$.$errors);
@@ -2595,8 +2595,6 @@ methods: {
         } else {
           this.storeUserData(this.userData);
          console.log("UserData:", this.userData);
-         console.log("UserData:",this.storeUserData(this.userData));
-
         }
       
       // console.log('UserData:', this.userData.ListeSousSecteurActivite);
