@@ -16,7 +16,7 @@
           <ul class="list-unstyled hstack gap-1 mb-0 justify-content-end !important;">
             <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                 <div class="dropdowns">
-          <div class="dropdown-toggles btn btn-sm btn-soft-primary"  @click="toggleDropdown">
+          <div class="dropdown-toggles btn btn-sm btn-primary"  @click="toggleDropdown">
             <i class="mdi mdi-dots-vertical"></i>
           </div>
           <ul class="dropdown-menus" v-show="isDropdownOpen">
@@ -190,6 +190,7 @@
           }
         }
       },
+      
        switchChartType(type) {
       this.chartType = type; // Mettre à jour le type de graphique en fonction du clic de l'utilisateur
       this.isDropdownOpen = false; // Fermer le dropdown après avoir sélectionné une option

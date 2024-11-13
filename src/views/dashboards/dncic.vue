@@ -12,27 +12,6 @@
        
           </BCol>
       </BRow>
-      <BRow>
-                  
-                  <BCol md="6">
-                   <div class="mb-3 position-relative">
-                     <label for="userpassword">Indicateur</label>
-                     <MazSelect label="" disabled v-model="indicateur1" color="info" no-radius :options="IndicateursOptions"  search />
-               
-
-                   </div>
-                </BCol>
-                <BCol md="6">
-                   <div class="mb-3 position-relative">
-                     <label for="userpassword">Indicateur</label>
-                     <MazSelect label="" disabled v-model="indicateur2" color="info" no-radius :options="IndicateursOptions"  search />
-              
-
-                   </div>
-                </BCol>
-
-               
-      </BRow>
       <!-- <BRow>
         <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
           <BCard no-body>
@@ -45,15 +24,13 @@
         </BCol>
       </BRow> -->
       <BRow>
-      <BCol lg="6" >
-        <BCard no-body>
-          <BCardBody>
-            <SecteurDncic  ></SecteurDncic>
-          </BCardBody>
-        </BCard>
+      <BCol lg="12" >
+       
+            <RapportDNCIC></RapportDNCIC>
+        
       </BCol>
 
-      <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
+      <!-- <BCol lg="6" v-for="(data, index) in apexChartData" :key="'apex-chart-' + index">
           <BCard no-body>
             <BCardBody>
               <BCardTitle class="mb-4">{{ data.title }}</BCardTitle>
@@ -61,16 +38,16 @@
               </apexchart>
             </BCardBody>
           </BCard>
-        </BCol>
+        </BCol> -->
     </BRow>
   
-      <BRow class="justify-content-center" >
+      <BRow class="" >
         
     
-       <div class="parent" v-for="pme in mpme" :key="pme.id">
+       <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-3" v-for="pme in mpme" :key="pme.id">
      <div class="carde" >
     <div class="content-box">
-        <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
+        <span class="carde-title" v-if="pme.pme">{{pme.pme.SigleMpme }}</span>
         <!-- <p class="carde-content">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
         </p> -->
@@ -121,8 +98,7 @@ import Activity from "@/components/widgets/activity.vue";
 import SellingProduct from "@/components/widgets/selling-product.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
-import Secteur from '@/components/admin/statistique/dncic/secteur.vue'
-import SecteurDncic from '@/components/admin/statistique/dncic/secteur2.vue'
+import RapportDNCIC from '@/components/admin/statistique/dncic/default.vue'
 
 
 /**
@@ -133,16 +109,13 @@ export default {
     Layout,
     PageHeader,
     Loading ,
-   
     Stat,
     Transaction,
-
     Emailsent,
     SocialSource,
     Activity,
     SellingProduct,
-    Secteur,
-    SecteurDncic
+    RapportDNCIC
   },
   computed: {
     loggedInUser() {

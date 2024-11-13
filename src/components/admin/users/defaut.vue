@@ -1,456 +1,525 @@
 <template >
- <div>
-  <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   
-   <BRow>
-     <BCol lg="12">
-       <BCard no-body>
-         <BCardBody class="border-bottom">
-           <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Utilisateurs(Personnels)</BCardTitle>
-             <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput  v-model="control.name" @input="filterByName"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
-             </BCol>
-               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
-               
-             </div>
-           </div>
-         </BCardBody>
-
-         <BCardBody v-if="paginatedItems.length === 0" class="noresul">
-           <div >
-         <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
-          </div>
-         </BCardBody>
-        
-         
-         
-         <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" style="width: 70px;"></BTh>
-                   <BTh scope="col">Noms</BTh>
-                   <BTh scope="col">Numéro</BTh>
-                   <BTh scope="col">Direction</BTh>
-                   <BTh scope="col">Fonction</BTh>
-                   <BTh scope="col">Actions</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="user in paginatedItems" :key="user.id">
-                   <BTd>
-                     <div v-if="user.profile === null" class="avatar-xs">
-
-                       <span class="avatar-title rounded-circle">
-                         <img src="@/assets/img/guinea.png" alt="" class="w-100 h-100 rounded-circle">
-                       </span>
-                     </div>
-                     <div v-if="user.profile">
-                       <img class="rounded-circle avatar-xs" :src="`${user.profile}`" alt />
-                     </div>
-                   </BTd>
-                   <BTd>
-                     <h5 class="font-size-14 mb-1">
-                       <BLink href="#" class="text-dark">{{ user.Nom }} {{ user.Prenoms }} </BLink>
-                     </h5>
-                     <p class="text-muted mb-0">{{ user.email }}</p>
-                   </BTd>
-                   <BTd>{{ user.Whatsapp }}</BTd>
-                   <BTd>
-                     <div>
-                       
-                       {{  user.Direction }}
-                       
-                     </div>
-                   </BTd>
-                   <BTd > Personnel</BTd>
-                  
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(user.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(user.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                       <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li> -->
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
-           </div>
-           <BRow>
-             <BCol lg="12">
-               <div class="container_pagination">
-                 <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
-               </div>
-             </BCol>
-           </BRow>
-         </BCardBody>
-       </BCard>
-     </BCol>
-   </BRow>
-
-
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un personnel</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="mcimpe" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['nom']"> {{ resultError["nom"] }} </small>
-
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Prenoms</label>
-                     <MazInput v-model="step1.prenom"  no-radius type="text" name="prnom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.prenom.$error">{{v$.step1.prenom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Prenoms']"> {{ resultError["Prenoms"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Adresse Email</label>
-                     <MazInput v-model="step1.email"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
-                      <small v-if="v$.step1.email.$error">{{v$.step1.email.$errors[0].$message}}</small> 
-                      <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
-
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Numéro Téléphone</label>
-                         <MazPhoneNumberInput v-model="step1.phoneNumber" name="numero"  show-code-on-list color="info"  no-radius defaultCountryCode="GN"
-                          :ignored-countries="['AC']" @update="results = $event" :success="results?.isValid" />
-                            <small v-if="v$.step1.phoneNumber.$error">{{ v$.step1.phoneNumber.$errors[0].$message }}</small>
-                           <small v-if="resultError['Whatsapp']"> {{ resultError["Whatsapp"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Mot de passe </label>
-                     <MazInput v-model="step1.password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.password.$error">{{v$.step1.password.$errors[0].$message}}</small> 
-                      <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Confirmer le mot de passe </label>
-                     <MazInput v-model="step1.confirm_password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step1.confirm_password.$error">{{v$.step.confirm_password.$errors[0].$message}}</small>
-                      <small v-if="!validatePasswordsMatch()" >Les mots de passe ne correspondent pas.</small>
-                      <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"] }} </small>
-                     </div>
-                  </BCol>
-                   </BRow>
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="HamdleAddUser()">Valider</button>
+  <div>
+    <Loading v-if="loading" style="z-index: 99999;"></Loading>
+  
+    <BRow>
+      <BCol lg="12">
+        <BCard no-body>
+          <BCardBody class="border-bottom">
+            <div class="d-flex align-items-center justify-content-between">
+              <BCardTitle class="mb-0 ">Liste des Utilisateurs(Personnels)</BCardTitle>
+              <div class="flex-shrink-0 d-flex">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
+                  <MazInput v-model="control.name" @input="filterByName" no-radius type="text" color="info" size="sm"
+                    placeholder="Recherchez ..." />
+                </BCol>
+                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+  
+              </div>
+            </div>
+          </BCardBody>
+  
+          <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+            <div>
+              <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
+            </div>
+          </BCardBody>
+  
+  
+  
+          <BCardBody v-else>
+            <div class="table-responsive">
+              <BTableSimple class="align-middle table-nowrap table-hover">
+                <BThead class="table-light" style="">
+                  <BTr>
+                    <BTh scope="col" style="width: 70px;"></BTh>
+                    <BTh scope="col">Noms</BTh>
+                    <BTh scope="col">Numéro</BTh>
+                    <BTh scope="col">Région</BTh>
+                    <BTh scope="col">Rôle</BTh>
+                    <BTh scope="col">Actions</BTh>
+                  </BTr>
+                </BThead>
+                <BTbody>
+                  <BTr v-for="user in paginatedItems" :key="user.id">
+                    <BTd>
+                      <div v-if="user.profile === null" class="avatar-xs">
+  
+                        <span class="avatar-title rounded-circle">
+                          <img src="@/assets/img/guinea.png" alt="" class="w-100 h-100 rounded-circle">
+                        </span>
                       </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
-
-   <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un personnel</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="mcimpe" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['nom']"> {{ resultError["nom"] }} </small>
-
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Prenoms</label>
-                     <MazInput v-model="step2.prenom"  no-radius type="text" name="prnom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.prenom.$error">{{v$.step2.prenom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Prenoms']"> {{ resultError["Prenoms"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Adresse Email</label>
-                     <MazInput v-model="step2.email"  no-radius type="email"  name="email"  color="info" placeholder="exemple@gmail.com" />
-                      <small v-if="v$.step2.email.$error">{{v$.step2.email.$errors[0].$message}}</small> 
-                      <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
-
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Numéro Téléphone</label>
-                         <MazPhoneNumberInput v-model="step2.phoneNumber" name="numero"  show-code-on-list color="info"  no-radius defaultCountryCode="GN"
-                          :ignored-countries="['AC']" @update="results = $event" :success="results?.isValid" />
-                            <small v-if="v$.step2.phoneNumber.$error">{{ v$.step2.phoneNumber.$errors[0].$message }}</small>
-                           <small v-if="resultError['Whatsapp']"> {{ resultError["Whatsapp"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <!-- <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Mot de passe </label>
-                     <MazInput v-model="step2.password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step2.password.$error">{{v$.step2.password.$errors[0].$message}}</small> 
-                      <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Confirmer le mot de passe </label>
-                     <MazInput v-model="step2.confirm_password"  no-radius type="password"  color="info" placeholder="abc123&@" />
-                      <small v-if="v$.step2.confirm_password.$error">{{v$.step2.confirm_password.$errors[0].$message}}</small>
-                      <small v-if="!validatePasswordsMatch()" >Les mots de passe ne correspondent pas.</small>
-                      <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"] }} </small>
-                     </div>
-                  </BCol>
-                   </BRow> -->
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="submitUpdate()">Modifier</button>
+                      <div v-if="user.profile">
+                        <img class="rounded-circle avatar-xs" :src="`${user.profile}`" alt />
                       </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
- </div>
-     
-    
-
- 
+                    </BTd>
+                    <BTd>
+                      <h5 class="font-size-14 mb-1">
+                        <span class="text-dark">{{ user.Nom }} {{ user.Prenoms }} </span>
+                      </h5>
+                      <p class="text-muted mb-0">{{ user.email }}</p>
+                    </BTd>
+                    <BTd>{{ user.Whatsapp }}</BTd>
+                    <BTd>
+                      <div>
+  
+                        {{ user.region ?? '-' }}
+  
+                      </div>
+                    </BTd>
+                    <BTd> {{ user.roles[0]?.name ?? "-" }}</BTd>
+  
+                    <BTd>
+                      <ul class="list-unstyled hstack gap-1 mb-0">
+  
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                          <Blink href="#" @click="UpdateUser(user.id)" class="btn btn-sm btn-info"><i
+                              class="mdi mdi-pencil-outline"></i></Blink>
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                          <Blink href="#" @click="confirmDelete(user.id)" data-bs-toggle="modal"
+                            class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                        </li>
+                        <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                           <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
+                         </li> -->
+                      </ul>
+                    </BTd>
+                  </BTr>
+                </BTbody>
+              </BTableSimple>
+            </div>
+            <BRow>
+              <BCol lg="12">
+                <div class="container_pagination">
+                  <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
+                </div>
+              </BCol>
+            </BRow>
+          </BCardBody>
+        </BCard>
+      </BCol>
+    </BRow>
+  
+  
+    <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+      <div>
+  
+        <div class="account-pages " style="width:100%;">
+          <BContainer>
+            <BRow>
+              <BCol>
+                <BCard no-body class="" style=" box-shadow:none !important;
+              border: 1px solid #c9d1d9 !important;">
+                  <div class="bg-primary-subtle">
+                    <BRow>
+                      <BCol cols="12 text-center">
+                        <div class="modalheader p-4">
+                          <h5 class="text-primary">Ajouter un personnel</h5>
+  
+                        </div>
+                      </BCol>
+  
+                    </BRow>
+                  </div>
+                  <BCardBody class="pt-0">
+                    <div>
+                      <router-link to="#">
+                        <div class="avatar-md profile-user-wid ">
+                          <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                            <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;" />
+                          </span>
+                        </div>
+                      </router-link>
+                    </div>
+                    <div class="p-2">
+                      <BForm class="form-horizontal">
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Nom</label>
+                              <MazInput v-model="step1.nom" no-radius type="text" name="nom" color="info"
+                                placeholder="mcimpe" />
+                              <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small>
+                              <small v-if="resultError['nom']"> {{ resultError["nom"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Prenoms</label>
+                              <MazInput v-model="step1.prenom" no-radius type="text" name="prnom" color="info"
+                                placeholder="exemple" />
+                              <small v-if="v$.step1.prenom.$error">{{v$.step1.prenom.$errors[0].$message}}</small>
+                              <small v-if="resultError['Prenoms']"> {{ resultError["Prenoms"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Adresse Email</label>
+                              <MazInput v-model="step1.email" no-radius type="email" name="email" color="info"
+                                placeholder="exemple@gmail.com" />
+                              <small v-if="v$.step1.email.$error">{{v$.step1.email.$errors[0].$message}}</small>
+                              <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Numéro Téléphone</label>
+                              <MazPhoneNumberInput v-model="step1.phoneNumber" name="numero" show-code-on-list
+                                color="info" no-radius defaultCountryCode="GN" :ignored-countries="['AC']"
+                                @update="results = $event" :success="results?.isValid" />
+                              <small v-if="v$.step1.phoneNumber.$error">{{ v$.step1.phoneNumber.$errors[0].$message
+                                }}</small>
+                              <small v-if="resultError['Whatsapp']"> {{ resultError["Whatsapp"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Région</label>
+                              <MazSelect v-model="step1.region" no-radius type="text" name="region" color="info"
+                                placeholder="Boke" search :options="regionOptions" />
+                              <small v-if="v$.step1.region.$error">{{v$.step1.region.$errors[0].$message}}</small>
+                              <small v-if="resultError['region']"> {{ resultError["region"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Rôle</label>
+                              <MazSelect v-model="step1.role" no-radius type="text" name="role" color="info"
+                                placeholder="exemple" search :options="rolesOptions" />
+                              <small v-if="v$.step1.role.$error">{{v$.step1.role.$errors[0].$message}}</small>
+                              <small v-if="resultError['role']"> {{ resultError["role"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Mot de passe </label>
+                              <MazInput v-model="step1.password" no-radius type="password" color="info"
+                                placeholder="abc123&@" />
+                              <small v-if="v$.step1.password.$error">{{v$.step1.password.$errors[0].$message}}</small>
+                              <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Confirmer le mot de passe </label>
+                              <MazInput v-model="step1.confirm_password" no-radius type="password" color="info"
+                                placeholder="abc123&@" />
+                              <small
+                                v-if="v$.step1.confirm_password.$error">{{v$.step.confirm_password.$errors[0].$message}}</small>
+                              <small v-if="!validatePasswordsMatch()">Les mots de passe ne correspondent pas.</small>
+                              <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"]
+                                }} </small>
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow class="mb-0">
+                          <BCol cols="12" class="text-end">
+                            <div class="boutton">
+                              <button class="" @click="HamdleAddUser()">Valider</button>
+                            </div>
+                          </BCol>
+                        </BRow>
+                      </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+  
+              </BCol>
+            </BRow>
+          </BContainer>
+        </div>
+      </div>
+    </BModal>
+  
+    <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
+      <div>
+  
+        <div class="account-pages " style="width:100%;">
+          <BContainer>
+            <BRow>
+              <BCol>
+                <BCard no-body class="" style=" box-shadow:none !important;
+              border: 1px solid #c9d1d9 !important;">
+                  <div class="bg-primary-subtle">
+                    <BRow>
+                      <BCol cols="12 text-center">
+                        <div class="modalheader p-4">
+                          <h5 class="text-primary">Modifier un personnel</h5>
+  
+                        </div>
+                      </BCol>
+  
+                    </BRow>
+                  </div>
+                  <BCardBody class="pt-0">
+                    <div>
+                      <router-link to="#">
+                        <div class="avatar-md profile-user-wid ">
+                          <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                            <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;" />
+                          </span>
+                        </div>
+                      </router-link>
+                    </div>
+                    <div class="p-2">
+                      <BForm class="form-horizontal">
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Nom</label>
+                              <MazInput v-model="step2.nom" no-radius type="text" name="nom" color="info"
+                                placeholder="mcimpe" />
+                              <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small>
+                              <small v-if="resultError['nom']"> {{ resultError["nom"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Prenoms</label>
+                              <MazInput v-model="step2.prenom" no-radius type="text" name="prnom" color="info"
+                                placeholder="exemple" />
+                              <small v-if="v$.step2.prenom.$error">{{v$.step2.prenom.$errors[0].$message}}</small>
+                              <small v-if="resultError['Prenoms']"> {{ resultError["Prenoms"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Adresse Email</label>
+                              <MazInput v-model="step2.email" no-radius type="email" name="email" color="info"
+                                placeholder="exemple@gmail.com" />
+                              <small v-if="v$.step2.email.$error">{{v$.step2.email.$errors[0].$message}}</small>
+                              <small v-if="resultError['email']"> {{ resultError["email"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Numéro Téléphone</label>
+                              <MazPhoneNumberInput v-model="step2.phoneNumber" name="numero" show-code-on-list
+                                color="info" no-radius defaultCountryCode="GN" :ignored-countries="['AC']"
+                                @update="results = $event" :success="results?.isValid" />
+                              <small v-if="v$.step2.phoneNumber.$error">{{ v$.step2.phoneNumber.$errors[0].$message
+                                }}</small>
+                              <small v-if="resultError['Whatsapp']"> {{ resultError["Whatsapp"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow>
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Région</label>
+                              <MazSelect v-model="step2.region" no-radius type="text" name="region" color="info"
+                                placeholder="Boke" search :options="regionOptions" />
+                              <small v-if="v$.step2.region.$error">{{v$.step2.region.$errors[0].$message}}</small>
+                              <small v-if="resultError['region']"> {{ resultError["region"] }} </small>
+  
+                            </div>
+                          </BCol>
+  
+                          <BCol md="6">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Rôle</label>
+                              <MazSelect v-model="step2.role" no-radius type="text" name="role" color="info"
+                                placeholder="exemple" search :options="rolesOptions" />
+                              <small v-if="v$.step2.role.$error">{{v$.step2.role.$errors[0].$message}}</small>
+                              <small v-if="resultError['role']"> {{ resultError["role"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <!-- <BRow>
+                       <BCol md="6">
+                       <div class="mb-3 position-relative">
+                         <label for="userpassword">Mot de passe </label>
+                       <MazInput v-model="step2.password"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                        <small v-if="v$.step2.password.$error">{{v$.step2.password.$errors[0].$message}}</small> 
+                        <small v-if="resultError['password']"> {{ resultError["password"] }} </small>
+                       </div>
+                    </BCol>
+  
+                    <BCol md="6">
+                       <div class="mb-3 position-relative">
+                         <label for="userpassword">Confirmer le mot de passe </label>
+                       <MazInput v-model="step2.confirm_password"  no-radius type="password"  color="info" placeholder="abc123&@" />
+                        <small v-if="v$.step2.confirm_password.$error">{{v$.step2.confirm_password.$errors[0].$message}}</small>
+                        <small v-if="!validatePasswordsMatch()" >Les mots de passe ne correspondent pas.</small>
+                        <small v-if="resultError['password_confirmation']"> {{ resultError["password_confirmation"] }} </small>
+                       </div>
+                    </BCol>
+                     </BRow> -->
+                        <BRow class="mb-0">
+                          <BCol cols="12" class="text-end">
+                            <div class="boutton">
+                              <button class="" @click="submitUpdate()">Modifier</button>
+                            </div>
+                          </BCol>
+                        </BRow>
+                      </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+  
+              </BCol>
+            </BRow>
+          </BContainer>
+        </div>
+      </div>
+    </BModal>
+  </div>
 </template>
 <script>
- import Layout from "@/layouts/main.vue";
- import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
- import PageHeader from "@/components/page-header.vue";
- import Pag from '@/components/others/pagination.vue'
+import Layout from "@/layouts/main.vue";
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
+import PageHeader from "@/components/page-header.vue";
+import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
 import useVuelidate from '@vuelidate/core';
-import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
-import {successmsg} from "@/lib/modal.js"
+import { require, lgmin, lgmax, ValidEmail } from '@/functions/rules';
+import { successmsg } from "@/lib/modal.js"
 import Swal from 'sweetalert2'
 
 export default {
-    components: {
+  components: {
     Layout,
     PageHeader,
-    Loading ,
+    Loading,
     Pag,
     MazPhoneNumberInput,
   },
   data() {
     return {
-      loading:true,
+      loading: true,
       control: { name: '', },
-      AddUser:false,
-      UpdateUser1:false,
-      ToId:'',
-      UserOptions:[],
-      data:[],
+      AddUser: false,
+      UpdateUser1: false,
+      ToId: '',
+      UserOptions: [],
+      data: [],
+      regionOptions: [],
+      rolesOptions: [],
       currentPage: 1,
       itemsPerPage: 8,
       totalPageArray: [],
-       resultError: {},
+      resultError: {},
       v$: useVuelidate(),
-        error:'',
-      step1:{
-             nom:'',
-             prenom:'',
-             email: '',
-             phoneNumber:'',
-             password: '',
-             confirm_password:''
-             
-           },
+      error: '',
+      step1: {
+        nom: '',
+        prenom: '',
+        email: '',
+        phoneNumber: '',
+        region: '',
+        role: '',
+        password: '',
+        confirm_password: ''
 
-             step2:{
-             nom:'',
-             prenom:'',
-             email: '',
-             phoneNumber:'',
-            
-        },
+      },
+
+      step2: {
+        nom: '',
+        prenom: '',
+        email: '',
+        phoneNumber: '',
+        region: '',
+        role: '',
+
+      },
     }
   },
   validations: {
-    step1:{
+    step1: {
       nom: {
-      require,
-      lgmin: lgmin(2),
-    
+        require,
+        lgmin: lgmin(2),
+
+      },
+      prenom: {
+        require,
+        lgmin: lgmin(2),
+
+      },
+      email: {
+        require,
+        ValidEmail
+      },
+
+      phoneNumber: {
+        require,
+
+      },
+      role: { require, },
+      region: {},
+      password: {
+        require,
+        lgmin: lgmin(8),
+        lgmax: lgmax(100),
+
+      },
+      confirm_password: {
+        require,
+        lgmin: lgmin(8),
+        lgmax: lgmax(190),
+      },
     },
-    prenom: {
-      require,
-      lgmin: lgmin(2),
-     
-    },
-    email: {
-      require,
-      ValidEmail
-    },
-    phoneNumber: {
-      require,
-      
-    },
-    password: {
-      require,
-      lgmin: lgmin(8),
-      lgmax: lgmax(100),
-      
-    },
-    confirm_password: {
-      require,
-      lgmin: lgmin(8),
-      lgmax: lgmax(190),
-    },
-    },
-    step2:{
+    step2: {
       nom: {
-      require,
-      lgmin: lgmin(2),
-      
+        require,
+        lgmin: lgmin(2),
+
+      },
+      prenom: {
+        require,
+        lgmin: lgmin(2),
+
+      },
+      email: {
+        require,
+        ValidEmail
+      },
+      phoneNumber: {
+        require,
+
+      },
+      role: { require, },
+      region: {},
+
+
     },
-    prenom: {
-      require,
-      lgmin: lgmin(2),
-      
-    },
-    email: {
-      require,
-      ValidEmail
-    },
-    phoneNumber: {
-      require,
-      
-    },
-   
-            
-        },
   },
-  computed:{
+  computed: {
     loggedInUser() {
       return this.$store.getters['auth/myAuthenticatedUser'];
     },
     totalPages() {
-    return Math.ceil(this.UserOptions.length / this.itemsPerPage);
+      return Math.ceil(this.UserOptions.length / this.itemsPerPage);
     },
     paginatedItems() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -458,66 +527,116 @@ export default {
       return this.UserOptions.slice(startIndex, endIndex);
     },
   },
- async mounted() {
-    console.log("uusers",this.loggedInUser);
-   await this.fetchUsers()
+  async mounted() {
+    console.log("uusers", this.loggedInUser);
+    await this.fetchUsers()
+    await this.fetchRegionOptions()
+    await this.fetchRole()
   },
   methods: {
     validatePasswordsMatch() {
-     return this.step1.password === this.step1.confirm_password;
+      return this.step1.password === this.step1.confirm_password;
     },
-    successmsg:successmsg,
+    successmsg: successmsg,
     async fetchUsers() {
-            try {
-              const response = await axios.get('/users', {
-              headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,},});
-
-                
-                 console.log(response.data.data);
-                 // Filtrer les utilisateurs dont Identifiant est null
-                 const filteredUsers = response.data.data.filter(user => user.Identifiant === null);
-                 console.log(filteredUsers); // Affiche la liste des utilisateurs dont Identifiant est null
-                 this.data = filteredUsers
-                 this.UserOptions =  this.data;
-              
-               this.loading = false;
-            
-            } catch (error) {
-              console.error('errorqqqqq',error);
-            
-              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-            }
+      try {
+        const response = await axios.get('/users', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
           },
-    async HamdleAddUser(){
+        });
+
+
+        console.log(response.data.data);
+        // Filtrer les utilisateurs dont Identifiant est null
+        const filteredUsers = response.data.data.filter(user => user.Identifiant === null);
+        console.log(filteredUsers); // Affiche la liste des utilisateurs dont Identifiant est null
+        this.data = filteredUsers
+        this.UserOptions = this.data;
+
+        this.loading = false;
+
+      } catch (error) {
+        console.error('errorqqqqq', error);
+
+        if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+          this.$router.push("/");  //a revoir
+        }
+      }
+    },
+    async fetchRegionOptions() {
+
+      try {
+        await this.$store.dispatch("fetchRegionOptions");
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getRegionOptions2"])
+
+        );
+        console.log(options);
+        options.map((i) => this.regionOptions.push({
+          label: i.NomRegion,
+          value: i.CodeRegion
+        }));
+
+        this.loading = false
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+      }
+    },
+    async fetchRole() {
+      try {
+        const response = await axios.get("/roles", {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+          },
+          params: { Direction: this.loggedInUser.direction },
+        });
+        response.data.data.map(r => this.rolesOptions.push({
+          value: r.id,
+          label: r.name
+        }));
+        this.loading = false;
+      } catch (error) {
+        console.error("errorqqqqq", error);
+
+        if (
+          error.response.data.message === "Vous n'êtes pas autorisé." ||
+          error.response.status === 401
+        ) {
+          await this.$store.dispatch("auth/clearMyAuthenticatedUser");
+          this.$router.push("/"); //a revoir
+        }
+      }
+    },
+
+    async HamdleAddUser() {
       this.error = '',
-      this.resultError= '',
-     this.v$.step1.$touch()
-     if (this.v$.$errors.length == 0 ) {
+        this.resultError = '',
+        this.v$.step1.$touch()
+      if (this.v$.$errors.length == 0) {
         this.loading = true
-          let DataUser = {
-            email:this.step1.email,
-            password:this.step1.password,
-            password_confirmation:this.step1.confirm_password,
-            Nom:this.step1.nom,
-            Prenoms:this.step1.prenom,
-            Whatsapp:this.step1.phoneNumber,
-            CodePartenaire:null,
-            region:null ,
-            Direction:this.loggedInUser.direction 
-          }
-          console.log("eeeee",DataUser);
-          try {
-          const response = await axios.post('/register-new/user' , DataUser);
-          console.log('response.login', response.data); 
-          if (response.data.status === "success") { 
-            this.AddUser = false
-            this.loading = false
-            this.successmsg("Création d'un personnel",'Votre personnel a été crée avec succès !')
-           await this.fetchUsers()
+        let DataUser = {
+          email: this.step1.email,
+          password: this.step1.password,
+          password_confirmation: this.step1.confirm_password,
+          Nom: this.step1.nom,
+          Prenoms: this.step1.prenom,
+          Whatsapp: this.step1.phoneNumber,
+          CodePartenaire: null,
+          region: this.step1.region,
+          Direction: this.loggedInUser.direction
+        }
+        console.log("eeeee", DataUser);
+        try {
+          const response = await axios.post('/register-new/user', DataUser);
+          console.log('response.login', response.data);
+          if (response.data.status === "success") {
+            await this.submitRole(response.data.data.id, this.step1.role, "add")
+
 
           } else {
 
@@ -525,24 +644,75 @@ export default {
 
 
 
-    } catch (error) {
-    console.log('response.login', error); 
+        } catch (error) {
+          console.log('response.login', error);
 
-    this.loading = false
-    if (error.response.data.status === "error") {
-    return this.error = error.response.data.message
+          this.loading = false
+          if (error.response.data.status === "error") {
+            return this.error = error.response.data.message
 
-    } else {
-      this.formatValidationErrors(error.response.data.errors);
-    }
-    }
-        }else{
-        
+          } else {
+            this.formatValidationErrors(error.response.data.errors);
+          }
+        }
+      } else {
+
         console.log('pas bon', this.v$.$errors);
-        
-        } 
+
+      }
+    },
+    async submitRole(a, b, c) {
+      let DataUser = {
+        code: b,
+        user: a
+      }
+      console.log('datass', DataUser)
+
+      try {
+
+        const response = await axios.post('/user/assign-role', DataUser, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
           },
-          async confirmDelete(id) {
+
+
+        });
+        console.log('dataRespinse', DataUser)
+        if (response.data.status === "success") {
+          if (c === "add") {
+            this.AddUser = false
+            this.loading = false
+            this.successmsg("Création d'un personnel", 'Votre personnel a été crée avec succès !')
+            await this.fetchUsers()
+
+          } else {
+            this.UpdateUser1 = false
+            this.loading = false
+            this.successmsg("Modification du personnel", 'Votre personnel a été modifié avec succès !')
+            await this.fetchUsers()
+          }
+
+
+        } else {
+
+        }
+
+
+
+      } catch (error) {
+
+
+        this.loading = false
+        if (error.response.data.status === "error") {
+          return this.error = error.response.data.message
+
+        } else {
+          this.formatValidationErrors(error.response.data.errors);
+        }
+      }
+
+    },
+    async confirmDelete(id) {
       // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
       const result = await Swal.fire({
         title: 'Êtes-vous sûr?',
@@ -550,7 +720,7 @@ export default {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Oui, supprimer!',
-       cancelButtonText: 'Non, annuler!',
+        cancelButtonText: 'Non, annuler!',
         reverseButtons: true
       });
 
@@ -558,155 +728,155 @@ export default {
       if (result.isConfirmed) {
         this.DeleteUser(id);
       }
+    },
+    async DeleteUser(id) {
+      this.loading = true
+
+      try {
+        // Faites une requête pour supprimer l'élément avec l'ID itemId
+        const response = await axios.delete(`/system-user/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+
+
           },
-          async DeleteUser(id) {
-           this.loading = true
-          
-          try {
-            // Faites une requête pour supprimer l'élément avec l'ID itemId
-            const response = await axios.delete(`/system-user/delete/${id}`, {
-              headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-                
-    
-              },
-    
-    
-            });
-            console.log('Réponse de suppression:', response);
-            if (response.data.status === 'success') {
-              this.loading = false
-             this.successmsg('Supprimé!', 'Votre utilisateur a été supprimé.')
-            await this.fetchUsers()
-    
-            } else {
-              console.log('error', response.data)
-              this.loading = false
-            }
-          } catch (error) {
-            console.error('Erreur lors de la suppression:', error);
-          
-            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-            
-          }
-    
-        },
-        async UpdateUser(id) {
-          this.UpdateUser1 = true;
-          this.loading = true;
 
-          try {
-              // Recherchez l'objet correspondant dans le tableau userOptions en fonction de l'ID
-              const user = this.UserOptions.find(user => user.id === id);
 
-              if (user) {
-                  // Utilisez les informations récupérées de l'objet user
-                  console.log('Informations de l\'utilisateur:', user);
+        });
+        console.log('Réponse de suppression:', response);
+        if (response.data.status === 'success') {
+          this.loading = false
+          this.successmsg('Supprimé!', 'Votre utilisateur a été supprimé.')
+          await this.fetchUsers()
 
-             this.step2.email = user.email,
-             this.step2.nom = user.Nom,
-             this.step2.prenom = user.Prenoms,
-             this.step2.phoneNumber = user.Whatsapp,
-             this.ToId = id
-              } else {
-                  console.log('Utilisateur non trouvé avec l\'ID', id);
-              }
-              this.loading = false;
-          } catch (error) {
-              console.error('Erreur lors de la mise à jour du document:', error);
-             
-              this.loading = false;
-          }
-},
-
-    async  submitUpdate(){
-    
-      this.v$.step2.$touch();
-       console.log("bonjour");
-    
-       if (this.v$.$errors.length == 0) {
-         console.log("bonjour");
-          this.loading = true;
-       
-                const dataCath = {
-    
-            email:this.step2.email,
-            Nom:this.step2.nom,
-            Prenoms:this.step2.prenom,
-            Whatsapp:this.step2.phoneNumber,
-            CodePartenaire:null,
-            region:null ,
-            Direction:this.loggedInUser.direction ,
-            user:this.ToId
-              }
-      console.log('dataCath',dataCath);
-    
-         try {
-           const response = await axios.put(`/system-user/modify`,dataCath, {
-             headers: {
-              
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-           });
-           console.log("Réponse du téléversement :", response);
-           if (response.data.status === "success") {
-            
-             this.UpdateUser1 = false
-            this.loading = false
-            this.successmsg("Modification du personnel",'Votre personnel a été modifié avec succès !')
-            await this.fetchUsers()
-             
-           } 
-         } catch (error) {
-           console.error("Erreur lors du téléversement :", error);
-          
-           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-        else{
-          this.formatValidationErrors(error.response.data.errors);
+        } else {
+          console.log('error', response.data)
+          this.loading = false
         }
-         }
-       } else {
-         console.log("cest pas bon ", this.v$.$errors);
-       }
-      },
-          updateCurrentPage(pageNumber) {
-          this.currentPage = pageNumber;
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+
+        if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+          this.$router.push("/");  //a revoir
+        }
+
+      }
+
+    },
+    async UpdateUser(id) {
+      this.UpdateUser1 = true;
+      this.loading = true;
+
+      try {
+        // Recherchez l'objet correspondant dans le tableau userOptions en fonction de l'ID
+        const user = this.UserOptions.find(user => user.id === id);
+
+        if (user) {
+          // Utilisez les informations récupérées de l'objet user
+          console.log('Informations de l\'utilisateur:', user);
+
+          this.step2.email = user.email,
+            this.step2.nom = user.Nom,
+            this.step2.prenom = user.Prenoms,
+            this.step2.phoneNumber = user.Whatsapp,
+            this.step2.region = user.region,
+            this.step2.role = user.roles[0].id
+            this.ToId = id
+        } else {
+          console.log('Utilisateur non trouvé avec l\'ID', id);
+        }
+        this.loading = false;
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du document:', error);
+
+        this.loading = false;
+      }
+    },
+
+    async submitUpdate() {
+
+      this.v$.step2.$touch();
+      console.log("bonjour");
+
+      if (this.v$.$errors.length == 0) {
+        console.log("bonjour");
+        this.loading = true;
+
+        const dataCath = {
+
+          email: this.step2.email,
+          Nom: this.step2.nom,
+          Prenoms: this.step2.prenom,
+          Whatsapp: this.step2.phoneNumber,
+          CodePartenaire: null,
+          region: this.step2.region,
+          Direction: this.loggedInUser.direction,
+          user: this.ToId
+        }
+        console.log('dataCath', dataCath);
+
+        try {
+          const response = await axios.put(`/system-user/modify`, dataCath, {
+            headers: {
+
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
           });
-        },
-        filterByName() {
-this.currentPage = 1;
-if (this.control.name !== null) {
-   const tt = this.control.name;
-  const  searchValue = tt.toLowerCase()
-  this.UserOptions =this.data.filter(user => {
-    const Nom = user.Nom || '';
-    const Prenoms = user.Prenoms || '';
-    return Nom.toLowerCase().includes(searchValue) || Prenoms.toLowerCase().includes(searchValue);
-  });
+          console.log("Réponse du téléversement :", response);
+          if (response.data.status === "success") {
+            await this.submitRole(response.data.data.id, this.step2.role, "update")
 
-} else {
-this.UserOptions = [...this.data];
- 
-}
 
-},
+          }
+        } catch (error) {
+          console.error("Erreur lors du téléversement :", error);
+
+          if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          else {
+            this.formatValidationErrors(error.response.data.errors);
+          }
+        }
+      } else {
+        console.log("cest pas bon ", this.v$.$errors);
+      }
+    },
+    updateCurrentPage(pageNumber) {
+      this.currentPage = pageNumber;
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+      });
+    },
+    filterByName() {
+      this.currentPage = 1;
+      if (this.control.name !== null) {
+        const tt = this.control.name;
+        const searchValue = tt.toLowerCase()
+        this.UserOptions = this.data.filter(user => {
+          const Nom = user.Nom || '';
+          const Email = user.email || '';
+          const Prenoms = user.Prenoms || '';
+          return Nom.toLowerCase().includes(searchValue) ||   Email.toLowerCase().includes(searchValue) || Prenoms.toLowerCase().includes(searchValue);
+        });
+
+      } else {
+        this.UserOptions = [...this.data];
+
+      }
+
+    },
     updatePaginatedItems() {
-          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-         
-          const endIndex = startIndex + this.itemsPerPage;
-          return  this.UserOptions.slice(startIndex, endIndex);
-        },
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
-        async formatValidationErrors(errors) {
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.UserOptions.slice(startIndex, endIndex);
+    },
+
+    async formatValidationErrors(errors) {
       const formattedErrors = {};
 
       for (const field in errors) {
@@ -728,5 +898,5 @@ this.UserOptions = [...this.data];
 }
 </script>
 <style lang="" scoped>
-    
+
 </style>

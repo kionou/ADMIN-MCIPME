@@ -10,7 +10,7 @@
               <BCardTitle class="mb-0">Liste des types de demandes</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class="me-3">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                   <MazInput
                     v-model="searchQuery"
                     no-radius
@@ -37,46 +37,30 @@
           </BCardBody>
 
           <BCardBody v-else>
-            <div
-              class="py-2 d-flex  align-items-center flex-wrap"
-            >
-              <div
-                class=""
-                style="
-                  width: 400px;
-                  border: 1px solid #dedfe1;
-                  margin: 0 10px 10px 0;
-                  padding: 8px;
-                "
-                v-for="(value, key) in filteredList"
-                :key="key"
-              >
-                <BRow class="align-items-center">
-                  <BCol xl="9">
-                    <div class="text-center p-2 border-end">
-                      <div class="p-2 text-center text-xl-start">
-                        <BRow>
-                          <BCol cols="12">
-                            <div>
-                              <p class="text-muted mb-2 text-truncate">
-                                Libellé :
-                              </p>
-                              <h5>
-                                {{ value.LibelleTypeDemandes }}
-                              </h5>
-                            </div>
-                          </BCol>
-                        </BRow>
-                      </div>
-                    </div>
-                  </BCol>
+            <div class="table-responsive" >
+           <BTableSimple class="align-middle table-nowrap table-hover">
+             <BThead class="table-light" style="">
+               <BTr>
+                 <BTh scope="col">N°</BTh>
+                 <BTh scope="col">Libellé</BTh>
+                 
+                 <BTh scope="col">Actions</BTh>
+               </BTr>
+             </BThead>
+             <BTbody>
+               <BTr v-for="(d , index) in filteredList" :key="d.id">
+                <BTd>{{ index + 1 }} </BTd>
 
-                  <BCol xl="3">
-                    <h5 class="text-truncate pb-1">
-                      <ul
-                        class="list-unstyled hstack gap-1 mb-0 justify-content-center"
-                      >
-                        <li
+                 <BTd>{{ d.LibelleTypeDemandes ?? '-' }} </BTd>
+                
+               
+                 
+                
+                
+                 <BTd>
+                   <ul class="list-unstyled hstack gap-1 mb-0">
+                    
+                    <li
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           aria-label="Edit"
@@ -85,9 +69,9 @@
                             href="#"
                             @click="
                               dataUpdate();
-                              recup(value.id);
+                              recup(d.id);
                             "
-                            class="btn btn-sm btn-soft-info"
+                            class="btn btn-sm btn-info"
                             ><i class="mdi mdi-pencil-outline"></i
                           ></Blink>
                         </li>
@@ -98,19 +82,24 @@
                         >
                           <Blink
                             href="#"
-                            @click="confirmDelete(value.id)"
+                            @click="confirmDelete(d.id)"
                             data-bs-toggle="modal"
-                            class="btn btn-sm btn-soft-danger"
+                             class="btn btn-sm btn-danger"
                             ><i class="mdi mdi-delete-outline"></i
                           ></Blink>
                         </li>
-                      </ul>
-                    </h5>
-                  </BCol>
-                </BRow>
-              </div>
-            </div>
-            <BRow>
+                      
+                     
+                   
+                    
+                   </ul>
+                 </BTd>
+               
+               </BTr>
+             </BTbody>
+           </BTableSimple>
+         </div>
+            <!-- <BRow>
               <BCol lg="12">
                 <div class="container_pagination">
                   <Pag
@@ -120,7 +109,7 @@
                   />
                 </div>
               </BCol>
-            </BRow>
+            </BRow> -->
           </BCardBody>
         </BCard>
       </BCol>
@@ -362,7 +351,6 @@ export default {
       searchQuery: "",
       UpdateUser1: false,
       ToId: "",
-      regionOptions: [],
       currentPage: 1,
       itemsPerPage: 8,
       typeOptions: [],
@@ -441,7 +429,7 @@ export default {
         this.typeOptions = response.data.data;
         this.loading = false;
       } catch (error) {
-        console.error("errorqqqqq", error);
+       
 
         if (
           error.response.data.message === "Vous n'êtes pas autorisé." ||

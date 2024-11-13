@@ -9,7 +9,7 @@
            <BCardTitle class="mb-0 ">Liste de {{demande.label}}</BCardTitle>
 
            <div class="flex-shrink-0 d-flex">
-              <BCol xxl="4" lg="9" class=" me-3">
+              <BCol xxl="12" xl="12" lg="12" md="12" sm="12" class="me-1">
              <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
              <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
@@ -63,19 +63,19 @@
                    <ul class="list-unstyled hstack gap-1 mb-0">
                     
                      <li data-bs-toggle="tooltip" v-if="region.traitements.length === 0  " data-bs-placement="top" aria-label="Edit">
-                       <Blink href="#"  @click="confirmDelete(region.id)"  class="btn btn-sm btn-soft-info"> Annote</Blink>
+                       <Blink href="#"  @click="confirmDelete(region.id)"  class="btn btn-sm btn-info"> Annote</Blink>
                      </li>
 
                      <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'EN COURS'" data-bs-placement="top" aria-label="Edit">
-                      <Blink href="#" @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info">EN COURS..</Blink>
+                      <Blink href="#" @click="UpdateUser(region.id)" class="btn btn-sm btn-info">EN COURS..</Blink>
 
                      </li>
                      <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'ACCEPTER'" data-bs-placement="top" aria-label="View">
-                       <Blink href="#"    class="btn btn-sm btn-soft-primary"> ACCEPTER</Blink>
+                       <Blink href="#"    class="btn btn-sm btn-primary"> ACCEPTER</Blink>
                      </li>
 
                      <li data-bs-toggle="tooltip"  v-else-if="region.traitements[0].Statut === 'REJETER'" data-bs-placement="top" aria-label="Delete">
-                       <Blink href="#"    class="btn btn-sm btn-soft-danger"> REJETER</Blink>
+                       <Blink href="#"    class="btn btn-sm btn-danger"> REJETER</Blink>
                      </li>
                       
                      
@@ -87,7 +87,7 @@
                    <ul class="list-unstyled hstack gap-1 mb-0">
                     
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                      <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                      <BDropdown toggle-class="btn btn-sm btn-primary" 
                             variant="white" dropright top>
                             <template #button-content>
                               <i class="mdi mdi-dots-vertical"></i>

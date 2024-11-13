@@ -2,7 +2,7 @@
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
    <PageHeader title="Detail entreprise " pageTitle="Entreprise" />
-   <div class="container-xxl flex-grow-1 ">
+   <div class=" flex-grow-1 ">
             <!-- Header -->
             <div class="row">
                 <div class="col-12">
@@ -93,7 +93,7 @@
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                 data-bs-target="#navs-pills-top-messages11" aria-controls="navs-pills-top-messages1"
                                 aria-selected="false" @click="reloadChild">
-                                Positon
+                                Position
                             </button>
                         </li>
 
@@ -273,12 +273,12 @@
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{{ data.PaysSiegeSocial }}</dd>
                                                         </div>
                                                         <div class="px-4 py-3 bg-gray-50 sm:grid  grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Numero Nif</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">NIF en cours de validité </dt>
                                                             <dd class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2"> {{ data.NumeroNif }} </dd>
                                                         </div>
                                                         <div
                                                             class="px-4 py-3 bg-white sm:grid grid align-items-center sm:grid-cols-3 sm:gap-6 sm:px-6">
-                                                            <dt class="text-sm font-medium text-gray-500">Date Generation du Numero Nif</dt>
+                                                            <dt class="text-sm font-medium text-gray-500">Date Generation du Numero NifNIF en cours de validité </dt>
                                                             <dd
                                                                 class="mt-1 font-semibold text-gray-900 sm:mt-0 sm:col-span-2">  {{ data.DateGenerationNif }}</dd>
                                                         </div>
@@ -357,7 +357,7 @@
 
                         </div>
 
-                        <div class=" tab-pane fade " id="navs-pills-top-home11" role="tabpanel">
+        <div class=" tab-pane fade " id="navs-pills-top-home11" role="tabpanel">
 
 <div class="row ttb">
     <div class=" card col-xl-6 col-lg-6 col-md-6 py-2 ttb1">
@@ -630,18 +630,18 @@
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link :to="{ name: 'detail-distributrice', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                         <router-link :to="{ name: 'detail-distributrice', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
                        </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <Blink href="#" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" menu-class="dropdown-menu-end"
+                        <BDropdown toggle-class="btn btn-sm btn-primary" menu-class="dropdown-menu-end"
                               variant="white" right>
                               <template #button-content>
                                 <i class="mdi mdi-dots-vertical"></i>
@@ -929,7 +929,7 @@ height: auto;
   .noresul {
   border: 1px solid #F9D310;
   max-width: 1140px;
-  margin: 0 auto;
+  margin: 20px auto;
   display: flex;
   align-items: center;
   justify-content: center;

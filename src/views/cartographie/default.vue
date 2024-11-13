@@ -1,8 +1,8 @@
 <template>
-  <Layout>
+  <Layout  >
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
     <!-- <PageHeader title="Cartographie" pageTitle="Tableau de bord"  :statistic="statistic"/> -->
-    <div class="cartographie">
+    <div class="cartographie" >
         <section>
           <iframe src="https://bd-mcipme.org/enterprise/App/Vues/master.html#/map" title="collect" style="width: 100%; height: 100vh; border: none;"></iframe>
          </section>
@@ -35,6 +35,7 @@ export default {
       return this.$store.getters['auth/myAuthenticatedUser'];
     },
    
+   
   },
   async mounted() {
     console.log("uusers", this.loggedInUser);
@@ -46,11 +47,43 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style  lang="css" scoped>
   .cartographie{
-
-     /* border:1px solid red; */
+   
  }
+
+ /* a detruir */
+ .content {
+  padding:0px !important;
+ }
+  .panel-body , .col-lg-12{
+  padding:0px !important;
+ }
+
+ /* a mettre */
+
+ .page-container {
+    width: 100%;
+    border: 1px solid red;
+    padding: 10px;
+    height: 100%;
+}
+
+.panel-body{
+
+height: 60vh;
+margin-top: 8px;
+display: flex;
+flex-direction: column;
+}
+
+#map{
+
+height: 510px;
+}
+
+
+
 </style>
 
 

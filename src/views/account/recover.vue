@@ -65,7 +65,7 @@
 
        
         <div class="boutton">
-            <button class="" style="padding: 10px 30px;" @click="$router.push({ path: '/login' })" >OK</button>
+            <button class="" style="padding: 10px 30px;" @click="$router.push({ path: '/' })" >OK</button>
             </div>
       </v-card-actions>
     </v-sheet>

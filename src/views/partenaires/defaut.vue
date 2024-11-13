@@ -11,10 +11,12 @@
               <BCardTitle class="mb-0 flex-grow-1">Liste des Partenaires</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <div @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
-                <BCol xxl="4" lg="6">
-                <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
+                  <MazInput v-model="searchQuery" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+
               </BCol>
+              <div @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary ">Ajouter</div>
+
               </div>
             </div>
           </BCardBody>
@@ -51,13 +53,13 @@
       <ul class="list-unstyled hstack gap-1 mb-0">
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <div @click="$router.push({ path: `/partenaires/update/${partenaire.CodePartenaire}` })" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
+                         <div @click="$router.push({ path: `/partenaires/update/${partenaire.CodePartenaire}` })" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <div @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                         <div @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                        <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
+                         <router-link to="/jobs/job-details" class="btn btn-sm btn-primary"><i class="mdi mdi-lock-outline"></i></router-link>
                        </li> -->
                      </ul>
                    </div>
@@ -122,11 +124,9 @@ loggedInUser() {
 
 data() {
     return {
-        control: {
-            name: '',
-
-        },
+      searchQuery:'',
          partenairesOptions:[],
+         data:[],
          loading:true,
          data:'',
          currentPage: 1,
@@ -165,7 +165,8 @@ methods: {
     
             });
                console.log(response.data.data);
-               this.partenairesOptions = response.data.data.data;
+               this.data =  response.data.data.data
+               this.partenairesOptions = this.data;
                this.UserOptionsPersonnels = this.partenairesOptions.length
                this.loading = false;
             
@@ -233,17 +234,18 @@ async confirmDelete(id) {
 
   filterByName() {
 this.currentPage = 1;
-if (this.control.name !== null) {
-   const tt = this.control.name;
+if (this.searchQuery !== null) {
+   const tt = this.searchQuery;
   const  searchValue = tt.toLowerCase()
-  this.partenairesOptions = [...this.$store.getters['getPartenaires']].filter(partenaire => {
+  this.partenairesOptions = this.data.filter(partenaire => {
     const codePartenaire = partenaire.CodePartenaire || '';
     const nomPartenaire = partenaire.NomPartenaire || '';
     return codePartenaire.toLowerCase().includes(searchValue) || nomPartenaire.toLowerCase().includes(searchValue);
   });
 
 } else {
-this.partenairesOptions = [...this.$store.getters['getPartenaires']];
+this.currentPage = 1;
+this.partenairesOptions = [... this.data];
  
 }
 

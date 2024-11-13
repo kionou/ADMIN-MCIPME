@@ -38,7 +38,7 @@
                </div>
                  </router-link>
                  <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
-                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-info"><i class="mdi mdi-plus-box-outline"></i></div>
                 </li>
                </div>
                <div class="p-2">
@@ -117,7 +117,7 @@
                         </BCol>
                             <BCol md="1">
                             <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
-                             <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                             <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
                             </li>
                             </BCol>
                            

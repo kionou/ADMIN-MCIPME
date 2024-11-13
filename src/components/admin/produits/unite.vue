@@ -12,7 +12,7 @@
             
 
              <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
@@ -54,10 +54,10 @@
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
+                         <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                         <div @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                       
                      </ul>
@@ -109,7 +109,7 @@
                </div>
                  </router-link>
                  <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 92px;">
-                    <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-soft-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                    <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-info"><i class="mdi mdi-plus-box-outline"></i></div>
                   </li>
                </div>
                <div class="p-2">
@@ -145,7 +145,7 @@
 
                      </div>
                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
-                         <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                         <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                   </BCol>
                  

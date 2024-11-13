@@ -1,16 +1,16 @@
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999"></Loading>
-    <PageHeader title="Departements" pageTitle="Paramétrages" />
+    <PageHeader title="divisions" pageTitle="Paramétrages" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
           <BCardBody class="border-bottom">
             <div class="d-flex align-items-center justify-content-between">
-              <BCardTitle class="mb-0">Liste des departements</BCardTitle>
+              <BCardTitle class="mb-0">Liste des divisions</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class="me-3">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                   <MazInput
                     v-model="searchQuery"
                     no-radius
@@ -30,7 +30,7 @@
           <BCardBody v-if="typeOptions.length === 0" class="noresul">
             <div>
               <span>
-                Vous n'avez pas encore de departement, vous pouvez
+                Vous n'avez pas encore de division, vous pouvez
                 également en ajouter un !!
               </span>
             </div>
@@ -106,7 +106,7 @@
                     <BRow>
                       <BCol cols="12 text-center">
                         <div class="modalheader p-4">
-                          <h5 class="text-primary">Ajouter un departement</h5>
+                          <h5 class="text-primary">Ajouter une division</h5>
                         </div>
                       </BCol>
                     </BRow>
@@ -134,7 +134,7 @@
                           <BCol md="12">
                             <div class="mb-3 position-relative">
                               <label for="userpassword"
-                                >Nom du departement</label
+                                >Nom de la division</label
                               >
                               <MazInput
                                 v-model="step1.nom"
@@ -292,7 +292,7 @@ export default {
     await this.fetchRegionOptions();
   },
   methods: {
-    async fetchDepartement() {
+    async fetchdivision() {
       try {
         const response = await axios.get("/departments", {
           headers: {
@@ -362,10 +362,10 @@ export default {
             this.AddUser = false;
             this.loading = false;
             this.successmsg(
-              "Création de departement",
-              "Votre departement a été créee avec succès !"
+              "Création de division",
+              "Votre division a été créee avec succès !"
             );
-            await this.fetchDepartement();
+            await this.fetchdivision();
             this.clean();
           } else {
           }
@@ -531,7 +531,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchDepartement();
+    this.fetchdivision();
   },
 };
 </script>

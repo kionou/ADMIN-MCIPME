@@ -626,7 +626,7 @@
                       <div class="row mb-3 mt-3 content-group">
             <div class="col">
               <div class="input-groupe">
-                <label for="NumeroNif">Numero Nif</label>
+                <label for="NumeroNif">NIF en cours de validité </label>
                 <input
                   type="text"
                   name="NumeroNif"
@@ -648,7 +648,7 @@
           
             <div class="col">
               <div class="input-groupe">
-                <label for="DateGenerationNif">Date Generation du Numero Nif </label>
+                <label for="DateGenerationNif">Date Generation du NIF en cours de validité  </label>
                 <input
                   type="date"
                   name="DateGenerationNif"
@@ -1636,7 +1636,7 @@
                 <label for="LatitudeMpme">Latitude Entreprise</label>
                 <input
                   v-model="step6.latitudeMpme"
-                  type="number"
+                  type="text"
                   name="LatitudeMpme"
                   id="LatitudeMpme"
                   placeholder="11.3333"
@@ -1657,7 +1657,7 @@
                 <label for="LongitudeMpme">Longitude Entreprise</label>
                 <input
                   v-model="step6.longitudeMpme"
-                  type="number"
+                  type="text"
                   name="LongitudeMpme"
                   id="LongitudeMpme"
                   placeholder="-12.333"
@@ -2094,7 +2094,7 @@ validations: {
     nom: { require },
     quartier: { require },
     rue: {},
-    boite_postale: { ValidNumeri },
+    boite_postale: {  },
     tel_what: { require },
     tel_second: {},
     email: { require },

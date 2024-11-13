@@ -868,9 +868,22 @@
                     :options="SecteurActiviteOptions"
                     :class="{ 'error-border': resultError['PrincipalSecteurActivite'] }"
                     @input="resultError['PrincipalSecteurActivite'] = false"
-                   
+                    v-slot="{ option }"
                     search
-                  />
+                  >
+                  <div
+                      class="flex items-center"
+                      style="
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                        width: 100%;
+                        gap: 1rem;
+                      "
+                      @click="handleOptionSousSecteur(option)"
+                    >
+                      {{ option.label }}
+                    </div>
+                  </MazSelect>
                 </div>
                 <small v-if="v$.step3.prin_sect_acti.$error">{{
                   v$.step3.prin_sect_acti.$errors[0].$message
@@ -892,7 +905,7 @@
                     multiple
                     :class="{ 'error-border': resultError['ListeSousSecteurActivite'] }"
                     @input="resultError['ListeSousSecteurActivite'] = false"
-                   
+                    :disabled="isSousSecteurDisabled"
                     search
                   />
                   
@@ -987,7 +1000,7 @@
                         <div class="row mb-3 mt-3 content-group">
               <div class="col">
                 <div class="input-groupe">
-                  <label for="NumeroNif">Numero Nif</label>
+                  <label for="NumeroNif">NIF en cours de validité </label>
                   <input
                     type="text"
                     name="NumeroNif"
@@ -1009,7 +1022,7 @@
             
               <div class="col">
                 <div class="input-groupe">
-                  <label for="DateGenerationNif">Date Generation du Numero Nif </label>
+                  <label for="DateGenerationNif">Date Generation du NIF en cours de validité  </label>
                   <input
                     type="date"
                     name="DateGenerationNif"
@@ -1620,7 +1633,7 @@
                   <label for="LatitudeMpme">Latitude Entreprise</label>
                   <input
                     v-model="step6.latitudeMpme"
-                    type="number"
+                    type="text"
                     name="LatitudeMpme"
                     id="LatitudeMpme"
                     placeholder="11.3333"
@@ -1641,7 +1654,7 @@
                   <label for="LongitudeMpme">Longitude Entreprise</label>
                   <input
                     v-model="step6.longitudeMpme"
-                    type="number"
+                    type="text"
                     name="LongitudeMpme"
                     id="LongitudeMpme"
                     placeholder="-12.333"
@@ -1791,7 +1804,7 @@
                   @input="resultError['FileNif'] = false"
                 />
               </div>
-            </div>
+                     </div>
                   </BCol>
                 </BRow>
 
@@ -1909,6 +1922,9 @@ export default {
     }, 
     isQuartierDisabled() {
       return !this.step1.commune;
+    },
+    isSousSecteurDisabled() {
+      return !this.step3.prin_sect_acti;
     },
    
  },
@@ -2071,7 +2087,7 @@ export default {
       nom: { require },
       quartier: { require },
       rue: {},
-      boite_postale: { ValidNumeri },
+      boite_postale: {  },
       tel_what: { require },
       tel_second: {},
       email: { require },
@@ -3045,14 +3061,14 @@ async updateMpmeDonnees(mpmeData) {
     async fetchSousSecteurActiviteOptions() {
       try {
         await this.$store.dispatch("fetchSousSecteurOptions"); // Remplacez par l'action de votre store
-        this.SousSecteurActiviteOptions = this.$store.getters[
-          "getSousSecteurOptions"
-        ].map((option) => {
-          return {
-            label: option.label,
-            value: option.value,
-          };
-        });
+        // this.SousSecteurActiviteOptions = this.$store.getters[
+        //   "getSousSecteurOptions"
+        // ].map((option) => {
+        //   return {
+        //     label: option.label,
+        //     value: option.value,
+        //   };
+        // });
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des options des secteurs d'activité:",
@@ -3062,7 +3078,7 @@ async updateMpmeDonnees(mpmeData) {
     },
     async fetchStatutJuridiqueOptions() {
       try {
-        await this.$store.dispatch("fetchStatutJuridiqueOptions"); // Action spécifique aux statuts juridiques
+        await this.$store.dispatch("fetchStatutJuridiqueOptions"); 
         const options = JSON.parse(
           JSON.stringify(this.$store.getters["getStatutJuridiqueOptions"])
         );
@@ -3152,6 +3168,35 @@ async updateMpmeDonnees(mpmeData) {
         console.error("Erreur lors de la récupération des données de localité :", error);
       }
     },
+    async handleOptionSousSecteur(option) {
+      console.log('otion',option)
+      this.loading = true;
+
+      try {
+          const response = await axios.get(`/secteurs-activites/${option.value}`, {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+          const dataFromAPI = response.data.data;
+          console.log(dataFromAPI.sous_secteurs);
+          this.SousSecteurActiviteOptions = dataFromAPI.sous_secteurs.map((option) => {
+          return {
+            label: option.NomSousSecteur,
+            value: option.CodeSousecteur,
+          };
+        });
+          this.loading = false;
+        } catch (error) {
+          console.error(error);
+          if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('user/clearLoggedInUser');
+            this.$router.push("/"); // Redirection vers la page de connexion
+          }
+        }
+    },
+
+
     async formatValidationErrors(errors) {
       const formattedErrors = {};
 

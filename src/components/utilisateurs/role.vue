@@ -41,30 +41,19 @@
               <BTableSimple class="align-middle table-nowrap table-hover">
                 <BThead class="table-light" style="">
                   <BTr>
-                    <BTh scope="col" style="width: 70px"></BTh>
+                    <BTh scope="col" style="width: 70px">N°</BTh>
                     <BTh scope="col">Nom</BTh>
-                    <BTh scope="col">Permissions</BTh>
-                    <BTh scope="col">Action</BTh>
+                    <BTh scope="col">Accèss</BTh>
+                    <BTh scope="col" style="width: 50px;">Action</BTh>
                   </BTr>
                 </BThead>
                 <BTbody>
-                  <BTr v-for="region in filteredList" :key="region.id">
-                    <BTd> </BTd>
+                  <BTr v-for="(region ,index) in filteredList" :key="index">
+                    <BTd>{{index + 1}} </BTd>
                     <BTd>{{ region.name }}</BTd>
                     <BTd
-                      ><button
-                        @click="
-                          permission = true;
-                          fetchPermissions(region.id);
-                        "
-                        style="
-                          color: #fff;
-                          background-color: #007575;
-                          padding: 7px;
-                          border-radius: 5px;
-                        "
-                      >
-                        Détails
+                      ><button style="color: blue !important; text-decoration: underline !important;"
+                        @click=" permission = true; fetchPermissions(region.id); " > Gérer les accèss
                       </button>
                     </BTd>
                     <BTd>
@@ -77,54 +66,23 @@
                           <Blink
                             href="#"
                             @click="updateRole(region.id)"
-                            class="btn btn-sm btn-soft-info"
+                            class="btn btn-sm btn-info"
                             ><i class="mdi mdi-pencil-outline"></i
                           ></Blink>
                         </li>
-                        <li
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="add"
-                        >
-                          <Blink
-                            href="#"
-                            @click="
-                              addPermission = true;
-                              id_test = region.id;
-                            "
-                            data-bs-toggle="modal"
-                            class="btn btn-sm btn-soft-primary"
-                          >
-                            <i class="mdi mdi-plus"></i>
-                          </Blink>
-                        </li>
-                        <li
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="account"
-                        >
-                          <button
-                            @click="
-                              utilisateur = true;
-                              id_test = region.id;
-                            "
-                            data-bs-toggle="modal"
-                            class="btn btn-sm btn-soft-primary"
-                          >
-                            <i class="mdi mdi-account"></i>
-                          </button>
-                        </li>
+                    
 
                         <li
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           aria-label="Delete"
+                          style="width: 50px;"
                         >
                           <Blink
                             href="#"
                             @click="confirmDelete(region.id)"
                             data-bs-toggle="modal"
-                            class="btn btn-sm btn-soft-danger"
+                            class="btn btn-sm btn-danger"
                             ><i class="mdi mdi-delete-outline"></i
                           ></Blink>
                         </li>
@@ -251,7 +209,7 @@
       centered
       header-class="border-0"
       title-class="font-18"
-      @hide="permissionByRole = ''"
+      size="xl"
     >
       <div>
         <div class="account-pages" style="width: 100%">
@@ -269,9 +227,9 @@
                   <div class="bg-primary-subtle">
                     <BRow>
                       <BCol cols="12 text-center">
-                        <div class="modalheader p-4">
+                        <div class="modalheader py-2">
                           <h5 class="text-primary">
-                            Liste des permissions du rôle
+                            Assigner les permissions et menus
                           </h5>
                         </div>
                       </BCol>
@@ -279,48 +237,9 @@
                   </div>
 
                   <BCardBody>
+                   
                     <div>
-                      <div v-if="permissionByRole.length === 0">
-                          Pas de permissions pour le moment !
-                      </div>
-                      <div v-else
-                        v-for="permission in permissionByRole"
-                        :key="permission.id"
-                      >
-                        <p
-                          style="
-                            background-color: #F9D310;
-                            padding: 9px 12px;
-                            font-size: 14px;
-                            margin-top: 8px;
-                            color: white;
-                          
-                          "
-                        >
-                          {{ traduirePermission(permission.name) }}
-                        </p>
-                      </div>
-                    </div>
-                  </BCardBody>
-                </BCard>
-              </BCol>
-            </BRow>
-          </BContainer>
-        </div>
-      </div>
-    </BModal>
-    <BModal
-      v-model="addPermission"
-      hide-footer
-      centered
-      header-class="border-0"
-      title-class="font-18"
-      @hide="clean2()"
-    >
-      <div>
-        <div class="account-pages" style="width: 100%">
-          <BContainer>
-            <BRow>
+                      <BRow>
               <BCol>
                 <BCard
                   no-body
@@ -330,63 +249,86 @@
                     border: 1px solid #c9d1d9 !important;
                   "
                 >
-                  <div class="bg-primary-subtle">
-                    <BRow>
-                      <BCol cols="12 text-center">
-                        <div class="modalheader p-4">
-                          <h5 class="text-primary">Ajouter des permissions</h5>
-                        </div>
-                      </BCol>
-                    </BRow>
-                  </div>
-
+               
                   <BCardBody class="pt-0">
+                    <div>
+                      <router-link to="#">
+                        <div class="avatar-md profile-user-wid">
+                          <span
+                            class="avatar-title rounded-circle"
+                            style="position: relative; z-index: 33"
+                          >
+                            <img
+                              src="@/assets/img/armoirie.png"
+                              alt
+                              style="width: 75%; height: 75%; z-index: 33"
+                            />
+                          </span>
+                        </div>
+                      </router-link>
+                    </div>
                     <div class="p-2">
                       <BForm class="form-horizontal">
-                        <BRow> </BRow>
-
-                        <BCol md="12">
-                          <div class="mb-3 position-relative">
-                            <div
-                              v-for="permission in permissionOption"
-                              :key="permission.id"
-                            >
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  :value="permission.name"
-                                  :id="'permissionCheckbox' + permission.id"
-                                  v-model="checkedPermissions"
-                                  style="
-                                    width: 20px;
-                                    height: 20px;
-                                    margin-right: 10px;
-                                  "
-                                />
-                                <label
-                                  class="form-check-label"
-                                  for="permissionCheckbox{{ permission.id }}"
-                                  style="font-size: 20px"
-                                >
-                                  {{ traduirePermission(permission.name) }}
-                                </label>
-                              </div>
+                        <BRow class="align-items-center">
+                          <BCol md="5">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Role</label>
+                              <MazSelect
+                                v-model="nom"
+                                no-radius
+                                type="text"
+                                name="nom"
+                                color="info"
+                                placeholder="exemple"
+                                search
+                                :options="rolesOptions"
+                              />
+                              <small v-if="v$.step1.nom.$error">{{
+                                v$.step1.nom.$errors[0].$message
+                              }}</small>
+                              <small v-if="resultError['CodeRegion']">
+                                {{ resultError["CodeRegion"] }}
+                              </small>
                             </div>
-                          </div>
-                        </BCol>
-                        <BRow> </BRow>
-
-                        <BRow class="mb-0">
-                          <BCol cols="12" class="text-end">
+                          </BCol>
+                          <BCol md="5">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Permissions</label>
+                              <MazSelect
+                                v-model="nom"
+                                no-radius
+                                type="text"
+                                name="nom"
+                                color="info"
+                                placeholder="exemple"
+                                search
+                                :options="permissionOptions"
+                              />
+                              <small v-if="v$.step1.nom.$error">{{
+                                v$.step1.nom.$errors[0].$message
+                              }}</small>
+                              <small v-if="resultError['CodeRegion']">
+                                {{ resultError["CodeRegion"] }}
+                              </small>
+                            </div>
+                          </BCol>
+                        
+                          <BCol cols="2" class="text-end">
                             <div class="boutton">
-                              <button class="" @click="HamdleAddPermission()">
-                                Ajouter
+                              <button class="" @click="actions()">
+                                Valider
                               </button>
                             </div>
                           </BCol>
                         </BRow>
+
+                      
                       </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+              </BCol>
+            </BRow>
                     </div>
                   </BCardBody>
                 </BCard>
@@ -397,96 +339,9 @@
       </div>
     </BModal>
 
-    <BModal
-      v-model="utilisateur"
-      hide-footer
-      centered
-      header-class="border-0"
-      title-class="font-18"
-      @hide="
-        oneUser = '';
-        id_test = '';
-      "
-    >
-      <div>
-        <div class="account-pages" style="width: 100%">
-          <BContainer>
-            <BRow>
-              <BCol>
-                <BCard
-                
-                  class=""
-                  style="
-                    box-shadow: none !important;
-                    border: 1px solid #c9d1d9 !important;
-                  "
-                >
-                  <div class="bg-primary-subtle">
-                    <BRow>
-                      <BCol cols="12 text-center">
-                        <div class="modalheader p-4">
-                          <h5 class="text-primary">Assigner le rôle</h5>
-                        </div>
-                      </BCol>
-                    </BRow>
-                  </div>
+   
 
-                  <BCardBody class="pt-0">
-                    <div class="p-8">
-                      <BForm class="form-horizontal">
-                        <BRow> </BRow>
-
-                        <BCol md="12">
-                          <div class="mb-3 position-relative">
-                            <MazSelect
-                              label="Sélectionner l'utilisateur"
-                              v-model="oneUser"
-                              no-radius
-                              color="info"
-                              :options="
-                                allUsers.map((user) => ({
-                                  value: user.id,
-                                  label: `${user.Prenoms} ${user.Nom}`,
-                                }))
-                              "
-                              v-slot="{ option }"
-                              search
-                            >
-                              <div
-                                class="flex items-center"
-                                style="
-                                  padding-top: 0.5rem;
-                                  padding-bottom: 0.5rem;
-                                  width: 100%;
-                                  gap: 1rem;
-                                "
-                              >
-                                {{ option.label }}
-                              </div>
-                            </MazSelect>
-                          </div>
-                        </BCol>
-                        <BRow> </BRow>
-
-                        <BRow class="mb-0">
-                          <BCol cols="12" class="text-end">
-                            <div class="boutton">
-                              <button class="" @click="HamdleAddRoleAssign()">
-                                Ajouter
-                              </button>
-                            </div>
-                          </BCol>
-                        </BRow>
-                      </BForm>
-                    </div>
-                  </BCardBody>
-                </BCard>
-              </BCol>
-            </BRow>
-          </BContainer>
-        </div>
-      </div>
-    </BModal>
+   
   </Layout>
 </template>
 <script>
@@ -517,6 +372,7 @@ export default {
       dataEdit: false,
       oneUser: "",
       allUsers: [],
+      rolesOptions:[],
       searchQuery: "",
       oneUserId: "",
       permission: false,
@@ -526,7 +382,7 @@ export default {
       checkedPermissions: [],
       selectedItemName: null,
       selectedItemId: null,
-      permissionOption: [],
+      permissionOptions: [],
       id: "",
       id_test: "",
       currentPage: 1,
@@ -606,7 +462,11 @@ export default {
           },
           params: { Direction: this.loggedInUser.direction },
         });
-        this.roleOptions = response.data.data;
+        this.roleOptions = response.data.data
+        response.data.data.map(r =>  this.rolesOptions.push({
+          label:r.name,
+          value:r.id
+        }));
         this.loading = false;
       } catch (error) {
         console.error("errorqqqqq", error);
@@ -699,6 +559,7 @@ export default {
               "Création de rôle",
               "Votre rôle a été crée avec succès !"
             );
+            this.v$.step1.$reset();
             await this.fetchRole();
           } else {
           }
@@ -898,7 +759,11 @@ export default {
           },
           params: { Direction: this.loggedInUser.direction },
         });
-        this.permissionOption = response.data.data.data;
+        console.log('response',response)
+        response.data.data.data.map( p =>  this.permissionOptions.push({
+          label:p.name,
+          value:p.id
+        }));
         this.loading = false;
       } catch (error) {
         console.error("errorqqqqq", error);

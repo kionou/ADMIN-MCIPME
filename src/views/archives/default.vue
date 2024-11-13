@@ -10,10 +10,11 @@
              <BCardTitle class="mb-0 flex-grow-1">Liste des Archives</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-               <div @click="AddUser = true" class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6">
+               <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
+             <div @click="AddUser = true" class="btn btn-primary ">Ajouter</div>
+
              </div>
            </div>
          </BCardBody>
@@ -50,10 +51,10 @@
                                 <ul class="list-unstyled hstack gap-1 mb-0">
                       
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(archive.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                        <Blink href="#"  @click="UpdateUser(archive.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                       </li>
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(archive.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                        <Blink href="#" @click="confirmDelete(archive.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                       </li>
                      
                     </ul>

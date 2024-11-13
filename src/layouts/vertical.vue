@@ -32,6 +32,9 @@ export default {
     },
     mode() {
       return layoutStore.mode
+    },
+    isCartographyRoute() {
+      return this.$route.name === 'cartographie';
     }
   },
   created: () => {
@@ -89,7 +92,7 @@ export default {
       <!-- ============================================================== -->
 
       <div class="main-content">
-        <div class="page-content">
+        <div :class="{ 'is-cartographie': isCartographyRoute }" class="page-content">
           <!-- Start Content-->
           <div>
             <slot />
@@ -101,3 +104,5 @@ export default {
     </div>
   </div>
 </template>
+
+

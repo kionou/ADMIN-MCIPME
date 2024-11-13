@@ -155,7 +155,7 @@ export default {
             <img class="rounded-circle header-profile-user" v-else :src="loggedInUser.profile" alt="Header Avatar" />
             <span class="d-none d-xl-inline-block ms-1">
              
-              <div >{{ loggedInUser.nom  }}</div>
+              <div >  {{ loggedInUser.nom  }}</div>
             </span>
             </div>
            

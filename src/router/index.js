@@ -248,6 +248,12 @@ const router = createRouter({
       component: () => import("../views/indicateurs/default.vue"),
     },
     {
+      path: "/rapport-statistiques",
+      name: "rapport-statistiques",
+      meta: { requiresAuth: true },
+      component: () => import("../views/statistiques/default.vue"),
+    },
+    {
       path: "/graphes",
       name: "graphes",
       meta: { requiresAuth: true },
@@ -329,11 +335,15 @@ const router = createRouter({
       component: () => import("../views/departement/default.vue"),
     },
     {
-      path: "/roles",
-      name: "roles",
+      path: "/droits",
+      name: "droits",
       meta: { requiresAuth: true },
       component: () => import("../views/permissions/default.vue"),
     },
+
+
+
+
 
 
     {

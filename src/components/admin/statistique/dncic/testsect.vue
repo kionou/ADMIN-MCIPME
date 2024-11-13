@@ -7,7 +7,7 @@
         <h6 class="mb-0 text-center">Statistiques par secteur d'activité</h6>
         <ul class="list-unstyled hstack gap-1 mb-0 justify-content-end !important;">
                 <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                    <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                    <BDropdown toggle-class="btn btn-sm btn-primary" 
                             variant="white" dropright top>
                             <template #button-content>
                               <i class="mdi mdi-dots-vertical"></i>

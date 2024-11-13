@@ -12,8 +12,9 @@
              
 
              <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
+             <MazInput v-model="searchQuery" @input="filterByName"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
+
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -58,10 +59,10 @@
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeSecteurActivite)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.CodeSecteurActivite)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                       
                      </ul>
@@ -266,8 +267,10 @@ export default {
      loading:true,
      AddUser:false,
      UpdateUser1:false,
+     searchQuery:'',
      ToId:'',
      SecteurActiviteOptions:[],
+     data:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -353,7 +356,7 @@ async  fetchData() {
       console.log('response', data);
       return data.data.data; // Retourne uniquement la partie 'data' de la réponse
   } catch (error) {
-      console.error("Erreur lors de la récupération des données :", error);
+      console.error("Erreure lors de la récupération des données :", error);
   }
 },
   
@@ -366,7 +369,8 @@ async  fetchData() {
     
             });
                console.log(response.data.data);
-               this.SecteurActiviteOptions =response.data.data.data
+               this.data = response.data.data.data
+               this.SecteurActiviteOptions = this.data
                
                this.loading = false;
             
@@ -573,6 +577,24 @@ async  fetchData() {
          const endIndex = startIndex + this.itemsPerPage;
          return  this.SecteurActiviteOptions.slice(startIndex, endIndex);
        },
+       filterByName() {
+this.currentPage = 1;
+if (this.searchQuery !== null) {
+   const tt = this.searchQuery;
+  const  searchValue = tt.toLowerCase()
+  this.SecteurActiviteOptions =this.data.filter(user => {
+    const Nom = user.CodeSecteurActivite || '';
+    const Email = user.NomSecteurActivite || '';
+    // const Prenoms = user.Prenoms || '';
+    return Nom.toLowerCase().includes(searchValue) ||  Email.toLowerCase().includes(searchValue);
+  });
+
+} else {
+this.SecteurActiviteOptions = [...this.data];
+ 
+}
+
+},
 
        async formatValidationErrors(errors) {
      const formattedErrors = {};

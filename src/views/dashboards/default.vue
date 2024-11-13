@@ -14,9 +14,8 @@ import Activity from "@/components/widgets/activity.vue";
 import SellingProduct from "@/components/widgets/selling-product.vue";
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
-import SecteurDni from '@/components/admin/statistique/dni/secteur.vue'
-import Zone from '@/components/admin/statistique/dni/zone.vue'
-import Zone1 from '@/components/admin/statistique/dni/zone1.vue'
+import RapportDNI from '@/components/admin/statistique/dni/defaultdni.vue'
+
 
 
 /**
@@ -35,9 +34,7 @@ export default {
     SocialSource,
     Activity,
     SellingProduct,
-    SecteurDni,
-    Zone,
-    Zone1
+    RapportDNI
   },
   computed: {
     loggedInUser() {
@@ -299,32 +296,20 @@ async  mounted() {
      
         </BCol>
     </BRow>
-  
-
       <BRow>
-      <BCol lg="6" >
-        <div>
-          <div>
-            <Zone1  ></Zone1>
-          </div>
-        </div>
+      <BCol lg="12" >
+            <RapportDNI></RapportDNI>
+   
       </BCol>
 
-      <BCol lg="6" >
-        <div>
-          <div>
-            <Zone ></Zone>
-          </div>
-        </div>
-      </BCol>
     </BRow>
 
-    <BRow class="justify-content-center">
+    <BRow class="">
        
-      <div class="parent" v-for="pme in mpme" :key="pme.id">
+      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-3" v-for="pme in mpme" :key="pme.id">
      <div class="carde" >
     <div class="content-box">
-      <span class="carde-title">{{ pme.NomMpme }}</span>
+      <span class="carde-title">{{ pme.SigleMpme }}</span>
           <p class="texte-content carde-content">Date creation : <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
             <p class="texte-content" v-if="pme">Code DNI : <span>{{ pme.CodeMpme }}</span></p>

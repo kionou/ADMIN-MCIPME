@@ -10,11 +10,12 @@
              <BCardTitle class="mb-0 flex-grow-1">Liste des Entreprises importatrices</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-               <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
-               <BCol xxl="4" lg="6" class=" me-1">
+               <BCol xxl="8" xl="8" lg="8" md="8" sm="8" class="me-1">
                <MazInput v-model="control.name" @input="filterByName"  no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
              <div style="background-color:#F9D310 ; display:flex" class="btn  ml-1"><i class="mdi mdi-filter-menu-outline"></i></div>
+             <div @click="$router.push({ path: '/entreprises/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
+
              </div>
            </div>
          </BCardBody>
@@ -25,15 +26,15 @@
            </div>
           </BCardBody>
           <BCardBody v-else>
-            <BRow class="justify-content-center">
-      <div class="parent" v-for="pme in paginatedItems" :key="pme.id">
+            <BRow class="">
+      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-3" v-for="pme in paginatedItems" :key="pme.id">
        <div class="carde" >
       <div class="content-box">
         <div class="date-box" v-if="pme.pme">
          <img v-if="pme.pme.profile === null" src="@/assets/img/guinea.png" alt="">
          <img v-else :src="pme.pme.profile" alt="">
       </div>
-        <span class="carde-title" v-if="pme.pme">{{pme.pme.NomMpme }}</span>
+        <span class="carde-title" v-if="pme.pme">{{pme.pme.SigleMpme }}</span>
           <p class="texte-content carde-content" v-if="pme.pme">Date creation: <span>{{ pme.pme.AnneeCreation }}</span></p>
           <div class="texte">
           <p class="texte-content" v-if="pme.pme">Code DNCIC: <span>{{ pme.pme.CodeMpme }}</span></p>
@@ -45,18 +46,18 @@
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                           <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                           <router-link :to="{ name: 'detail-entreprises', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
                        </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <router-link  :to="{ name: 'entreprises-update', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
+                         <router-link  :to="{ name: 'entreprises-update', params: { id: pme.CodeMpme }}"  class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <div @click="confirmDelete(pme.CodeMpme)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
+                         <div @click="confirmDelete(pme.CodeMpme)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                        <BDropdown toggle-class="btn btn-sm btn-soft-primary" 
+                        <BDropdown toggle-class="btn btn-sm btn-primary" 
                               variant="white" dropright top>
                               <template #button-content>
                                 <i class="mdi mdi-dots-vertical"></i>

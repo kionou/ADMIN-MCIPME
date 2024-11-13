@@ -2,41 +2,48 @@
   <div>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
     <BRow>
-      <BCol md="6" v-for="(statistics, index) in allStatistics" :key="index">
-        <BCard class="card z-index-2">
-          <div class="card-titre">
-            <h6 class="mb-0 text-center">Statistiques par zone industrielle</h6>
+      <BCol md="12">
+        <div class="mb-3 position-relative">
+          <label for="userpassword">Indicateur</label>
+          <MazSelect label="" disabled v-model="indicateur1" color="info" no-radius :options="IndicateursOptions" search></MazSelect>
+        </div>
+      </BCol>
+    </BRow>
+    <BCard class="card z-index-2">
+      <div class="card-titre">
+        <h6 class="mb-0 text-center">Statistiques par zone industrielle</h6>
+        <BRow>
+          <BCol md="12">
             <ul class="list-unstyled hstack gap-1 mb-0 justify-content-end !important;">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                 <div class="dropdowns">
-                  <div class="dropdown-toggles btn btn-sm btn-primary" @click="switchChartType('histogramme', index)">
-                    H
+                  <div class="dropdown-toggles btn btn-sm btn-primary"  @click="toggleDropdown">
+                    <i class="mdi mdi-dots-vertical"></i>
                   </div>
-                </div>
-              </li>
-              <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                <div class="dropdowns">
-                  <div class="dropdown-toggles btn btn-sm btn-primary" @click="switchChartType('camembert', index)">
-                    C
-                  </div>
+                  <ul class="dropdown-menus" v-show="isDropdownOpen">
+                    <li @click="switchChartType('histogramme')">Histogramme</li>
+                    <li @click="switchChartType('camembert')">Camembert</li>
+                    <li @click="switchChartType('courbe')">Courbe</li>
+                  </ul>
                 </div>
               </li>
             </ul>
-            <hr class="dark horizontal">
-          </div>
-          <div v-if="chartTypes[index] === 'histogramme'" >
-            <input type="hidden" name="" :value="loadChartData(statistics, index)">
-            <highcharts :options="chartOptions[index]"></highcharts>
-          </div>
-          <div v-else-if="chartTypes[index] === 'camembert'">
-            <input type="hidden" name="" :value="loadChartData(statistics, index)">
-            <highcharts :options="camembertOptions[index]"></highcharts>
-          </div>
-        </BCard>
-      </BCol>
-    </BRow>
+          </BCol>
+        </BRow>
+        <hr class="dark horizontal">
+      </div>
+      <div v-if="chartType === 'histogramme'">
+        <highcharts v-for="(chartOption, index) in chartOptions" :key="index" :options="chartOption"></highcharts>
+        <!-- Ajoutez ici les boutons spécifiques à l'histogramme -->
+      </div>
+      <div v-else-if="chartType === 'camembert'">
+        <highcharts v-for="(camembertOption, index) in camembertOptions" :key="index" :options="camembertOption"></highcharts>
+        <!-- Ajoutez ici les boutons spécifiques au camembert -->
+      </div>
+    </BCard>
   </div>
 </template>
+
 
 <script>
 import axios from '@/lib/axiosConfig';
@@ -57,8 +64,8 @@ export default {
     return {
       loading: true,
       IndicateursOptions:[],
-      allStatistics:[],
-      chartTypes: [], // Tableau pour stocker les types de graphique pour chaque élément
+      isDropdownOpen: false,
+      chartType: 'histogramme', // Par défaut, afficher l'histogramme
       chartOptions: [],
       camembertOptions: []
     };
@@ -71,7 +78,10 @@ export default {
   methods: {
     async fetchStatistics() {
       try {
+        // Récupérer les IDs des 6 derniers indicateurs
         const lastIndicateurIds = this.IndicateursOptions.slice(0, 6).map(indicateur => indicateur.value);
+
+        // Initialiser un tableau pour stocker les statistiques de chaque indicateur
         const statisticsPromises = lastIndicateurIds.map(async indicateurId => {
           const response = await axios.get(`/indicateurs/statistics/${indicateurId}`, {
             headers: {
@@ -81,18 +91,17 @@ export default {
           return response.data.data;
         });
 
-        this.allStatistics = await Promise.all(statisticsPromises);
-        console.log(' this.allStatistics',  this.allStatistics)
-
-        // Initialiser les types de graphique pour chaque élément
-        this.chartTypes = Array(this.allStatistics.length).fill('histogramme');
+        const allStatistics = await Promise.all(statisticsPromises);
+        console.log('allStatistics',allStatistics);
 
         // Réinitialiser les options de graphique
         this.chartOptions = [];
         this.camembertOptions = [];
 
-        this.allStatistics.forEach((statistics, index) => {
+        // Afficher les statistiques de chaque tableau
+        allStatistics.forEach((statistics, index) => {
           this.loadChartData(statistics, index);
+          console.log('statistics',statistics);
         });
 
         this.loading = false;
@@ -109,8 +118,10 @@ export default {
           },
         });
         
-        const indicateurs = response.data.data.filter(indicateur => indicateur.IsActive === "1");
-        const derniersIndicateurs = indicateurs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 6);
+        const indicateurs = response.data.data.filter(indicateur => indicateur.IsActive === "1"); // Filtrer les indicateurs actifs
+        const derniersIndicateurs = indicateurs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 6); // Trier par date de création et sélectionner les 6 derniers
+
+        console.log(derniersIndicateurs); // Afficher les 6 derniers indicateurs
 
         this.IndicateursOptions = derniersIndicateurs.map(indicateur => ({
           label: indicateur.Description,
@@ -124,20 +135,22 @@ export default {
     },
 
     loadChartData(statisticsArray, index) {
-      console.log(' this.allStatistics',  statisticsArray)
-
+      // Initialiser les tableaux pour stocker les données des deux types de graphiques
       const chartData = [];
       const camembertData = [];
 
+      // Parcourir chaque statistique dans le tableau
       statisticsArray.forEach(statistic => {
         const name = statistic.IntituleZone || statistic.NomSecteurActivite;
         const y = parseInt(statistic.nb);
 
+        // Ajouter les données à la série pour le graphique en colonnes
         chartData.push({
           name: name,
           y: y
         });
 
+        // Ajouter les données à la série pour le graphique en camembert
         camembertData.push({
           name: name,
           y: y
@@ -145,7 +158,7 @@ export default {
       });
 
       // Mettre à jour les options de graphique en colonnes
-      this.chartOptions[index] = {
+      this.chartOptions[index]= {
         chart: {
           type: 'column'
         },
@@ -179,7 +192,8 @@ export default {
       };
 
       // Mettre à jour les options de graphique en camembert
-      this.camembertOptions[index] = {
+     
+        this.camembertOptions[index] = {
         chart: {
           plotBackgroundColor: null,
           plotBorderWidth: null,
@@ -217,8 +231,13 @@ export default {
       };
     },
 
-    switchChartType(type, index) {
-      this.chartTypes[index] = type; // Changer le type de graphique pour l'élément spécifié
+    switchChartType(type) {
+      this.chartType = type;
+      this.isDropdownOpen = false;
+    },
+
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
     }
   },
 };
@@ -235,5 +254,29 @@ export default {
   padding: 4px 9px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.dropdown-menus {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
+  list-style: none;
+  margin: 0;
+  left: -91px;
+  top: 101%;
+  z-index: 1000;
+  display: block;
+}
+
+.dropdown-menus li {
+  padding: 8px 30px;
+  cursor: pointer;
+}
+
+.dropdown-menus li:hover {
+  background-color: #f0f0f0;
 }
 </style>

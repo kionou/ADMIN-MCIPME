@@ -11,15 +11,15 @@
 
 
              <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1" >
+               <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>
          </BCardBody>
-
+<!-- 
          <BCardBody v-if="paginatedItems.length === 0" class="noresul">
            <div >
          <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
@@ -43,9 +43,6 @@
               </div>
 
               <div class="flex-grow-1 overflow-hidden">
-                <!-- <h5 class="text-truncate font-size-15">
-                  <BLink href="#" class="text-dark">{{ indicateur.Description }}</BLink>
-                </h5> -->
                 <p class="text-muted mb-4">
                   {{ indicateur.Description }}
                 </p>
@@ -66,10 +63,10 @@
               <ul class="list-unstyled hstack gap-1 mb-0">
                       
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                       </li>
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                       </li>
                       
                     </ul>
@@ -83,6 +80,65 @@
         
         
             </div>
+           <BRow>
+             <BCol lg="12">
+               <div class="container_pagination">
+                 <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
+               </div>
+             </BCol>
+           </BRow>
+         </BCardBody> -->
+
+
+         
+         <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+           <div >
+         <span> Vous n'avez pas encore d'indicateur, vous pouvez également en ajouter un !! </span>
+          </div>
+         </BCardBody>
+        
+         
+         
+         <BCardBody v-else>
+           <div class="table-responsive" >
+             <BTableSimple class="align-middle table-nowrap table-hover">
+               <BThead class="table-light" style="">
+                 <BTr>
+                   <BTh scope="col" ></BTh>
+                   <BTh scope="col">Code</BTh>
+                   <BTh scope="col">Indicateurs</BTh>
+                   <BTh scope="col">Statut</BTh>
+                   <BTh scope="col">Action</BTh>
+                 </BTr>
+               </BThead>
+               <BTbody>
+                 <BTr v-for="indicateur in paginatedItems" :key="indicateur.id">
+                   <BTd> </BTd>
+                   <BTd> {{  indicateur.CodeIndicateur }}</BTd>
+                   <BTd> {{  indicateur.Description}}</BTd>
+                   <BTd> 
+                    <span  v-if="indicateur.IsActive === 0" class="badge badge-pill badge-success font-size-11" :class="{ 'badge-danger': `${indicateur.IsActive}` === 'Chargeback'}">Desactiver</span>
+                    <span  v-else  class="badge badge-pill badge-success font-size-11" :class="{'badge-warning': `${indicateur.IsActive}` === 'Refund',}">Activer</span>
+
+                   </BTd>
+                   <BTd>
+                     <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                         <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                       </li>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                         <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                       </li>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                         <Blink href="#" @click="Requete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-success"><i class="mdi mdi-delete-outline"></i></Blink>
+                       </li>
+                     </ul>
+                   </BTd>
+                 </BTr>
+               </BTbody>
+             </BTableSimple>
+           </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -280,6 +336,136 @@
    </div>
  </div>
    </BModal>
+
+   <BModal v-model="RequeteDynamique1" hide-footer centered header-class="border-0" title-class="font-18"  size="lg">
+     <div>
+   
+   <div class="account-pages " style="width:100%;">
+     <BContainer>
+       <BRow >
+         <BCol >
+           <BCard no-body class="" style=" box-shadow:none !important;
+            border: 1px solid #c9d1d9 !important;">
+             <div class="bg-primary-subtle">
+               <BRow>
+                 <BCol cols="12 text-center">
+                   <div class="modalheader p-2">
+                     <h5 class="text-primary">Ajouter une requete</h5>
+                     
+                   </div>
+                 </BCol>
+                 
+               </BRow>
+             </div>
+             <BCardBody class="pt-0">
+               <div>
+                 <router-link to="#">
+                   <div class="avatar-md profile-user-wid ">
+                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+                 </span>
+               </div>
+                 </router-link>
+                 <li data-bs-toggle="tooltip" class="list-unstyled" data-bs-placement="top" aria-label="Edit" style="position: absolute;right: 15px;top: 59px;">
+                  <div  style="font-size: 18px;" @click="AddformData" class="btn btn-sm btn-info"><i class="mdi mdi-plus-box-outline"></i></div>
+                </li>
+               </div>
+               <div class="p-2">
+                 <BForm class="form-horizontal">
+                  <BCol md="12">
+                       <div class="mb-3 position-relative">
+                         <label for="userpassword">Indicateurs</label>
+                          <MazSelect v-model="indicateur"  no-radius type="text"  color="info"   :options="IndicateursOptions1"  search  label="Sélectionner l'indicateur" />
+                          <small v-if="errors.indicateur">{{ errors.indicateur }}</small>
+                        <small v-if="resultError['indicateur']"> {{ resultError["indicateur"] }} </small>
+                       </div>
+                    </BCol>
+                    <BRow  v-for="(table, index) in tables" :key="table.id" class="align-items-center p-2 border border-secondary rounded-2 mb-3" >
+                      
+                        <BCol md="11" >
+                            <span class="nombre">
+                          Fiche  {{index + 1}}
+                        </span>
+                        <hr style="border:1px solid #435971 !important">
+                        <BRow >
+                           </BRow>
+                        <BRow >
+                    
+
+                  <BCol md="6">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Tables</label>
+                     <MazSelect
+                     label="Sélectionner la table"
+                      v-model="table.table"
+                     no-radius  color="info"
+                     @input="clearError(index, 'table')"
+                       :options="TablesOptions"  search
+                    v-slot="{ option }"
+                     
+                   
+                  >
+                    <div
+                      class="flex items-center"
+                      style="
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                        width: 100%;
+                        gap: 1rem;
+                      "
+                      @click="handleOptionClick(option)"
+                    >
+                      {{ option.label }}
+                    </div>
+                  </MazSelect>
+                    <small v-if="errors.tables && errors.tables[index] && errors.tables[index].table">{{ errors.tables[index].table }}</small> 
+                      <small v-if="resultError['table']"> {{ resultError["table"] }} </small>
+                     </div>
+                  </BCol>
+                  <BCol md="6">
+              <label for="userpassword">Colonnes</label>
+              <div class="mb-3 position-relative">
+                <div class="input-groupe">
+                  <MazSelect v-model="table.colonne" no-radius type="text" color="info"   :disabled="!table.table" :options="ColonneOptions"  search  label="Sélectionner la colonne" />
+                </div>
+                <small v-if="errors.tables && errors.tables[index] && errors.tables[index].colonne">{{ errors.tables[index].colonne }}</small>
+                <small v-if="resultError['colonne']"> {{ resultError["colonne"] }} </small>
+              </div>
+            </BCol>
+                         </BRow>
+
+                 
+                  
+                        </BCol>
+                            <BCol md="1">
+                            <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" class="ml-4 list-unstyled">
+                             <div @click="deleteRow(index)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></div>
+                            </li>
+                            </BCol>
+                           
+                    </BRow>
+
+
+                    <BRow class="mb-0">
+                     <BCol cols="12" class="text-end">
+                       <div class="boutton">
+                       <button class="" @click="submitTable()">Valider</button>
+                      </div>
+                     </BCol>
+                   </BRow>
+                    
+
+                 </BForm>
+               </div>
+             </BCardBody>
+           </BCard>
+           
+         </BCol>
+       </BRow>
+     </BContainer>
+   </div>
+ </div>
+   </BModal>
    
 
  </Layout>
@@ -309,21 +495,31 @@ export default {
      loading:true,
      AddUser:false,
      UpdateUser1:false,
+     RequeteDynamique1:false,
      ToId:'',
      IndicateursOptions:[],
+     IndicateursOptions1:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
       UserOptionsPersonnels:"",
+      TablesOptions:[],
+      ColonneOptions:[],
+      indicateur: '',
+      tables: [{ table: ''  , colonne:'' }],
      v$: useVuelidate(),
+     errors: {
+      indicateur: '',
+         tables: [] ,
+      
+      },
        error:'',
        choix: [
         { label: "Oui", value: true },
         { label: "Non", value: false },
       ],
-     step1:{
-           
+     step1:{    
             code:'',
             description:'',
   
@@ -380,6 +576,9 @@ export default {
    totalPages() {
    return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
+   isColonneDisabled() {
+      return !this.table.table;
+    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
@@ -393,6 +592,12 @@ async mounted() {
  methods: {
    
    successmsg:successmsg,
+   clearError(index, field) {
+        
+        if (this.errors.tables[index]) {
+          this.errors.tables[index][field] = null;
+        }
+      },
    async fetchIndicateursOptions() {
     try {
               const response = await axios.get('/indicateurs', {
@@ -405,6 +610,10 @@ async mounted() {
                console.log(response.data.data);
                 this.IndicateursOptions = response.data.data;
                 this.UserOptionsPersonnels =  this.IndicateursOptions.length
+                this.IndicateursOptions1 = this.IndicateursOptions.map(prefecture => ({
+                  label: prefecture.Description,
+                  value: prefecture.CodeIndicateur,
+                }));
                this.loading = false;
             
             } catch (error) {
@@ -610,6 +819,129 @@ async mounted() {
          const endIndex = startIndex + this.itemsPerPage;
          return  this.IndicateursOptions.slice(startIndex, endIndex);
        },
+       AddformData() {
+    this.tables.push({ table: ''  , colonne:'', });
+  },
+
+  deleteRow(index) {
+    console.log(index);
+    if(index !== 0){
+      this.tables.splice(index, 1);
+    }
+},
+       async Requete(id) {
+        console.log("isd",id)
+         this.RequeteDynamique1 = true;
+         try {
+              const response = await axios.get('/bd-tables', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+    
+            });
+               console.log('tables',response.data.data);
+                this.TablesOptions = response.data.data.map(el => ({
+                  label: el,
+                  value: el,
+                }));
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+       
+},
+async submitTable() {
+      console.log("Submitting form");
+      try {
+        let isValid = this.validateTable();
+        if (isValid) {
+          // Form is valid, submit the form
+          console.log("Form is valid");
+        } else {
+          // Form is invalid, show error message
+          console.log("Le formulaire contient des erreurs");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          this.loading = false;
+        }
+      } catch (error) {
+        // Handle errors
+        console.error("Une erreur s'est produite :", error);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.loading = false;
+      }
+    },
+validateTable() {
+      let isValid = true;
+      this.errors = { indicateur: '', tables: [] };
+
+      // Validate indicateur
+      if (!this.indicateur) {
+        this.errors.indicateur = 'Indicateur est obligatoire!';
+        isValid = false;
+      }
+      this.tables.forEach((table, index) => {
+        const tableErrors = {};
+        if (!table.table) {
+          tableErrors.table = 'Table est obligatoire!';
+          isValid = false;
+        }
+        if (!table.colonne) {
+          tableErrors.colonne = 'Colonne est obligatoire!';
+          isValid = false;
+        }
+        
+        // this.$set(this.errors.tables, index, tableErrors);
+        this.errors.tables[index] = tableErrors;
+      });
+      return isValid;
+    },
+    clearError(index, field) {
+      if (this.errors.tables && this.errors.tables[index]) {
+        this.$set(this.errors.tables[index], field, null);
+      }
+    },
+    // deleteRow(index) {
+    //   this.tables.splice(index, 1);
+    //   this.errors.tables.splice(index, 1);
+    // },
+    async handleOptionClick(option) {
+      console.log('aaaa',option)
+      this.loading = true;
+      try {
+              const response = await axios.get('/bd-tables/columns', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,  
+              },
+              params:{
+                  name:option.value
+                }
+    
+            });
+               console.log('tables',response);
+                this.ColonneOptions = response.data.data.map(el => ({
+                  label: el,
+                  value: el,
+                }));
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+     
+    },
+
 
        async formatValidationErrors(errors) {
      const formattedErrors = {};
@@ -632,6 +964,12 @@ async mounted() {
  },
 }
 </script>
-<style lang="" scoped>
+<style lang="css" scoped>
+
+.nombre{
+  color:red;
+  font-weight:900;
+
+}
    
 </style>

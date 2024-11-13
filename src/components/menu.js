@@ -21,7 +21,7 @@ let menuItems = [
       {
           id: 32,
           label: "menuitems.email.list.role",
-          link: "/roles",
+          link: "/droits",
           parentId: 29
       },
       // {
@@ -105,12 +105,12 @@ let menuItems = [
         link: "/secteurs",
         parentId: 37,
       },
-      {
-        id: 50,
-        label: "menuitems.projects.list.direction",
-        link: "/directions",
-        parentId: 37,
-      },
+      // {
+      //   id: 50,
+      //   label: "menuitems.projects.list.direction",
+      //   link: "/directions",
+      //   parentId: 37,
+      // },
       {
         id: 56,
         label: "menuitems.projects.list.demande",
@@ -179,6 +179,12 @@ let menuItems = [
     label: "menuitems.cartographie.text",
     icon: "bx-map",
     link: "/cartographie",
+  },
+  {
+    id: 61,
+    label: "menuitems.statistique.text",
+    icon: "bxs-bar-chart-alt-2",
+    link: "/rapport-statistiques",
   },
   // {
   //     id: 46,

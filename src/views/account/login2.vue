@@ -37,7 +37,7 @@
               </div>
               
           </div>
-      </div>
+         </div>
   
       </div>
       <div class="text-center pa-4">
@@ -263,9 +263,19 @@
         console.log('response.login', response.data); 
         if (response.data.status === "success") {
           this.InfoUser = response.data.data
-          this.dialogOtp = true
-          this.loading = false
-          this.SendOtp()
+          // this.dialogOtp = true
+          // this.loading = false
+           this.SendOtp()
+          this.setMyAuthenticatedUser(this.InfoUser);
+            if (this.InfoUser.user.Direction === 'DNI') {
+                this.$router.push('/dni'); 
+                this.loading = false
+                  // this.dialogOtp = false
+              } else {
+                this.$router.push('/dncic'); 
+                this.loading = false
+                  // this.dialogOtp = false
+              }
           
         } else {
           
@@ -467,7 +477,7 @@
                     email: this.step3.email,
                     code: this.step4.code// Assurez-vous de récupérer le code correctement
                   }));
-               this.$router.push('/reinitialiser2');
+               this.$router.push('/reinitialiser');
                 this.loading = false
                 this.dialogOtpPassword = false
         }else{

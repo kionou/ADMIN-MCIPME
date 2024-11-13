@@ -90,7 +90,7 @@
       "text": "Gestion Utilisateurs",
       "list": {
         "inbox": "Liste des Utilisateurs",
-        "role": "Rôles et permissions",
+        "role": "Droits",
         "historique": "Historiques",
         "menu": "Menu"
       }
@@ -119,7 +119,7 @@
         "direction": "Directions",
         "demande": "Types de Demandes",
         "entreprise": "Types d'Entreprises",
-        "departement": "Departements",
+        "departement": "Divisions",
         "categorie": "types de Produits",
         "graphe": "types de Graphes",
         "zone": " Zones Industrielles",
@@ -133,7 +133,11 @@
     },
 
     "cartographie": {
-      "text": "Cartographie"
+      "text" : "Cartographie"
+    },
+
+   "statistique": {
+      "text": "Statistiques"
     }
    
   }

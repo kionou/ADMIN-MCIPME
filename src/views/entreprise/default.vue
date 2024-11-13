@@ -1,238 +1,249 @@
 <template >
-    <Layout>
-     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Entreprises" pageTitle="Paramétrages" :statistic="statistic" />
-   <BRow>
-     <BCol lg="12">
-       <BCard no-body>
-         <BCardBody class="border-bottom">
-           <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des types d'entreprises</BCardTitle>
-
-           
-
-             <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
-             </BCol>
-               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
-               
-             </div>
-           </div>
-         </BCardBody>
-
-         <BCardBody v-if="paginatedItems.length === 0" class="noresul">
-           <div >
-         <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
-          </div>
-         </BCardBody>
-        
-         
-         
-         <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" ></BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Description</BTh>
-                   <BTh scope="col">Action</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                   
-                     
-                   </BTd>
-                   <BTd> {{ region.IntituleType }}</BTd>
-                   <BTd>{{ region.Description }}</BTd>
-                   
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
-           </div>
-           <BRow>
-             <BCol lg="12">
-               <div class="container_pagination">
-                 <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
-               </div>
-             </BCol>
-           </BRow>
-         </BCardBody>
-       </BCard>
-     </BCol>
-   </BRow>
-
-
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un type d'netreprise</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom </label>
-                     <MazInput v-model="step1.IntituleType"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.IntituleType.$error">{{v$.step1.IntituleType.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IntituleType']"> {{ resultError["IntituleType"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Description </label>
-                     <MazTextarea v-model="step1.Description"  no-radius type="text" name="Description"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.Description.$error">{{v$.step1.Description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                  
-
-
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="HamdleAddUser()">Valider</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
-
-   <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un type d'entreprise</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-
-                  
-                   <BRow>
-                    <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.IntituleType"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
-                      <small v-if="v$.step2.IntituleType.$error">{{v$.step2.IntituleType.$errors[0].$message}}</small> 
-                      <small v-if="resultError['IntituleType']"> {{ resultError["IntituleType"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                    <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Description</label>
-                     <MazTextarea v-model="step2.Description"  no-radius type="text" name="Description"   color="info" placeholder="Conakry" />
-                      <small v-if="v$.step2.Description.$error">{{v$.step2.Description.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="submitUpdate()">Modifier</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
-   
-
- </Layout>
+  <Layout>
+    <Loading v-if="loading" style="z-index: 99999;"></Loading>
+    <PageHeader title="Entreprises" pageTitle="Paramétrages" :statistic="statistic" />
+    <BRow>
+      <BCol lg="12">
+        <BCard no-body>
+          <BCardBody class="border-bottom">
+            <div class="d-flex align-items-center justify-content-between">
+              <BCardTitle class="mb-0 ">Liste des types d'entreprises</BCardTitle>
+  
+  
+  
+              <div class="flex-shrink-0 d-flex">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
+                  <MazInput v-model="searchQuery" no-radius type="text" color="info" size="sm"
+                    placeholder="Recherchez ..." @input="filterByName" />
+                </BCol>
+                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+  
+              </div>
+            </div>
+          </BCardBody>
+  
+          <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+            <div>
+              <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
+            </div>
+          </BCardBody>
+  
+  
+  
+          <BCardBody v-else>
+            <div class="table-responsive">
+              <BTableSimple class="align-middle table-nowrap table-hover">
+                <BThead class="table-light" style="">
+                  <BTr>
+                    <BTh scope="col"></BTh>
+                    <BTh scope="col">Nom</BTh>
+                    <BTh scope="col">Description</BTh>
+                    <BTh scope="col">Action</BTh>
+                  </BTr>
+                </BThead>
+                <BTbody>
+                  <BTr v-for="region in paginatedItems" :key="region.id">
+                    <BTd>
+  
+  
+                    </BTd>
+                    <BTd> {{ region.IntituleType }}</BTd>
+                    <BTd>{{ region.Description }}</BTd>
+  
+                    <BTd>
+                      <ul class="list-unstyled hstack gap-1 mb-0">
+  
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                          <Blink href="#" @click="UpdateUser(region.id)" class="btn btn-sm btn-info"><i
+                              class="mdi mdi-pencil-outline"></i></Blink>
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                          <Blink href="#" @click="confirmDelete(region.id)" data-bs-toggle="modal"
+                            class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                        </li>
+                      </ul>
+                    </BTd>
+                  </BTr>
+                </BTbody>
+              </BTableSimple>
+            </div>
+            <BRow>
+              <BCol lg="12">
+                <div class="container_pagination">
+                  <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
+                </div>
+              </BCol>
+            </BRow>
+          </BCardBody>
+        </BCard>
+      </BCol>
+    </BRow>
+  
+  
+    <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18">
+      <div>
+  
+        <div class="account-pages " style="width:100%;">
+          <BContainer>
+            <BRow>
+              <BCol>
+                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+              border: 1px solid #c9d1d9 !important;">
+                  <div class="bg-primary-subtle">
+                    <BRow>
+                      <BCol cols="12 text-center">
+                        <div class="modalheader p-4">
+                          <h5 class="text-primary">Ajouter un type d'netreprise</h5>
+  
+                        </div>
+                      </BCol>
+  
+                    </BRow>
+                  </div>
+                  <BCardBody class="pt-0">
+                    <div>
+                      <router-link to="#">
+                        <div class="avatar-md profile-user-wid ">
+                          <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                            <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;" />
+                          </span>
+                        </div>
+                      </router-link>
+                    </div>
+                    <div class="p-2">
+                      <BForm class="form-horizontal">
+                        <BRow>
+                          <BCol md="12">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Nom </label>
+                              <MazInput v-model="step1.IntituleType" no-radius type="text" name="nom" color="info"
+                                placeholder="exemple" />
+                              <small
+                                v-if="v$.step1.IntituleType.$error">{{v$.step1.IntituleType.$errors[0].$message}}</small>
+                              <small v-if="resultError['IntituleType']"> {{ resultError["IntituleType"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <BRow>
+                          <BCol md="12">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Description </label>
+                              <MazTextarea v-model="step1.Description" no-radius type="text" name="Description"
+                                color="info" placeholder="exemple" />
+                              <small
+                                v-if="v$.step1.Description.$error">{{v$.step1.Description.$errors[0].$message}}</small>
+                              <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+  
+  
+                        <BRow class="mb-0">
+                          <BCol cols="12" class="text-end">
+                            <div class="boutton">
+                              <button class="" @click="HamdleAddUser()">Valider</button>
+                            </div>
+                          </BCol>
+                        </BRow>
+                      </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+  
+              </BCol>
+            </BRow>
+          </BContainer>
+        </div>
+      </div>
+    </BModal>
+  
+    <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18">
+      <div>
+  
+        <div class="account-pages " style="width:100%;">
+          <BContainer>
+            <BRow>
+              <BCol>
+                <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+              border: 1px solid #c9d1d9 !important;">
+                  <div class="bg-primary-subtle">
+                    <BRow>
+                      <BCol cols="12 text-center">
+                        <div class="modalheader p-4">
+                          <h5 class="text-primary">Modifier un type d'entreprise</h5>
+  
+                        </div>
+                      </BCol>
+  
+                    </BRow>
+                  </div>
+                  <BCardBody class="pt-0">
+                    <div>
+                      <router-link to="#">
+                        <div class="avatar-md profile-user-wid ">
+                          <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                            <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;" />
+                          </span>
+                        </div>
+                      </router-link>
+                    </div>
+                    <div class="p-2">
+                      <BForm class="form-horizontal">
+  
+  
+                        <BRow>
+                          <BCol md="12">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Nom</label>
+                              <MazInput v-model="step2.IntituleType" no-radius type="text" name="nom" color="info"
+                                placeholder="Conakry" />
+                              <small
+                                v-if="v$.step2.IntituleType.$error">{{v$.step2.IntituleType.$errors[0].$message}}</small>
+                              <small v-if="resultError['IntituleType']"> {{ resultError["IntituleType"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <BRow>
+                          <BCol md="12">
+                            <div class="mb-3 position-relative">
+                              <label for="userpassword">Description</label>
+                              <MazTextarea v-model="step2.Description" no-radius type="text" name="Description"
+                                color="info" placeholder="Conakry" />
+                              <small
+                                v-if="v$.step2.Description.$error">{{v$.step2.Description.$errors[0].$message}}</small>
+                              <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
+  
+                            </div>
+                          </BCol>
+                        </BRow>
+  
+                        <BRow class="mb-0">
+                          <BCol cols="12" class="text-end">
+                            <div class="boutton">
+                              <button class="" @click="submitUpdate()">Modifier</button>
+                            </div>
+                          </BCol>
+                        </BRow>
+                      </BForm>
+                    </div>
+                  </BCardBody>
+                </BCard>
+  
+              </BCol>
+            </BRow>
+          </BContainer>
+        </div>
+      </div>
+    </BModal>
+  
+  
+  </Layout>
 </template>
 <script>
 import Layout from "../../layouts/main.vue";
@@ -242,287 +253,294 @@ import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
 import useVuelidate from '@vuelidate/core';
-import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
-import {successmsg} from "@/lib/modal.js"
+import { require, lgmin, lgmax, ValidEmail } from '@/functions/rules';
+import { successmsg } from "@/lib/modal.js"
 import Swal from 'sweetalert2'
 
 export default {
-   components: {
-   Layout,
-   PageHeader,
-   Loading ,
-   Pag,
-   MazPhoneNumberInput,
- },
- data() {
-   return {
-     loading:true,
-     AddUser:false,
-     UpdateUser1:false,
-     ToId:'',
-     IsActive:'',
-     StatutJuridiqueOptions:[],
-     currentPage: 1,
-     itemsPerPage: 8,
-     totalPageArray: [],
+  components: {
+    Layout,
+    PageHeader,
+    Loading,
+    Pag,
+    MazPhoneNumberInput,
+  },
+  data() {
+    return {
+      loading: true,
+      AddUser: false,
+      UpdateUser1: false,
+      searchQuery:'',
+      ToId: '',
+      IsActive: '',
+      StatutJuridiqueOptions: [],
+      data:[],
+      currentPage: 1,
+      itemsPerPage: 8,
+      totalPageArray: [],
       resultError: {},
-     v$: useVuelidate(),
-     UserOptionsPersonnels:"",
-       error:'',
-     step1:{
-        IntituleType:'',
-        Description:'',
-            
-  
-          },
+      v$: useVuelidate(),
+      UserOptionsPersonnels: "",
+      error: '',
+      step1: {
+        IntituleType: '',
+        Description: '',
 
-            step2:{
-                IntituleType:'',
-        Description:'',
-           
-       },
-   }
- },
- validations: {
-   step1:{
-    IntituleType: {
-     require
-     
-   },
-   Description: {
 
-     
-   },
-   
-   },
-   step2:{
-    IntituleType: {
-     require
-     
-   },
-   Description: {
+      },
 
-     
-   },
-           
-       },
-     
+      step2: {
+        IntituleType: '',
+        Description: '',
 
-   
- },
- computed:{
-   loggedInUser() {
-     return this.$store.getters['auth/myAuthenticatedUser'];
-   },
-   statistic() {
+      },
+    }
+  },
+  validations: {
+    step1: {
+      IntituleType: {
+        require
+
+      },
+      Description: {
+
+
+      },
+
+    },
+    step2: {
+      IntituleType: {
+        require
+
+      },
+      Description: {
+
+
+      },
+
+    },
+
+
+
+  },
+  computed: {
+    loggedInUser() {
+      return this.$store.getters['auth/myAuthenticatedUser'];
+    },
+    statistic() {
       return `Total des Types d'entreprises = ${this.UserOptionsPersonnels} .  `;
     },
-   totalPages() {
-   return Math.ceil(this.StatutJuridiqueOptions.length / this.itemsPerPage);
-   },
-   paginatedItems() {
-     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-     const endIndex = startIndex + this.itemsPerPage;
-     return this.StatutJuridiqueOptions.slice(startIndex, endIndex);
-   },
- },
-async mounted() {
-   console.log("uusers",this.loggedInUser);
-  await this.fetchStatutJuridiqueOptions()
- },
- methods: {
-   
-   successmsg:successmsg,
-   async fetchStatutJuridiqueOptions() {
-    try {
-             const response = await axios.get('/types-entreprises', {
-             headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-               
-             },
-   
-           });
-                   console.log(response.data.data);
-
-                 this.StatutJuridiqueOptions = response.data.data;
-                 console.log( this.StatutJuridiqueOptions);
-                
-                 const filteredUsersEntreprise = response.data.data
-                 this.UserOptionsPersonnels = filteredUsersEntreprise.length
-
-                  this.loading = false;
-           
-           } catch (error) {
-             console.error('errorqqqqq',error);
-           
-             if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-               await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-             this.$router.push("/");  //a revoir
-           }
-           }
+    totalPages() {
+      return Math.ceil(this.StatutJuridiqueOptions.length / this.itemsPerPage);
     },
-   async HamdleAddUser(){
-     this.error = '',
-     this.resultError= '',
-    this.v$.step1.$touch()
-    if (this.v$.$errors.length == 0 ) {
-       this.loading = true
-         let DataUser = {
-            types:[
-                {
-                    IntituleType:this.step1.IntituleType,
-                    Description:this.step1.Description,
-                    IsActive:true
-                }
-            ]
-           
-         }
-         console.log("eeeee",DataUser);
-         try {
-        
-         const response = await axios.post('/types-entreprises' , DataUser, {
-             headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
+    paginatedItems() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.StatutJuridiqueOptions.slice(startIndex, endIndex);
+    },
+  },
+  async mounted() {
+    console.log("uusers", this.loggedInUser);
+    await this.fetchStatutJuridiqueOptions()
+  },
+  methods: {
+
+    successmsg: successmsg,
+    async fetchStatutJuridiqueOptions() {
+      try {
+        const response = await axios.get('/types-entreprises', {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+
+          },
+
+        });
+        console.log(response.data.data);
+        if(this.loggedInUser.direction === 'DNI'){
+           this.data = response.data?.data .filter(e => e.id === 5)
+           this.StatutJuridiqueOptions = this.data
+          this.UserOptionsPersonnels =  this.StatutJuridiqueOptions.length
    
-   
-           });
-         console.log('response.login', response.data); 
-         if (response.data.status === "success") { 
-           this.AddUser = false
-           this.loading = false
-           this.successmsg("Création du statut juridique",'Votre statut juridique a été crée avec succès !')
-           await this.fetchStatutJuridiqueOptions()
+        }else{
+          this.data = response.data?.data.filter(e => e.id !== 5)
+          this.StatutJuridiqueOptions = this.data
+         this.UserOptionsPersonnels =  this.StatutJuridiqueOptions.length
+      
+        }
+        this.loading = false;
+      
 
-         } else {
+      } catch (error) {
+        console.error('errorqqqqq', error);
 
-         }
-
-
-
-   } catch (error) {
-   console.log('response.login', error); 
-
-   this.loading = false
-   if (error.response.data.status === "error") {
-   return this.error = error.response.data.message
-
-   } else {
-     this.formatValidationErrors(error.response.data.errors);
-   }
-   }
-       }else{
-       
-       console.log('pas bon', this.v$.$errors);
-       
-       } 
-         },
-         async confirmDelete(id) {
-     // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
-     const result = await Swal.fire({
-       title: 'Êtes-vous sûr?',
-       text: 'Vous ne pourrez pas revenir en arrière!',
-       icon: 'warning',
-       showCancelButton: true,
-       confirmButtonText: 'Oui, supprimer!',
-       cancelButtonText: 'Non, annuler!',
-       reverseButtons: true
-     });
-
-     // Si l'utilisateur confirme la suppression
-     if (result.isConfirmed) {
-       this.DeleteUser(id);
-     }
-         },
-         async DeleteUser(id) {
-          this.loading = true
-         
-         try {
-           // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/types-entreprises/${id}`, {
-             headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-               
-   
-             },
-   
-   
-           });
-           console.log('Réponse de suppression:', response);
-           if (response.data.status === 'success') {
-             this.loading = false
-            await this.fetchStatutJuridiqueOptions()
-            this.successmsg('Supprimé!', 'Votre statut juridique a été supprimée.')
-   
-           } else {
-             console.log('error', response.data)
-             this.loading = false
-           }
-         } catch (error) {
-           console.error('Erreur lors de la suppression:', error);
-          
-           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
+        if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+          this.$router.push("/");  //a revoir
+        }
+      }
+    },
+    async HamdleAddUser() {
+      this.error = '',
+        this.resultError = '',
+        this.v$.step1.$touch()
+      if (this.v$.$errors.length == 0) {
+        this.loading = true
+        let DataUser = {
+          types: [
+            {
+              IntituleType: this.step1.IntituleType,
+              Description: this.step1.Description,
+              IsActive: true
             }
-           
-         }
-   
-       },
-       async UpdateUser(id) {
-         this.UpdateUser1 = true;
-         this.loading = true;
+          ]
 
-         try {
-             // Recherchez l'objet correspondant dans le tableau StatutJuridiqueOptions en fonction de l'ID
-             const user = this.StatutJuridiqueOptions.find(user => user.id === id);
+        }
+        console.log("eeeee", DataUser);
+        try {
 
-             if (user) {
-                 // Utilisez les informations récupérées de l'objet user
-                 console.log('Informations de l\'utilisateur:', user);
+          const response = await axios.post('/types-entreprises', DataUser, {
+            headers: {
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
 
-              this.step2.IntituleType = user.IntituleType,
-              this.step2.Description = user.Description,
-              this.IsActive = user.IsActive,
-              this.ToId = user.id
 
-             } else {
-                 console.log('Utilisateur non trouvé avec l\'ID', id);
-             }
-             this.loading = false;
-         } catch (error) {
-             console.error('Erreur lors de la mise à jour du document:', error);
-            
-             this.loading = false;
-         }
-},
+          });
+          console.log('response.login', response.data);
+          if (response.data.status === "success") {
+            this.AddUser = false
+            this.loading = false
+            this.successmsg("Création du statut juridique", 'Votre statut juridique a été crée avec succès !')
+            await this.fetchStatutJuridiqueOptions()
 
-   async  submitUpdate(){
-   
-     this.v$.step2.$touch();
+          } else {
+
+          }
+
+
+
+        } catch (error) {
+          console.log('response.login', error);
+
+          this.loading = false
+          if (error.response.data.status === "error") {
+            return this.error = error.response.data.message
+
+          } else {
+            this.formatValidationErrors(error.response.data.errors);
+          }
+        }
+      } else {
+
+        console.log('pas bon', this.v$.$errors);
+
+      }
+    },
+    async confirmDelete(id) {
+      // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
+      const result = await Swal.fire({
+        title: 'Êtes-vous sûr?',
+        text: 'Vous ne pourrez pas revenir en arrière!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer!',
+        cancelButtonText: 'Non, annuler!',
+        reverseButtons: true
+      });
+
+      // Si l'utilisateur confirme la suppression
+      if (result.isConfirmed) {
+        this.DeleteUser(id);
+      }
+    },
+    async DeleteUser(id) {
+      this.loading = true
+
+      try {
+        // Faites une requête pour supprimer l'élément avec l'ID itemId
+        const response = await axios.delete(`/types-entreprises/${id}`, {
+          headers: {
+            Authorization: `Bearer ${this.loggedInUser.token}`,
+
+
+          },
+
+
+        });
+        console.log('Réponse de suppression:', response);
+        if (response.data.status === 'success') {
+          this.loading = false
+          await this.fetchStatutJuridiqueOptions()
+          this.successmsg('Supprimé!', 'Votre statut juridique a été supprimée.')
+
+        } else {
+          console.log('error', response.data)
+          this.loading = false
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+
+        if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+          await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+          this.$router.push("/");  //a revoir
+        }
+
+      }
+
+    },
+    async UpdateUser(id) {
+      this.UpdateUser1 = true;
+      this.loading = true;
+
+      try {
+        // Recherchez l'objet correspondant dans le tableau StatutJuridiqueOptions en fonction de l'ID
+        const user = this.StatutJuridiqueOptions.find(user => user.id === id);
+
+        if (user) {
+          // Utilisez les informations récupérées de l'objet user
+          console.log('Informations de l\'utilisateur:', user);
+
+          this.step2.IntituleType = user.IntituleType,
+            this.step2.Description = user.Description,
+            this.IsActive = user.IsActive,
+            this.ToId = user.id
+
+        } else {
+          console.log('Utilisateur non trouvé avec l\'ID', id);
+        }
+        this.loading = false;
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du document:', error);
+
+        this.loading = false;
+      }
+    },
+
+    async submitUpdate() {
+
+      this.v$.step2.$touch();
       console.log("bonjour");
-   
+
       if (this.v$.$errors.length == 0) {
         console.log("bonjour");
-         this.loading = true;
-      
-         let DataUser = {
-            types:[
-                {
-                    IntituleType:this.step2.IntituleType,
-                    Description:this.step2.Description,
-                    IsActive:this.IsActive,
-                    id:this.ToId
-                }
-            ]
-           
-         }
-             console.log('dataCath',DataUser);
-   
+        this.loading = true;
+
+        let DataUser = {
+          types: [
+            {
+              IntituleType: this.step2.IntituleType,
+              Description: this.step2.Description,
+              IsActive: this.IsActive,
+              id: this.ToId
+            }
+          ]
+
+        }
+        console.log('dataCath', DataUser);
+
         try {
-          const response = await axios.post('/types-entreprises/update',DataUser, {
+          const response = await axios.post('/types-entreprises/update', DataUser, {
             headers: {
-             
+
               Authorization: `Bearer ${this.loggedInUser.token}`,
             },
           });
@@ -530,61 +548,77 @@ async mounted() {
           if (response.data.status === "success") {
             await this.fetchStatutJuridiqueOptions()
             this.UpdateUser1 = false
-           this.loading = false
-           this.successmsg("Modification du statut juridique",'Votre statut juridique a été modifié avec succès !')
-           
-            
-          } 
+            this.loading = false
+            this.successmsg("Modification du statut juridique", 'Votre statut juridique a été modifié avec succès !')
+
+
+          }
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
-          
-          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
-              this.$router.push("/");  //a revoir
-            }
-       else{
-         this.formatValidationErrors(error.response.data.errors);
-       }
+
+          if (error.response.data.message === "Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+            this.$router.push("/");  //a revoir
+          }
+          else {
+            this.formatValidationErrors(error.response.data.errors);
+          }
         }
       } else {
         console.log("cest pas bon ", this.v$.$errors);
       }
-     },
-         updateCurrentPage(pageNumber) {
-         this.currentPage = pageNumber;
-         window.scrollTo({
-           top: 0,
-           behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
-         });
-       },
-       updatePaginatedItems() {
-         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        
-         const endIndex = startIndex + this.itemsPerPage;
-         return  this.StatutJuridiqueOptions.slice(startIndex, endIndex);
-       },
+    },
+    updateCurrentPage(pageNumber) {
+      this.currentPage = pageNumber;
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
+      });
+    },
+    updatePaginatedItems() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
-       async formatValidationErrors(errors) {
-     const formattedErrors = {};
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.StatutJuridiqueOptions.slice(startIndex, endIndex);
+    },
+    filterByName() {
+this.currentPage = 1;
+if (this.searchQuery !== null) {
+   const tt = this.searchQuery;
+  const  searchValue = tt.toLowerCase()
+  this.StatutJuridiqueOptions =this.data.filter(user => {
+    const Nom = user.IntituleType || '';
+    const CodeMpme = user.id || '';
+    return Nom.toLowerCase().includes(searchValue) || CodeMpme === parseInt(searchValue);
+  });
 
-     for (const field in errors) {
-       const errorMessages = errors[field]; // Liste complète des messages d'erreur
-       console.log(" errorMessages", errorMessages, typeof errorMessages);
+} else {
+this.StatutJuridiqueOptions = [...this.data];
+ 
+}
 
-       const concatenatedError = errorMessages.join(", "); // Concaténer les messages d'erreur
-       console.log(" concatenatedError", concatenatedError, typeof concatenatedError);
+},
+    async formatValidationErrors(errors) {
+      const formattedErrors = {};
 
-       formattedErrors[field] = concatenatedError; // Utilisez le nom du champ comme clé
-     }
+      for (const field in errors) {
+        const errorMessages = errors[field]; // Liste complète des messages d'erreur
+        console.log(" errorMessages", errorMessages, typeof errorMessages);
 
-     this.resultError = formattedErrors; // Stockez les erreurs dans un objet
+        const concatenatedError = errorMessages.join(", "); // Concaténer les messages d'erreur
+        console.log(" concatenatedError", concatenatedError, typeof concatenatedError);
 
-     // Maintenant, this.resultError est un objet où les clés sont les noms des champs
-     console.log("resultError", this.resultError);
-   },
- },
+        formattedErrors[field] = concatenatedError; // Utilisez le nom du champ comme clé
+      }
+
+      this.resultError = formattedErrors; // Stockez les erreurs dans un objet
+
+      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
+      console.log("resultError", this.resultError);
+    },
+  },
 }
 </script>
 <style lang="" scoped>
-   
+
 </style> 

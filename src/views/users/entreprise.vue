@@ -14,7 +14,7 @@
              </div>
 
              <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                <MazInput v-model="searchQuery" no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
@@ -77,13 +77,13 @@
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(user.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <Blink href="#"  @click="UpdateUser(user.id)" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(user.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(user.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
+                         <router-link to="/jobs/job-details" class="btn btn-sm btn-primary"><i class="mdi mdi-lock-outline"></i></router-link>
                        </li>
                      </ul>
                    </BTd>

@@ -167,7 +167,8 @@ export default {
     Layout,
     PageHeader,
     Loading ,
-    Pag, ckeditor: CKEditor.component
+    Pag,
+     ckeditor: CKEditor.component
   },
   data() {
     return { 

@@ -247,3 +247,16 @@ margin-bottom: 10px !important;
 .input-groupe input:focus {
   border-color: var(--color-primary);
 }
+
+.noresul {
+  border: 1px solid #F9D310;
+  max-width: 1140px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  border-radius: 6px;
+  font-size: 20px;
+
+}

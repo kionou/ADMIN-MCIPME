@@ -10,7 +10,7 @@
               <BCardTitle class="mb-0">Liste des Rôles</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class="me-3">
+                <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                   <MazInput
                     v-model="searchQuery"
                     no-radius
@@ -41,14 +41,14 @@
               <BTableSimple class="align-middle table-nowrap table-hover">
                 <BThead class="table-light" style="">
                   <BTr>
-                    <BTh scope="col" style="width: 70px"></BTh>
+                    <BTh scope="col" style="width: 70px">N°</BTh>
                     <BTh scope="col">Nom</BTh>
-                    <BTh scope="col">Action</BTh>
+                    <BTh scope="col" style="width: 70px">Action</BTh>
                   </BTr>
                 </BThead>
                 <BTbody>
-                  <BTr v-for="region in filteredList" :key="region.id">
-                    <BTd> </BTd>
+                  <BTr v-for="(region , index) in filteredList" :key="region.id">
+                    <BTd> {{ index+1 }}</BTd>
                     <BTd>{{ region.name }}</BTd>
 
                     <BTd>
@@ -61,23 +61,11 @@
                           <Blink
                             href="#"
                             @click="updateRole(region.id)"
-                            class="btn btn-sm btn-soft-info"
+                            class="btn btn-sm btn-info"
                             ><i class="mdi mdi-pencil-outline"></i
                           ></Blink>
                         </li>
-                        <li
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          aria-label="Delete"
-                        >
-                          <Blink
-                            href="#"
-                            @click="confirmDelete(region.id)"
-                            data-bs-toggle="modal"
-                            class="btn btn-sm btn-soft-danger"
-                            ><i class="mdi mdi-delete-outline"></i
-                          ></Blink>
-                        </li>
+                      
                       </ul>
                     </BTd>
                   </BTr>
@@ -452,6 +440,7 @@ export default {
               "Création de rôle",
               "Votre rôle a été crée avec succès !"
             );
+            this.v$.step1.$reset();
             await this.fetchPermission();
           } else {
           }

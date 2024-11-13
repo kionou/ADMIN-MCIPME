@@ -11,7 +11,7 @@
  
  
               <div class="flex-shrink-0 d-flex">
-                 <BCol xxl="4" lg="9" class=" me-3">
+                 <BCol xxl="9" xl="9" lg="9" md="9" sm="9" class="me-1">
                 <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
               </BCol>
                 <div @click="$router.push({ path: '/zone-industrielle/ajouter' })" class="btn btn-primary">Ajouter</div>
@@ -43,13 +43,13 @@
                  <h5 class="text-truncate pb-1">
                      <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                          <Blink href="#" @click="ViewDetail(zone.id)" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></Blink>
+                          <Blink href="#" @click="ViewDetail(zone.id)" class="btn btn-sm btn-primary"><i class="mdi mdi-eye-circle-outline"></i></Blink>
                         </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <router-link :to="{ name: 'update-zone-industrielle', params: { id: zone.id }}" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></router-link>
+                         <router-link :to="{ name: 'update-zone-industrielle', params: { id: zone.id }}" class="btn btn-sm btn-info"><i class="mdi mdi-pencil-outline"></i></router-link>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(zone.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(zone.id)" data-bs-toggle="modal" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                       
                      </ul>
